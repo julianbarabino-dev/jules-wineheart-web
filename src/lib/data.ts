@@ -194,8 +194,24 @@ export const projects = [
 ];
 
 export const cosmicVicarServices = [
-    { name: "Producción Musical", icon: "Mic2" },
-    { name: "Mezcla & Mastering", icon: "Layers" },
-    { name: "Edición de Audio", icon: "Scissors" },
-    { name: "SFX & Game Audio", icon: "Gamepad2" },
+    { 
+        name: "Producción Musical", 
+        icon: "Mic2",
+        description: "Desde la composición inicial hasta los arreglos finales para dar vida a tus canciones."
+    },
+    { 
+        name: "Mezcla & Mastering", 
+        icon: "Layers",
+        description: "Balance, profundidad y claridad profesional para que tu música suene increíble en todas partes."
+    },
+    { 
+        name: "Edición de Audio", 
+        icon: "Scissors",
+        description: "Limpieza, afinación y sincronización precisa para un sonido pulido y sin imperfecciones."
+    },
+    { 
+        name: "SFX & Game Audio", 
+        icon: "Gamepad2",
+        description: "Diseño de efectos de sonido y música inmersiva que potencian la experiencia de juego."
+    },
 ] as const;

@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { Play, Instagram, Mic2, Layers, Scissors, Gamepad2 } from 'lucide-react';
+import { Play, Instagram } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { links, cosmicVicarServices } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Mic2, Layers, Scissors, Gamepad2 } from 'lucide-react';
 
 type IconKeys = keyof typeof iconMap;
 
@@ -12,6 +14,7 @@ const iconMap = {
   Scissors,
   Gamepad2,
 };
+
 
 const CosmicVicar = () => {
   return (
@@ -34,17 +37,24 @@ const CosmicVicar = () => {
                 <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-lg border-l-2 border-border pl-4">
                   Identidad sonora para artistas independientes. Un espacio donde lo análogo y lo digital convergen bajo la dirección de Julián Barabino.
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Accordion type="single" collapsible className="w-full">
                   {cosmicVicarServices.map((service) => {
                     const Icon = iconMap[service.icon as IconKeys];
                     return (
-                        <div key={service.name} className="flex items-center gap-3 bg-secondary/50 p-3 border border-border rounded">
+                      <AccordionItem value={service.name} key={service.name} className="border-border/50">
+                        <AccordionTrigger className="hover:no-underline font-bold text-sm uppercase tracking-wider text-foreground">
+                          <div className="flex items-center gap-3">
                             <Icon size={16} className="text-primary"/>
-                            <span className="text-xs font-bold uppercase tracking-wider text-foreground">{service.name}</span>
-                        </div>
+                            <span>{service.name}</span>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="text-muted-foreground text-xs pl-9">
+                          {service.description}
+                        </AccordionContent>
+                      </AccordionItem>
                     )
                   })}
-                </div>
+                </Accordion>
               </div>
               <div className="flex flex-col justify-end items-start md:items-end gap-6 min-w-[200px]">
                 <Button asChild size="lg" className="bg-primary-foreground text-background font-black uppercase tracking-widest hover:bg-primary hover:text-primary-foreground transition-all w-full text-center">

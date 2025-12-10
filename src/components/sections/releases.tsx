@@ -80,7 +80,7 @@ const Releases = () => {
                         <Card
                           onClick={(e) => handleReleaseClick(e, index)}
                           className={cn(
-                            "group relative aspect-square bg-card/70 backdrop-blur-sm border transition-all duration-300 cursor-pointer overflow-hidden rounded-2xl",
+                            "group relative aspect-square bg-card/50 backdrop-blur-sm border transition-all duration-300 cursor-pointer overflow-hidden rounded-2xl",
                             activeRelease === index ? release.color : "border-border hover:border-foreground/30"
                           )}
                         >
@@ -91,11 +91,7 @@ const Releases = () => {
                             className="object-cover transition-all duration-500 opacity-80 group-hover:opacity-100"
                             data-ai-hint={image.imageHint}
                           />
-                          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-card/50 to-background/50 z-[-1]">
-                            <span className="text-foreground/10 font-black text-4xl font-headline">{release.altText}</span>
-                          </div>
-
-                          <div className={cn("absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex flex-col justify-end p-4 transition-opacity duration-300", activeRelease === index ? 'opacity-100' : 'opacity-0')}>
+                          <div className={cn("absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-4 transition-opacity duration-300", activeRelease === index ? 'opacity-100' : 'opacity-0 group-hover:opacity-100')}>
                             <h3 className="text-xl font-bold text-white leading-tight mb-1 font-headline">{release.title}</h3>
                             <p className={cn("text-[10px] font-mono uppercase tracking-wider mb-4 font-bold", release.textColor)}>{release.type}</p>
                             <div className="flex gap-2">
