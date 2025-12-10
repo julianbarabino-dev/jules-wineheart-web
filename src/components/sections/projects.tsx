@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
 import { getPlaceholderImage } from '@/lib/placeholder-images';
 
-
 const Projects = () => {
 
   return (
@@ -20,7 +19,7 @@ const Projects = () => {
           <h2 className="text-5xl font-black text-foreground font-headline uppercase italic tracking-tighter">Proyectos</h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
           {projects.map((project) => {
             const TagIcon = project.tagIcon;
             const image = getPlaceholderImage(project.imgId);
