@@ -20,7 +20,7 @@ const Projects = () => {
           <h2 className="text-5xl font-black text-foreground font-headline uppercase italic tracking-tighter">Proyectos</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           {projects.map((project) => {
             const TagIcon = project.tagIcon;
             const image = getPlaceholderImage(project.imgId);
@@ -30,7 +30,7 @@ const Projects = () => {
                 key={project.id}
                 className={cn(
                   'group rounded-2xl bg-card border border-border/50 transition-all duration-300 overflow-hidden flex flex-col',
-                  project.style
+                  'hover:border-primary/50'
                 )}
               >
                 <div className="relative aspect-video w-full overflow-hidden">

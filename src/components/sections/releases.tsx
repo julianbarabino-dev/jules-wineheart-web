@@ -75,7 +75,7 @@ const Releases = () => {
                 {secondaryReleases.map((release, index) => {
                    const image = getPlaceholderImage(release.imgId);
                   return (
-                    <CarouselItem key={index} className="pl-6 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/2 xl:basis-[40%]">
+                    <CarouselItem key={index} className="pl-6 basis-full md:basis-1/2 lg:basis-1/2 xl:basis-[40%]">
                       <div className="p-1">
                         <Card
                           onClick={(e) => handleReleaseClick(e, index)}
