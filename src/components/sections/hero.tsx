@@ -82,7 +82,7 @@ const Hero = () => {
         return;
       }
       
-      const newSequence = (keySequence + e.key.toUpperCase()).slice(-Math.max(GHOST_CODE.length, HACKER_CODE.length));
+      const newSequence = (keySequence + e.key.toUpperCase()).slice(-HACKER_CODE.length);
       setKeySequence(newSequence);
       
       if (newSequence.endsWith(GHOST_CODE)) {
@@ -240,5 +240,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
-    
