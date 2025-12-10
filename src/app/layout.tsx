@@ -16,10 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="scroll-smooth">
-      {/* CAMBIO: Base de color violeta muy oscuro (#13051c) */}
+      {/* FONDO VIOLETA OSCURO (#13051c) */}
       <body className={`${inter.className} bg-[#13051c] text-white antialiased relative`}>
         
-        {/* 1. TEXTURA DE RUIDO (NOISE) - Se mantiene para el toque Lo-Fi */}
+        {/* 1. TEXTURA DE RUIDO (NOISE) */}
         <div 
           className="fixed inset-0 z-[-1] opacity-[0.08] pointer-events-none"
           style={{ 
@@ -27,13 +27,12 @@ export default function RootLayout({
           }}
         />
 
-        {/* 2. DEGRADADO COSMIC VIOLET - El toque mágico */}
-        {/* Va desde un violeta espacial arriba hasta casi negro abajo */}
+        {/* 2. DEGRADADO COSMIC VIOLET */}
         <div className="fixed inset-0 z-[-2] bg-gradient-to-b from-[#1e0a2e] via-[#13051c] to-[#05020a] pointer-events-none"></div>
 
-        {/* Contenido de la página (flotando sobre el fondo violeta) */}
         {children}
       </body>
     </html>
   );
 }
+
