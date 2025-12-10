@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Play, ShoppingBag, Disc, ExternalLink } from 'lucide-react';
+import { Play, ShoppingBag, Disc, ExternalLink, MoveHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
@@ -38,7 +38,7 @@ const Releases = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           {/* BLOODMOON (Principal) */}
-          <Card className="lg:col-span-1 group relative aspect-[3/4] bg-card border-primary/50 shadow-lg shadow-primary/10 transition-all duration-500 cursor-pointer overflow-hidden rounded-2xl flex flex-col hover:border-primary/80 hover:shadow-primary/20 hover:shadow-xl">
+          <Card className="lg:col-span-1 group relative aspect-[3/4] bg-card/70 backdrop-blur-sm border-primary/50 shadow-lg shadow-primary/10 transition-all duration-500 cursor-pointer overflow-hidden rounded-2xl flex flex-col hover:border-primary/80 hover:shadow-primary/20 hover:shadow-xl">
             <div className="absolute top-4 right-4 bg-primary-foreground text-background text-[9px] font-black px-2.5 py-1 uppercase z-20 animate-pulse rounded-full shadow-lg">Nuevo</div>
             <div className="relative flex-1 overflow-hidden">
               <Image
@@ -48,9 +48,9 @@ const Releases = () => {
                 className="object-cover transition-all duration-500 group-hover:scale-105"
                 data-ai-hint={bloodmoonImage.imageHint}
               />
-              <div className="absolute bottom-0 w-full h-1/3 bg-gradient-to-t from-card to-transparent"></div>
+              <div className="absolute bottom-0 w-full h-1/3 bg-gradient-to-t from-card/70 to-transparent"></div>
             </div>
-            <CardContent className="p-6 flex flex-col justify-end relative z-10 bg-card">
+            <CardContent className="p-6 flex flex-col justify-end relative z-10 bg-card/70 backdrop-blur-sm">
               <h3 className="text-3xl font-black text-foreground font-headline uppercase italic leading-none mb-2">BLOODMOON</h3>
               <p className="text-muted-foreground font-mono text-[10px] uppercase tracking-wider mb-6">EP • 2025</p>
               <div className="flex gap-2">
@@ -67,7 +67,7 @@ const Releases = () => {
           {/* Catalog Slider */}
           <div className="lg:col-span-2">
             <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6 flex items-center gap-2">
-              <Disc size={12} /> Archivo
+              <Disc size={12} /> Catálogo
             </h3>
             
             <Carousel opts={{ align: "start", loop: false }} className="w-full">
@@ -80,7 +80,7 @@ const Releases = () => {
                         <Card
                           onClick={(e) => handleReleaseClick(e, index)}
                           className={cn(
-                            "group relative aspect-square bg-card border transition-all duration-300 cursor-pointer overflow-hidden rounded-2xl",
+                            "group relative aspect-square bg-card/70 backdrop-blur-sm border transition-all duration-300 cursor-pointer overflow-hidden rounded-2xl",
                             activeRelease === index ? release.color : "border-border hover:border-foreground/30"
                           )}
                         >
@@ -109,9 +109,10 @@ const Releases = () => {
                   );
                 })}
               </CarouselContent>
-               <div className="hidden sm:block">
-                <CarouselPrevious className="absolute -left-12 top-1/2 -translate-y-1/2" />
-                <CarouselNext className="absolute -right-12 top-1/2 -translate-y-1/2" />
+               <div className="hidden sm:flex justify-end items-center gap-4 mt-4">
+                 <span className="text-muted-foreground text-xs font-mono flex items-center gap-2">Deslizar <MoveHorizontal size={14}/></span>
+                <CarouselPrevious className="relative -left-0 top-0 translate-y-0" />
+                <CarouselNext className="relative -right-0 top-0 translate-y-0" />
               </div>
             </Carousel>
           </div>

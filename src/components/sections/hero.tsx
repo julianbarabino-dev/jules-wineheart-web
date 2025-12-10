@@ -3,13 +3,14 @@
 import { Play, Headphones, ChevronDown, Guitar, Laptop, Book, Keyboard, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const creativeTools = [
-  { icon: Guitar, delay: 0.8 },
-  { icon: Laptop, delay: 0.9 },
-  { icon: Book, delay: 1.0 },
-  { icon: Keyboard, delay: 1.1 },
-  { icon: Terminal, delay: 1.2 },
+  { icon: Guitar, section: "#releases", tooltip: "Música" },
+  { icon: Laptop, section: "#projects", tooltip: "Proyectos" },
+  { icon: Book, section: "#diary", tooltip: "Sound Diary" },
+  { icon: Keyboard, section: "#cosmic", tooltip: "Cosmic Vicar" },
+  { icon: Terminal, section: "#bunker", tooltip: "Bunker" },
 ];
 
 const Hero = () => {
@@ -52,27 +53,28 @@ const Hero = () => {
           visible: { transition: { staggerChildren: 0.1 } }
         }}
       >
-        {creativeTools.map((tool, index) => (
-          <motion.div
-            key={index}
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut", delay: tool.delay } }
-            }}
-            whileHover={{ y: -5, color: 'hsl(var(--accent))' }}
-            className="text-muted-foreground transition-colors"
-          >
-            <tool.icon size={20} />
-          </motion.div>
-        ))}
-        <motion.code 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 0.8 }}
-            className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-accent/20 font-code text-xs select-none pointer-events-none"
-        >
-            const vibe = "cosmic-folk";
-        </motion.code>
+        <TooltipProvider>
+          {creativeTools.map((tool, index) => (
+            <Tooltip key={index}>
+              <TooltipTrigger asChild>
+                <motion.button
+                  onClick={() => scrollToSection(tool.section)}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut", delay: 0.8 + index * 0.1 } }
+                  }}
+                  whileHover={{ y: -5, color: 'hsl(var(--accent))' }}
+                  className="text-muted-foreground transition-colors cursor-pointer"
+                >
+                  <tool.icon size={20} />
+                </motion.button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{tool.tooltip}</p>
+              </TooltipContent>
+            </Tooltip>
+          ))}
+        </TooltipProvider>
       </motion.div>
 
       <motion.div
