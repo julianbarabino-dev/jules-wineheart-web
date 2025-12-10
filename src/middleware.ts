@@ -27,33 +27,10 @@ function getLocale(request: NextRequest): string | undefined {
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
-  // `/_next/` and `/api/` are ignored by the watcher, but we need to ignore files in `public`
-  if (
-    [
-      '/manifest.json',
-      '/favicon.ico',
-      '/fotos/bloodmoon-cover.jpg',
-      '/fotos/habitar-remix-cover.jpg',
-      '/fotos/algo-se-fue-cover.jpg',
-      '/fotos/ocupado-tu-corazon-cover.jpg',
-      '/fotos/memory-of-changes-cover.jpg',
-      '/fotos/nothingeverhappened-cover.jpg',
-      '/fotos/wegonnamakeit-cover.jpg',
-      '/fotos/wherewasi-cover.jpg',
-      '/fotos/ok-cover.jpg',
-      '/fotos/spheres-cover.jpg',
-      '/fotos/summertime-cover.jpg',
-      '/fotos/julesbasement-cover.jpg',
-      '/fotos/norah-game-screenshot.jpg',
-      '/fotos/habitar-p2p-docu.jpg',
-      '/fotos/memory-short-film.jpg',
-      '/fotos/goodbye-cities-film.jpg',
-      '/fotos/retroaventuras-cover.jpg',
-      '/key-press.mp3',
-      '/ghost-track.mp3',
-    ].includes(pathname)
-  )
-    return
+  // Skip middleware for files with extensions (e.g. images, fonts, etc.)
+  if (/\..*$/.test(pathname)) {
+    return NextResponse.next();
+  }
 
   // Check if there is any supported locale in the pathname
   const pathnameIsMissingLocale = i18n.locales.every(
