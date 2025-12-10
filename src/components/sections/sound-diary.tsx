@@ -10,7 +10,6 @@ export default function SoundDiary() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitted(true);
-    // Aquí conectaremos la base de datos real más adelante
     console.log("Suscripto:", email);
   };
 
@@ -21,12 +20,11 @@ export default function SoundDiary() {
             <Mail size={14} />
             <span className="text-[10px] font-black uppercase tracking-widest">Sound Diary</span>
         </div>
-        
         <h3 className="text-3xl md:text-4xl font-black text-white uppercase italic tracking-tighter mb-4">
           Únete a la Transmisión
         </h3>
         <p className="text-neutral-500 text-sm leading-relaxed mb-8">
-          Recibe demos inéditos, pensamientos analógicos y noticias antes que nadie. Sin spam, solo señales.
+          Recibe demos inéditos, pensamientos analógicos y noticias antes que nadie.
         </p>
 
         {isSubmitted ? (
@@ -47,20 +45,13 @@ export default function SoundDiary() {
                         onChange={(e) => setEmail(e.target.value)}
                         className="w-full bg-white/5 border border-white/10 text-white px-5 py-4 rounded-lg focus:outline-none focus:border-purple-500 focus:bg-white/10 transition-all text-sm font-mono placeholder:text-neutral-600"
                     />
-                    <button 
-                        type="submit" 
-                        className="absolute right-2 top-2 bottom-2 bg-white text-black px-4 rounded font-bold uppercase text-[10px] tracking-widest hover:bg-purple-500 hover:text-white transition-all flex items-center gap-2"
-                    >
+                    <button type="submit" className="absolute right-2 top-2 bottom-2 bg-white text-black px-4 rounded font-bold uppercase text-[10px] tracking-widest hover:bg-purple-500 hover:text-white transition-all flex items-center gap-2">
                         <span>Enviar</span> <ArrowRight size={12}/>
                     </button>
                 </div>
-                <p className="text-neutral-600 text-[10px] uppercase tracking-widest">
-                    * Solo emails importantes.
-                </p>
             </form>
         )}
       </div>
     </section>
   );
 }
-
