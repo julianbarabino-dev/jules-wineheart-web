@@ -7,6 +7,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import {googleAI} from '@genkit-ai/google-genai';
 import {z} from 'genkit';
 
 const BunkerSignalsOutputSchema = z.array(
@@ -29,12 +30,20 @@ const possibleTexts = [
 ];
 
 export async function generateBunkerSignals(): Promise<BunkerSignalsOutput> {
+  if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'YOUR_API_KEY_HERE') {
+    return [
+        { date: '2025-07-22', time: '14:30:15', status: 'LIVE', text: 'Bloodmoon EP just dropped.' },
+        { date: '2025-07-25', time: '18:00:00', status: 'NEXT MOVE', text: 'Secret collaboration in the works.' },
+        { date: '2025-07-28', time: '11:45:23', status: 'REC', text: 'Experimenting with new sounds...' },
+    ];
+  }
   return generateBunkerSignalsFlow();
 }
 
 const generateBunkerSignalsPrompt = ai.definePrompt({
   name: 'generateBunkerSignalsPrompt',
   output: {schema: BunkerSignalsOutputSchema},
+  model: googleAI.model('gemini-1.5-flash-latest'),
   prompt: `You are an AI that generates plausible entries for a \"Signal from the Bunker\" section of a website. Each entry should have a date, time, status, and text.
 
 The entries should mimic cryptic messages and sound mysterious. The status can be one of: LIVE, NEXT MOVE, REC. The date and time should be plausible.
