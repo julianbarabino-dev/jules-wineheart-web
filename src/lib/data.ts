@@ -1,4 +1,5 @@
 import { Gamepad2, Film, MonitorPlay, Award } from 'lucide-react';
+import type { Dictionary } from './get-dictionary';
 
 export const links = {
   spotify: 'https://open.spotify.com/intl-es/artist/2pwi6uHFFNXPvoC2dECIf9',
@@ -10,7 +11,9 @@ export const links = {
   youtube: 'https://www.youtube.com/@juleswineheart',
 };
 
-export const secondaryReleases = [
+type ReleasesDictionary = Dictionary['releases']['secondaryReleases'];
+
+export const secondaryReleases = (dictionary: ReleasesDictionary) => [
   {
     title: 'Habitar P2P (Remix)',
     type: 'EP • 2025',
@@ -23,7 +26,7 @@ export const secondaryReleases = [
   },
   {
     title: 'Algo Se Fue',
-    type: 'Single • 2024',
+    type: dictionary.single + ' • 2024',
     imgId: 'algo-se-fue-cover.jpg',
     altText: 'ASF',
     streamUrl: links.spotify,
@@ -33,7 +36,7 @@ export const secondaryReleases = [
   },
   {
     title: 'Ocupado Tu Corazón',
-    type: 'Single • 2024',
+    type: dictionary.single + ' • 2024',
     imgId: 'ocupado-tu-corazon-cover.jpg',
     altText: 'OTC',
     streamUrl: links.spotify,
@@ -53,7 +56,7 @@ export const secondaryReleases = [
   },
   {
     title: 'Nothing Ever Happened',
-    type: 'Single • 2021',
+    type: dictionary.single + ' • 2021',
     imgId: 'nothingeverhappened-cover.jpg',
     altText: 'NEH',
     streamUrl: links.spotify,
@@ -63,7 +66,7 @@ export const secondaryReleases = [
   },
   {
     title: 'We Gonna Make It',
-    type: 'Single • 2021',
+    type: dictionary.single + ' • 2021',
     imgId: 'wegonnamakeit-cover.jpg',
     altText: 'WGMI',
     streamUrl: links.spotify,
@@ -73,7 +76,7 @@ export const secondaryReleases = [
   },
   {
     title: 'Where Was I',
-    type: 'Single • 2021',
+    type: dictionary.single + ' • 2021',
     imgId: 'wherewasi-cover.jpg',
     altText: 'WWI',
     streamUrl: links.spotify,
@@ -103,7 +106,7 @@ export const secondaryReleases = [
   },
   {
     title: 'Summertime',
-    type: 'Double Single • 2014',
+    type: dictionary.doubleSingle + ' • 2014',
     imgId: 'summertime-cover.jpg',
     altText: 'Summer',
     streamUrl:
@@ -115,7 +118,7 @@ export const secondaryReleases = [
   },
   {
     title: "Jules' Basement",
-    type: 'Compilado • 2013',
+    type: dictionary.compilation + ' • 2013',
     imgId: 'julesbasement-cover.jpg',
     altText: 'Demos',
     streamUrl: links.bandcamp,
@@ -125,15 +128,17 @@ export const secondaryReleases = [
   },
 ];
 
-export const projects = [
+type ProjectsDictionary = Dictionary['projects']['projectList'];
+
+export const projects = (dictionary: ProjectsDictionary) => [
     {
         id: 'norah',
         title: 'NORAH',
-        tag: 'Premio CreAr',
-        tagIcon: Award,
+        tag: dictionary.norah.tag,
+        tagIcon: 'Award',
         icon: Gamepad2,
         imgId: 'norah-game-screenshot.jpg',
-        desc: 'Videojuego educativo sobre artistas argentinas (Construct 3). Arte, música, concepto y programación. Premio a Mejor Sonorización.',
+        desc: dictionary.norah.desc,
         btn: null,
         style: 'hover:border-blue-500/80',
         tagStyle: 'bg-yellow-500/10 border-yellow-500/20 text-yellow-500',
@@ -146,8 +151,8 @@ export const projects = [
         tagIcon: null,
         icon: Film,
         imgId: 'habitar-p2p-docu.jpg',
-        desc: 'Música original para 4 mini documentales sobre arquitectos de BsAs. Prod. por Estudio Fiørd.',
-        btn: { text: 'Escuchar en Spotify', link: links.spotify },
+        desc: dictionary.habitar.desc,
+        btn: { text: dictionary.habitar.btnText, link: links.spotify },
         style: 'hover:border-primary/50',
         tagStyle: '',
         glowStyle: 'bg-gradient-to-t from-purple-900/50 to-purple-800/20 blur-3xl'
@@ -156,10 +161,10 @@ export const projects = [
         id: 'memory',
         title: 'MEMORY',
         tag: 'Unreal Connectors',
-        tagIcon: Film,
+        tagIcon: 'Film',
         icon: Film,
         imgId: 'memory-short-film.jpg',
-        desc: 'Música y diseño de sonido para cortometraje en Unreal 5. Dirigido por Aldana Drisaldi.',
+        desc: dictionary.memory.desc,
         btn: null,
         style: 'hover:border-purple-500/50',
         tagStyle: 'bg-purple-900/20 text-purple-400 border-purple-500/20',
@@ -169,10 +174,10 @@ export const projects = [
         id: 'goodbye',
         title: 'GOODBYE CITIES',
         tag: 'BAFICI 2018',
-        tagIcon: Film,
+        tagIcon: 'Film',
         icon: Film,
         imgId: 'goodbye-cities-film.jpg',
-        desc: 'Carta a los nonatos. Cortometraje de Sebastian Pérez Opačak. Selección Oficial.',
+        desc: dictionary.goodbye.desc,
         btn: null,
         style: 'hover:border-red-500/50',
         tagStyle: 'bg-purple-900/20 text-purple-400 border-purple-500/20',
@@ -185,7 +190,7 @@ export const projects = [
         tagIcon: null,
         icon: MonitorPlay,
         imgId: 'retroaventuras-cover.jpg',
-        desc: 'Música original para canal de YouTube dedicado a la cultura gaming retro en Argentina.',
+        desc: dictionary.retro.desc,
         btn: null,
         style: 'hover:border-blue-500/50',
         tagStyle: '',

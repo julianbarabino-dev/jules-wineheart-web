@@ -1,0 +1,116 @@
+{
+    "header": {
+        "music": "Music",
+        "projects": "Projects",
+        "cosmicVicar": "Cosmic Vicar",
+        "bunker": "Bunker",
+        "soundDiary": "Sound Diary"
+    },
+    "hero": {
+        "nav": {
+            "music": "Music",
+            "projects": "Projects",
+            "diary": "Diary",
+            "bunker": "Bunker"
+        },
+        "cta": {
+            "bloodmoon": "Bloodmoon EP",
+            "producer": "Producer"
+        }
+    },
+    "releases": {
+        "pretitle": "01. DISCOGRAPHY",
+        "title": "Releases",
+        "latest": "New",
+        "stream": "Stream",
+        "buy": "Buy",
+        "catalog": "Catalog",
+        "swipe": "Swipe",
+        "secondaryReleases": {
+            "single": "Single",
+            "doubleSingle": "Double Single",
+            "compilation": "Compilation"
+        }
+    },
+    "projects": {
+        "pretitle": "02. PORTFOLIO",
+        "title": "Projects",
+        "projectList": {
+            "norah": {
+                "tag": "CreAr Award",
+                "desc": "Educational video game about Argentine female artists (Construct 3). Art, music, concept, and programming. Award for Best Sound."
+            },
+            "habitar": {
+                "desc": "Original music for 4 mini-documentaries about architects from BsAs. Prod. by Estudio Fiørd.",
+                "btnText": "Listen on Spotify"
+            },
+            "memory": {
+                "desc": "Music and sound design for a short film in Unreal 5. Directed by Aldana Drisaldi."
+            },
+            "goodbye": {
+                "desc": "Letter to the unborn. Short film by Sebastian Pérez Opačak. Official Selection."
+            },
+            "retro": {
+                "desc": "Original music for a YouTube channel dedicated to retro gaming culture in Argentina."
+            }
+        }
+    },
+    "cosmicVicar": {
+        "status": "REC",
+        "description": "Sound identity for independent artists. A space where analog and digital converge under the direction of Julián Barabino.",
+        "services": {
+            "production": {
+                "title": "Music Production",
+                "description": "From initial composition to final arrangements to bring your songs to life."
+            },
+            "mixing": {
+                "title": "Mixing & Mastering",
+                "description": "Professional balance, depth, and clarity so your music sounds amazing everywhere."
+            },
+            "editing": {
+                "title": "Audio Editing",
+                "description": "Cleaning, tuning, and precise synchronization for a polished and flawless sound."
+            },
+            "gameAudio": {
+                "title": "SFX & Game Audio",
+                "description": "Immersive sound effect design and music that enhance the gaming experience."
+            }
+        },
+        "startProject": "Start Project",
+        "followIG": "Follow on IG",
+        "whatsappCTA": "Hello%20Cosmic%20Vicar%20Records,%20I%20want%20to%20start%20a%20project."
+    },
+    "bunker": {
+        "title": "Signal from the Bunker"
+    },
+    "soundDiary": {
+        "pretitle": "Private_Access",
+        "title": "Sound Diary",
+        "description": "A personal archive of textures, raw demos, and b-sides.",
+        "form": {
+            "namePlaceholder": "Name / Alias",
+            "emailPlaceholder": "Email",
+            "submit": "Tune In",
+            "submitting": "Sending..."
+        },
+        "toast": {
+            "success": {
+                "title": "Subscription Successful!"
+            },
+            "error": {
+                "title": "Subscription Failed"
+            }
+        }
+    },
+    "footer": {
+        "contact": {
+            "title": "Contact",
+            "location": "Buenos Aires, CABA",
+            "epk": "Download EPK"
+        },
+        "social": {
+            "title": "Socials"
+        },
+        "credits": "Developed by Julián Barabino"
+    }
+}

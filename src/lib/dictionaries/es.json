@@ -1,0 +1,116 @@
+{
+    "header": {
+        "music": "Música",
+        "projects": "Proyectos",
+        "cosmicVicar": "Cosmic Vicar",
+        "bunker": "Bunker",
+        "soundDiary": "Sound Diary"
+    },
+    "hero": {
+        "nav": {
+            "music": "Música",
+            "projects": "Proyectos",
+            "diary": "Diary",
+            "bunker": "Bunker"
+        },
+        "cta": {
+            "bloodmoon": "Bloodmoon EP",
+            "producer": "Productora"
+        }
+    },
+    "releases": {
+        "pretitle": "01. DISCOGRAFÍA",
+        "title": "Lanzamientos",
+        "latest": "Nuevo",
+        "stream": "Stream",
+        "buy": "Buy",
+        "catalog": "Catálogo",
+        "swipe": "Deslizar",
+        "secondaryReleases": {
+            "single": "Single",
+            "doubleSingle": "Doble Single",
+            "compilation": "Compilado"
+        }
+    },
+    "projects": {
+        "pretitle": "02. PORTFOLIO",
+        "title": "Proyectos",
+        "projectList": {
+            "norah": {
+                "tag": "Premio CreAr",
+                "desc": "Videojuego educativo sobre artistas argentinas (Construct 3). Arte, música, concepto y programación. Premio a Mejor Sonorización."
+            },
+            "habitar": {
+                "desc": "Música original para 4 mini documentales sobre arquitectos de BsAs. Prod. por Estudio Fiørd.",
+                "btnText": "Escuchar en Spotify"
+            },
+            "memory": {
+                "desc": "Música y diseño de sonido para cortometraje en Unreal 5. Dirigido por Aldana Drisaldi."
+            },
+            "goodbye": {
+                "desc": "Carta a los nonatos. Cortometraje de Sebastian Pérez Opačak. Selección Oficial."
+            },
+            "retro": {
+                "desc": "Música original para canal de YouTube dedicado a la cultura gaming retro en Argentina."
+            }
+        }
+    },
+    "cosmicVicar": {
+        "status": "REC",
+        "description": "Identidad sonora para artistas independientes. Un espacio donde lo análogo y lo digital convergen bajo la dirección de Julián Barabino.",
+        "services": {
+            "production": {
+                "title": "Producción Musical",
+                "description": "Desde la composición inicial hasta los arreglos finales para dar vida a tus canciones."
+            },
+            "mixing": {
+                "title": "Mezcla & Mastering",
+                "description": "Balance, profundidad y claridad profesional para que tu música suene increíble en todas partes."
+            },
+            "editing": {
+                "title": "Edición de Audio",
+                "description": "Limpieza, afinación y sincronización precisa para un sonido pulido y sin imperfecciones."
+            },
+            "gameAudio": {
+                "title": "SFX & Game Audio",
+                "description": "Diseño de efectos de sonido y música inmersiva que potencian la experiencia de juego."
+            }
+        },
+        "startProject": "Iniciar Proyecto",
+        "followIG": "Seguir en IG",
+        "whatsappCTA": "Hola%20Cosmic%20Vicar%20Records%2C%20quiero%20iniciar%20un%20proyecto."
+    },
+    "bunker": {
+        "title": "Señal desde el Bunker"
+    },
+    "soundDiary": {
+        "pretitle": "Private_Access",
+        "title": "Sound Diary",
+        "description": "Un archivo personal de texturas, demos crudos y b-sides.",
+        "form": {
+            "namePlaceholder": "Nombre / Alias",
+            "emailPlaceholder": "Email",
+            "submit": "Tune In",
+            "submitting": "Enviando..."
+        },
+        "toast": {
+            "success": {
+                "title": "¡Subscripción Exitosa!"
+            },
+            "error": {
+                "title": "Falló la Subscripción"
+            }
+        }
+    },
+    "footer": {
+        "contact": {
+            "title": "Contacto",
+            "location": "Buenos Aires, CABA",
+            "epk": "Descargar EPK"
+        },
+        "social": {
+            "title": "Redes"
+        },
+        "credits": "Desarrollado por Julián Barabino"
+    }
+}

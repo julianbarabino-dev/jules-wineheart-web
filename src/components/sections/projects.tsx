@@ -2,26 +2,39 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { projects } from '@/lib/data';
+import { projects as projectData } from '@/lib/data';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Play } from 'lucide-react';
+import { Play, Award, Film, MonitorPlay } from 'lucide-react';
 import { getPlaceholderImage } from '@/lib/placeholder-images';
+import type { Dictionary } from '@/lib/get-dictionary';
 
-const Projects = () => {
+interface ProjectsProps {
+  dictionary: Dictionary['projects'];
+}
+
+const iconMap = {
+  Award,
+  Film,
+  MonitorPlay,
+};
+
+const Projects = ({ dictionary }: ProjectsProps) => {
+
+  const projects = projectData(dictionary);
 
   return (
     <section id="projects" className="py-24 sm:py-32 relative z-10 border-t border-border/50 bg-secondary/20">
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="mb-12">
-          <span className="text-blue-500 font-mono text-xs mb-2 block tracking-widest">02. PORTFOLIO</span>
-          <h2 className="text-5xl font-black text-foreground font-headline uppercase italic tracking-tighter">Proyectos</h2>
+          <span className="text-blue-500 font-mono text-xs mb-2 block tracking-widest">{dictionary.pretitle}</span>
+          <h2 className="text-5xl font-black text-foreground font-headline uppercase italic tracking-tighter">{dictionary.title}</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
           {projects.map((project) => {
-            const TagIcon = project.tagIcon;
+            const TagIcon = project.tagIcon ? iconMap[project.tagIcon as keyof typeof iconMap] : null;
             const image = getPlaceholderImage(project.imgId);
             
             return (

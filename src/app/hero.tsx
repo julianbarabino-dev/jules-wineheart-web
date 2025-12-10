@@ -4,6 +4,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Play, Headphones, ChevronDown, Guitar, Laptop, Book, Terminal, Moon, Flame } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from '@/components/ui/button';
+import type { Dictionary } from '@/lib/get-dictionary';
+
+interface HeroProps {
+  dictionary: Dictionary['hero'];
+}
 
 // --- CONFIGURACIÓN DE LOS MODOS SECRETOS ---
 const SECRET_MODES = {
@@ -97,7 +102,7 @@ const DraggableTitle = ({
 };
 
 // --- HERO PRINCIPAL ---
-export default function Hero() {
+export default function Hero({ dictionary }: HeroProps) {
   const [mode, setMode] = useState('default'); 
   const [buffer, setBuffer] = useState("");
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -157,6 +162,13 @@ export default function Hero() {
     const el = document.querySelector(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
+  
+  const navIcons = [
+      { icon: Guitar, label: dictionary.nav.music, id: "#releases" },
+      { icon: Laptop, label: dictionary.nav.projects, id: "#projects" },
+      { icon: Book, label: dictionary.nav.diary, id: "#diary" },
+      { icon: Terminal, label: dictionary.nav.bunker, id: "#bunker" }
+    ];
 
   return (
     <section className={`relative min-h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden transition-colors duration-1000 z-20
@@ -246,12 +258,7 @@ export default function Hero() {
 
           {/* Iconos de Navegación */}
           <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-16">
-            {[
-              { icon: Guitar, label: "Música", id: "#releases" },
-              { icon: Laptop, label: "Proyectos", id: "#projects" },
-              { icon: Book, label: "Diary", id: "#diary" },
-              { icon: Terminal, label: "Bunker", id: "#bunker" }
-            ].map((tool, i) => (
+            {navIcons.map((tool, i) => (
               <Button
                 variant="ghost"
                 key={i}
@@ -272,7 +279,7 @@ export default function Hero() {
               onClick={() => scrollTo('#releases')}
               className="px-8 py-4 bg-white text-black font-black uppercase tracking-wider hover:scale-105 transition-transform flex items-center gap-2 rounded-sm"
             >
-              <Play size={16} fill="currentColor" /> Bloodmoon EP
+              <Play size={16} fill="currentColor" /> {dictionary.cta.bloodmoon}
             </Button>
             
             <Button
@@ -280,7 +287,7 @@ export default function Hero() {
               variant='outline'
               className="px-8 py-4 border-white/20 text-current font-bold uppercase tracking-wider hover:bg-white/10 backdrop-blur-md flex items-center gap-2 rounded-sm"
             >
-              <Headphones size={16} /> Productora
+              <Headphones size={16} /> {dictionary.cta.producer}
             </Button>
           </div>
       </motion.div>
@@ -291,5 +298,3 @@ export default function Hero() {
     </section>
   );
 }
-
-    

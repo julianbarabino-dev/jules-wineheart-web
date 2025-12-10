@@ -7,14 +7,20 @@ import { Play, ShoppingBag, Disc, ExternalLink, MoveHorizontal } from 'lucide-re
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { links, secondaryReleases } from '@/lib/data';
+import { links, secondaryReleases as secondaryReleasesData } from '@/lib/data';
 import { cn } from '@/lib/utils';
 import { getPlaceholderImage } from '@/lib/placeholder-images';
+import type { Dictionary } from '@/lib/get-dictionary';
 
-const Releases = () => {
+interface ReleasesProps {
+  dictionary: Dictionary['releases'];
+}
+
+const Releases = ({ dictionary }: ReleasesProps) => {
   const [activeRelease, setActiveRelease] = useState<number | null>(null);
 
   const bloodmoonImage = getPlaceholderImage('bloodmoon-cover');
+  const secondaryReleases = secondaryReleasesData(dictionary);
   
   const handleReleaseClick = (e: React.MouseEvent, index: number) => {
     e.stopPropagation();
@@ -26,9 +32,9 @@ const Releases = () => {
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
-            <span className="text-primary font-mono text-xs mb-2 block tracking-widest">01. DISCOGRAFÍA</span>
+            <span className="text-primary font-mono text-xs mb-2 block tracking-widest">{dictionary.pretitle}</span>
             <h2 className="text-5xl font-black text-foreground font-headline uppercase italic tracking-tighter">
-              Lanzamientos
+              {dictionary.title}
             </h2>
           </div>
           <Link href={links.spotify} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground transition-colors text-xs font-bold uppercase tracking-widest border-b border-transparent hover:border-foreground pb-1 flex items-center gap-2">
@@ -39,7 +45,7 @@ const Releases = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           {/* BLOODMOON (Principal) */}
           <Card className="lg:col-span-1 group relative aspect-[3/4] bg-card/70 backdrop-blur-sm border-primary/50 shadow-lg shadow-primary/10 transition-all duration-500 cursor-pointer overflow-hidden rounded-2xl flex flex-col hover:border-primary/80 hover:shadow-primary/20 hover:shadow-xl">
-            <div className="absolute top-4 right-4 bg-primary-foreground text-background text-[9px] font-black px-2.5 py-1 uppercase z-20 animate-pulse rounded-full shadow-lg">Nuevo</div>
+            <div className="absolute top-4 right-4 bg-primary-foreground text-background text-[9px] font-black px-2.5 py-1 uppercase z-20 animate-pulse rounded-full shadow-lg">{dictionary.latest}</div>
             <div className="relative flex-1 overflow-hidden">
               <Image
                 src={bloodmoonImage.imageUrl}
@@ -55,10 +61,10 @@ const Releases = () => {
               <p className="text-muted-foreground font-mono text-[10px] uppercase tracking-wider mb-6">EP • 2025</p>
               <div className="flex gap-2">
                 <Button asChild className="flex-1 bg-primary-foreground text-background hover:bg-muted" size="sm">
-                  <Link href={links.spotify} target="_blank"><Play size={12} fill="currentColor" /> Stream</Link>
+                  <Link href={links.spotify} target="_blank"><Play size={12} fill="currentColor" /> {dictionary.stream}</Link>
                 </Button>
                 <Button asChild variant="outline" className="flex-1" size="sm">
-                  <Link href={links.bandcamp} target="_blank"><ShoppingBag size={12} /> Buy</Link>
+                  <Link href={links.bandcamp} target="_blank"><ShoppingBag size={12} /> {dictionary.buy}</Link>
                 </Button>
               </div>
             </CardContent>
@@ -67,7 +73,7 @@ const Releases = () => {
           {/* Catalog Slider */}
           <div className="lg:col-span-2">
             <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6 flex items-center gap-2">
-              <Disc size={12} /> Catálogo
+              <Disc size={12} /> {dictionary.catalog}
             </h3>
             
             <Carousel opts={{ align: "start", loop: false }} className="w-full">
@@ -95,8 +101,8 @@ const Releases = () => {
                             <h3 className="text-xl font-bold text-white leading-tight mb-1 font-headline">{release.title}</h3>
                             <p className={cn("text-[10px] font-mono uppercase tracking-wider mb-4 font-bold", release.textColor)}>{release.type}</p>
                             <div className="flex gap-2">
-                              <Button asChild size="xs" className="flex-1 bg-white text-black hover:bg-neutral-300"><Link href={release.streamUrl} target="_blank"><Play size={10} fill="currentColor" /> Stream</Link></Button>
-                              <Button asChild variant="outline" size="xs" className="flex-1 border-white/50 text-white hover:bg-white hover:text-black"><Link href={release.buyUrl} target="_blank"><ShoppingBag size={10} /> Buy</Link></Button>
+                              <Button asChild size="xs" className="flex-1 bg-white text-black hover:bg-neutral-300"><Link href={release.streamUrl} target="_blank"><Play size={10} fill="currentColor" /> {dictionary.stream}</Link></Button>
+                              <Button asChild variant="outline" size="xs" className="flex-1 border-white/50 text-white hover:bg-white hover:text-black"><Link href={release.buyUrl} target="_blank"><ShoppingBag size={10} /> {dictionary.buy}</Link></Button>
                             </div>
                           </div>
                         </Card>
@@ -106,7 +112,7 @@ const Releases = () => {
                 })}
               </CarouselContent>
                <div className="hidden sm:flex justify-end items-center gap-4 mt-4">
-                 <span className="text-muted-foreground text-xs font-mono flex items-center gap-2">Deslizar <MoveHorizontal size={14}/></span>
+                 <span className="text-muted-foreground text-xs font-mono flex items-center gap-2">{dictionary.swipe} <MoveHorizontal size={14}/></span>
                 <CarouselPrevious className="relative -left-0 top-0 translate-y-0" />
                 <CarouselNext className="relative -right-0 top-0 translate-y-0" />
               </div>

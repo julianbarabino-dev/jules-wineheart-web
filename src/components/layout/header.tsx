@@ -6,17 +6,23 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import type { Dictionary } from "@/lib/get-dictionary";
+import LanguageSwitch from "./language-switch";
 
-const navLinks = [
-  { href: "#releases", label: "Música", className: "hover:text-foreground transition-colors hover:line-through decoration-primary" },
-  { href: "#projects", label: "Proyectos", className: "hover:text-foreground transition-colors hover:line-through decoration-blue-500" },
-  { href: "#cosmic", label: "Cosmic Vicar", className: "hover:text-primary transition-colors hover:line-through decoration-foreground" },
-  { href: "#bunker", label: "Bunker", className: "hover:text-accent transition-colors hover:line-through decoration-accent" },
-  { href: "#diary", label: "Sound Diary", className: "hover:text-foreground transition-colors hover:line-through decoration-red-500" },
-];
+interface HeaderProps {
+  dictionary: Dictionary['header'];
+}
 
-const Header = () => {
+const Header = ({ dictionary }: HeaderProps) => {
   const [scrolled, setScrolled] = useState(false);
+  
+  const navLinks = [
+    { href: "#releases", label: dictionary.music, className: "hover:text-foreground transition-colors hover:line-through decoration-primary" },
+    { href: "#projects", label: dictionary.projects, className: "hover:text-foreground transition-colors hover:line-through decoration-blue-500" },
+    { href: "#cosmic", label: dictionary.cosmicVicar, className: "hover:text-primary transition-colors hover:line-through decoration-foreground" },
+    { href: "#bunker", label: dictionary.bunker, className: "hover:text-accent transition-colors hover:line-through decoration-accent" },
+    { href: "#diary", label: dictionary.soundDiary, className: "hover:text-foreground transition-colors hover:line-through decoration-red-500" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,16 +52,18 @@ const Header = () => {
         </Link>
 
         {/* Desktop Menu */}
-        <nav className="hidden md:flex space-x-8 text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+        <nav className="hidden md:flex items-center space-x-8 text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
           {navLinks.map((link) => (
             <button key={link.href} onClick={() => scrollToSection(link.href)} className={cn("transition-colors", link.className)}>
               {link.label}
             </button>
           ))}
+          <LanguageSwitch />
         </nav>
 
         {/* Mobile Menu */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-2">
+           <LanguageSwitch />
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
