@@ -11,11 +11,8 @@ import AnimatedSection from '@/components/layout/animated-section';
 import { getDictionary } from '@/lib/get-dictionary';
 import type { Locale } from '@/lib/i18n-config';
 
-export default async function Home({
-  params: { lang },
-}: {
-  params: { lang: Locale };
-}) {
+export default async function Home() {
+  const lang: Locale = 'es'; // Hardcoded to spanish for now
   const bunkerSignals = await generateBunkerSignals();
   const dictionary = await getDictionary(lang);
 

@@ -43,7 +43,8 @@ const Header = ({ dictionary }: HeaderProps) => {
     <header
       className={cn(
         "fixed top-0 left-0 w-full z-50 transition-all duration-300",
-        scrolled ? "bg-background/95 backdrop-blur-md border-b border-border py-4" : "bg-transparent py-8"
+        // Aumentamos py-8 a py-16 para crear más espacio arriba y abajo del menú (empujando el Hero hacia abajo).
+        scrolled ? "bg-background/95 backdrop-blur-md border-b border-border py-4" : "bg-transparent py-16"  
       )}
     >
       <div className="container mx-auto px-6 max-w-6xl flex justify-between items-center">
@@ -58,12 +59,12 @@ const Header = ({ dictionary }: HeaderProps) => {
               {link.label}
             </button>
           ))}
-          <LanguageSwitch />
+          {/* <LanguageSwitch /> */}
         </nav>
 
         {/* Mobile Menu */}
         <div className="md:hidden flex items-center gap-2">
-           <LanguageSwitch />
+           {/* <LanguageSwitch /> */}
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">

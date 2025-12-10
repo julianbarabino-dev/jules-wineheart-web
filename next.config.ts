@@ -1,39 +1,8 @@
-import type {NextConfig} from 'next';
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-        port: '',
-        pathname: '/**',
-      },
-    ],
-  },
-   i18n: {
-    locales: ['es', 'en'],
-    defaultLocale: 'es',
-  },
+  /* Opciones de configuración */
+  // Quitamos toda la parte de "i18n" o "locales"
 };
 
 export default nextConfig;

@@ -1,92 +1,69 @@
 "use client";
 
-import React from 'react';
-import Image from 'next/image';
-import { projects as projectData } from '@/lib/data';
-import { cn } from '@/lib/utils';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Play, Award, Film, MonitorPlay } from 'lucide-react';
-import { getPlaceholderImage } from '@/lib/placeholder-images';
-import type { Dictionary } from '@/lib/get-dictionary';
+import { projects } from '@/lib/data';
+import { Play, Award, Gamepad2, Film, MonitorPlay } from 'lucide-react';
+import { useState } from 'react';
 
-interface ProjectsProps {
-  dictionary: Dictionary['projects'];
-}
+export default function Projects() {
+  const [activeProject, setActiveProject] = useState<string | null>(null);
 
-const iconMap = {
-  Award,
-  Film,
-  MonitorPlay,
-};
-
-const Projects = ({ dictionary }: ProjectsProps) => {
-
-  const projects = projectData(dictionary);
+  const handleProjectClick = (id: string) => {
+    setActiveProject(activeProject === id ? null : id);
+  };
 
   return (
-    <section id="projects" className="py-24 sm:py-32 relative z-10 border-t border-border/50 bg-secondary/20">
-      <div className="container mx-auto px-6 max-w-6xl">
-        <div className="mb-12">
-          <span className="text-blue-500 font-mono text-xs mb-2 block tracking-widest">{dictionary.pretitle}</span>
-          <h2 className="text-5xl font-black text-foreground font-headline uppercase italic tracking-tighter">{dictionary.title}</h2>
-        </div>
+    <section id="projects" className="py-32 relative z-10 border-t border-white/5 bg-[#080808]">
+        <div className="container mx-auto px-6 max-w-[1080px]">
+            <div className="mb-12">
+                <span className="text-blue-500 font-mono text-xs mb-2 block tracking-widest">02. PORTFOLIO</span>
+                <h2 className="text-5xl font-black text-white uppercase italic tracking-tighter">Proyectos</h2>
+            </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
-          {projects.map((project) => {
-            const TagIcon = project.tagIcon ? iconMap[project.tagIcon as keyof typeof iconMap] : null;
-            const image = getPlaceholderImage(project.imgId);
-            
-            return (
-              <Card
-                key={project.id}
-                className={cn(
-                  'group rounded-2xl bg-card border border-border/50 transition-all duration-300 overflow-hidden flex flex-col',
-                  'hover:border-primary/50'
-                )}
-              >
-                <div className="relative aspect-video w-full overflow-hidden">
-                    <Image
-                        src={image.imageUrl}
-                        alt={project.title}
-                        fill
-                        className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
-                        data-ai-hint={image.imageHint}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {projects.map((project) => (
+                    <div 
+                        key={project.id} 
+                        onClick={(e) => { e.stopPropagation(); handleProjectClick(project.id); }}
+                        className={`group rounded-2xl bg-[#0a0a0a] border transition-all duration-300 cursor-pointer overflow-hidden flex flex-col ${project.style} ${activeProject === project.id ? 'border-opacity-100 shadow-[0_0_20px_rgba(255,255,255,0.05)]' : 'border-white/10'}`}
+                    >
+                        <div className="relative aspect-[16/9] w-full bg-neutral-900 overflow-hidden">
+                            <img 
+                                src={project.imgId} 
+                                alt={project.title} 
+                                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" 
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center z-[-1]">
+                                {/* Icono placeholder si no carga la imagen */}
+                                <project.icon size={40} className="text-white/20" />
+                            </div>
+                            
+                            {project.tag && (
+                                <div className="absolute top-3 right-3 z-20">
+                                    <span className={`border text-[9px] font-black px-2 py-0.5 uppercase flex items-center gap-1 shadow-lg rounded ${project.tagStyle}`}>
+                                        <Award size={8} /> {project.tag}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
 
-                  {project.tag && (
-                    <div className="absolute top-3 right-3 z-20">
-                      <span className={cn('border text-[9px] font-black px-2 py-0.5 uppercase flex items-center gap-1.5 shadow-lg rounded', project.tagStyle)}>
-                        {TagIcon && <TagIcon size={10} />} {project.tag}
-                      </span>
+                        <div className="p-6 bg-neutral-900/50 border-t border-white/5 flex flex-col justify-center min-h-[100px] transition-colors group-hover:bg-neutral-900">
+                            <h3 className="text-xl font-black text-white uppercase italic mb-1">{project.title}</h3>
+                            
+                            <div className={`overflow-hidden transition-all duration-500 ease-out ${activeProject === project.id ? 'max-h-40 opacity-100 mt-2' : 'max-h-0 opacity-0 group-hover:max-h-40 group-hover:opacity-100 group-hover:mt-2'}`}>
+                                <p className="text-neutral-400 text-xs leading-relaxed">
+                                    {project.desc}
+                                </p>
+                                {project.btn && (
+                                    <button onClick={() => window.open(project.btn.link)} className="mt-3 flex items-center gap-2 text-white text-[10px] uppercase font-bold tracking-widest hover:text-green-400 transition-colors">
+                                        <Play size={10} fill="currentColor"/> {project.btn.text}
+                                    </button>
+                                )}
+                            </div>
+                        </div>
                     </div>
-                  )}
-                </div>
-
-                <div className="p-6 bg-card flex flex-col justify-center min-h-[100px] flex-grow">
-                  <h3 className="text-xl font-black text-foreground font-headline uppercase italic mb-2">{project.title}</h3>
-                  
-                  <div className="mt-2 flex flex-col flex-grow">
-                    <p className="text-muted-foreground text-sm leading-relaxed flex-grow">
-                      {project.desc}
-                    </p>
-                    {project.btn && (
-                      <Button asChild variant="link" className="mt-4 px-0 text-accent font-bold uppercase tracking-widest h-auto self-start">
-                        <a href={project.btn.link} target="_blank" rel="noopener noreferrer">
-                          <Play size={12} fill="currentColor"/> {project.btn.text}
-                        </a>
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </Card>
-            )
-          })}
+                ))}
+            </div>
         </div>
-      </div>
     </section>
   );
-};
-
-export default Projects;
+}

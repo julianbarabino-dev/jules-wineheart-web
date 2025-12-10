@@ -1,174 +1,300 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Headphones, ChevronDown, Guitar, Laptop, Book, Terminal, Moon, Flame } from "lucide-react";
+import { Play, Headphones, ChevronDown, Guitar, Laptop, Book, Keyboard, Terminal, Moon, Flame } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from '@/components/ui/button';
-import type { Dictionary } from '@/lib/get-dictionary';
-
-interface HeroProps {
-  dictionary: Dictionary['hero'];
-}
 
 // --- CONFIGURACIÓN DE LOS MODOS SECRETOS ---
+// 'target': la palabra que tienes que escribir.
+// 'title': el texto que aparecerá gigante en pantalla al ganar.
 const SECRET_MODES = {
   default: { 
-    text: "JULES WINEHEART", 
+    target: "",
+    title: "JULES WINEHEART", 
     style: "text-white" 
   },
   ghost: { 
-    text: "LISTEN", 
+    target: "LISTEN",
+    title: "LISTEN", 
     style: "text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500 drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] font-serif" 
   },
   hacker: { 
-    text: "TRUE LIES", 
-    style: "text-green-500 font-mono tracking-widest drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]" 
+    target: "TRUELIES",
+    title: "TRUE LIES", 
+    style: "text-green-500 font-mono tracking-widest drop-shadow-[0_0_15px_rgba(34,197,94,0.9)]" 
   },
   blood: { 
-    text: "LUNA", 
+    target: "LUNA",
+    title: "LUNA", 
     style: "text-red-600 font-black tracking-tighter drop-shadow-[0_0_30px_rgba(220,38,38,1)]" 
   },
   ritual: { 
-    text: "RITUAL", 
+    target: "RITUAL",
+    title: "RITUAL", 
     style: "text-neutral-400 font-serif tracking-[1em] uppercase" 
   }
 };
 
-// --- COMPONENTE: TÍTULO INTERACTIVO ---
-const DraggableTitle = ({ 
-  mode, 
-  onLetterClick, 
-  activeBuffer 
-}: { 
-  mode: string, 
-  onLetterClick: (char: string) => void,
-  activeBuffer: string 
-}) => {
-  const constraintsRef = useRef(null);
-  const currentConfig = SECRET_MODES[mode as keyof typeof SECRET_MODES] || SECRET_MODES.default;
-  const letters = currentConfig.text.split("");
-
+// --- COMPONENTE: LLUVIA MATRIX (Visual) ---
+const MatrixRain = () => {
+  const columns = Array.from({ length: 20 });
   return (
-    <div className="relative z-50 mb-8 w-full max-w-6xl mx-auto">
-      <motion.div className="absolute inset-0 w-full h-full pointer-events-none" ref={constraintsRef} />
-      
-      <AnimatePresence mode="wait">
-        <motion.h1
-          key={mode} 
-          className={`text-5xl sm:text-7xl md:text-9xl font-black leading-none select-none flex flex-wrap justify-center gap-1 sm:gap-2 ${currentConfig.style}`}
-          initial={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          exit={{ 
-            opacity: 0, 
-            y: 50, 
-            rotateX: 90, 
-            filter: "blur(20px)",
-            transition: { duration: 0.5 } 
+    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden opacity-30 flex justify-between">
+      {columns.map((_, i) => (
+        <motion.div
+          key={i}
+          initial={{ y: -1000 }}
+          animate={{ y: 2000 }}
+          transition={{ 
+            repeat: Infinity, 
+            duration: Math.random() * 5 + 5, 
+            ease: "linear",
+            delay: Math.random() * 5 
           }}
+          className="text-green-500 font-mono text-xs writing-vertical-lr leading-none opacity-50 select-none"
+          style={{ writingMode: 'vertical-rl' }}
         >
-          {letters.map((char, index) => {
-            if (char === " ") return <span key={index} className="w-4 md:w-8" />;
-            
-            const isSecret = mode !== 'default';
-            const isActive = !isSecret && activeBuffer.length > 0 && currentConfig.text.indexOf(activeBuffer[activeBuffer.length-1]) === index;
-
-            // Animación de "Sacudida" para modos secretos
-            const shake = isSecret ? {
-              x: [0, -2, 2, -1, 1, 0],
-              y: [0, 1, -1, 0],
-              transition: { repeat: Infinity, duration: 0.2 + Math.random() * 0.3 }
-            } : {};
-
-            return (
-              <motion.span
-                key={`${mode}-${index}`}
-                onTap={() => onLetterClick(char)}
-                drag={!isSecret}
-                dragConstraints={constraintsRef}
-                dragElastic={0.2}
-                animate={isActive ? { color: "#d8b4fe", textShadow: "0 0 20px #a855f7", scale: 1.1 } : shake}
-                whileHover={!isSecret ? { scale: 1.2, color: "#a855f7", rotate: Math.random() * 15 - 7.5 } : {}}
-                whileTap={{ scale: 0.9, cursor: "grabbing", color: "#fff" }}
-                className={`inline-block transition-colors duration-300 ${!isSecret ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'}`}
-              >
-                {char}
-              </motion.span>
-            );
-          })}
-        </motion.h1>
-      </AnimatePresence>
+          {/* Genera una cadena larga de 0s y 1s */}
+          {Array.from({ length: 30 }).map(() => Math.round(Math.random())).join(" ")}
+        </motion.div>
+      ))}
     </div>
   );
 };
 
-// --- HERO PRINCIPAL ---
-export default function Hero({ dictionary }: HeroProps) {
-  const [mode, setMode] = useState('default'); 
-  const [buffer, setBuffer] = useState("");
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+// --- COMPONENTE: TÍTULO INTERACTIVO ---
+const InteractiveTitle = ({ 
+  text, 
+  usedIndices, 
+  onLetterClick, 
+  mode,
+  shake 
+}: { 
+  text: string, 
+  usedIndices: number[], 
+  onLetterClick: (char: string, index: number) => void,
+  mode: string,
+  shake: boolean
+}) => {
+  const constraintsRef = useRef(null);
+  const words = text.split(" ");
+  let globalCharIndex = 0;
 
-  const playSound = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.play().catch(() => {});
+  // Animación de Entrada
+  const introVariants = {
+    hidden: { opacity: 0, scale: 0.8, filter: "blur(20px)" },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      filter: "blur(0px)",
+      transition: { duration: 1.5, ease: "easeOut" } 
     }
   };
 
-  const handleInput = (char: string) => {
+  // Animación de Sacudida
+  const shakeVariants = {
+    idle: { x: 0 },
+    shaking: {
+      x: [0, -10, 10, -10, 10, 0],
+      y: [0, -5, 5, -5, 5, 0],
+      transition: { duration: 0.5 }
+    }
+  };
+
+  const currentStyle = SECRET_MODES[mode as keyof typeof SECRET_MODES]?.style || SECRET_MODES.default.style;
+
+  return (
+    <motion.div 
+      className="relative z-50 w-full max-w-7xl mx-auto select-none px-4"
+      initial="hidden" 
+      animate="visible" 
+      variants={introVariants}
+    >
+      <motion.div className="absolute inset-0 w-full h-full pointer-events-none" ref={constraintsRef} />
+      
+      <AnimatePresence mode="wait">
+        <motion.h1
+          key={text} 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={shake ? "shaking" : { opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)", transition: { duration: 0.3 } }}
+          variants={shakeVariants}
+          className={`flex flex-wrap justify-center gap-x-4 sm:gap-x-8 gap-y-2 ${currentStyle}`}
+        >
+          {words.map((word, wIndex) => (
+            <span key={wIndex} className="whitespace-nowrap inline-block">
+              {word.split("").map((char) => {
+                const myIndex = globalCharIndex++; 
+                const isUsed = usedIndices.includes(myIndex);
+                const isSecretMode = mode !== 'default';
+
+                return (
+                  <motion.span
+                    key={myIndex}
+                    onTap={() => !isUsed && !isSecretMode && onLetterClick(char, myIndex)}
+                    drag={!isSecretMode}
+                    dragConstraints={constraintsRef}
+                    dragElastic={0.2}
+                    
+                    // Feedback visual
+                    animate={isUsed ? { 
+                      color: "#d8b4fe", 
+                      textShadow: "0 0 30px #a855f7", 
+                      scale: 1.1,
+                      y: -5
+                    } : { 
+                      y: 0, 
+                      color: isSecretMode ? "currentColor" : "#ffffff" 
+                    }}
+                    
+                    whileHover={!isUsed && !isSecretMode ? { 
+                      scale: 1.2, 
+                      color: "#a855f7", 
+                      cursor: "pointer" 
+                    } : {}}
+                    
+                    className="inline-block text-5xl sm:text-7xl md:text-9xl font-black leading-none p-1 transition-colors"
+                  >
+                    {char}
+                  </motion.span>
+                );
+              })}
+            </span>
+          ))}
+        </motion.h1>
+      </AnimatePresence>
+    </motion.div>
+  );
+};
+
+// --- COMPONENTE: PROGRESO DE LA PALABRA (Tipo Ahorcado) ---
+const WordProgressDisplay = ({ target, current }: { target: string, current: string }) => {
+  // Ocupa espacio pero es invisible si no hay palabra objetivo.
+  if (!target) return <div className="h-12 mb-12 opacity-0">...</div>; 
+
+  const slots = target.split("");
+  
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex gap-3 sm:gap-4 mb-12 h-12 items-end justify-center z-50 relative"
+    >
+      {slots.map((char, i) => {
+        const found = current[i]; // Letra encontrada en la posición i
+        return (
+          <div key={i} className="flex flex-col items-center gap-2 w-6 sm:w-10">
+            <motion.span 
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={found ? { opacity: 1, scale: 1 } : { opacity: 0 }}
+              className="text-xl sm:text-2xl font-mono text-purple-400 font-bold"
+            >
+              {found || "_"} {/* Muestra "_" si no se ha encontrado */}
+            </motion.span>
+            <div className={`w-full h-1 rounded transition-colors duration-300 ${found ? "bg-purple-500 shadow-[0_0_10px_#a855f7]" : "bg-white/10"}`} />
+          </div>
+        )
+      })}
+    </motion.div>
+  );
+};
+
+// --- HERO PRINCIPAL ---
+export default function Hero() {
+  const [mode, setMode] = useState('default'); 
+  
+  // LOGICA JUEGO
+  const [buffer, setBuffer] = useState("");         
+  const [targetWord, setTargetWord] = useState(""); 
+  const [usedIndices, setUsedIndices] = useState<number[]>([]); 
+  
+  const [shake, setShake] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  // MANEJO DE ENTRADA (Teclado o Clic)
+  const processInput = (char: string, index: number = -1) => {
+    // Si ya estamos en un modo, resetear al default con cualquier tecla
     if (mode !== 'default') {
         setMode('default');
+        setShowOverlay(false);
         setBuffer("");
+        setTargetWord("");
+        setUsedIndices([]);
         return;
     }
 
-    playSound();
     const upperChar = char.toUpperCase();
-    
-    setBuffer(prev => {
-        const newBuffer = (prev + upperChar).slice(-10);
-        
-        if (newBuffer.endsWith('LISTEN')) setMode('ghost');
-        else if (newBuffer.endsWith('TRUELIES')) setMode('hacker');
-        else if (newBuffer.endsWith('LUNA')) setMode('blood');
-        else if (newBuffer.endsWith('RITUAL')) setMode('ritual');
-        
-        return newBuffer;
-    });
+    const nextCharIndex = buffer.length;
 
-    clearTimeout((window as any).resetTimer);
-    (window as any).resetTimer = setTimeout(() => setBuffer(""), 3000);
+    // 1. Empezar nueva palabra
+    let currentTarget = targetWord;
+    if (buffer === "") {
+      const foundKey = Object.keys(SECRET_MODES).find(key => 
+        key !== 'default' && SECRET_MODES[key as keyof typeof SECRET_MODES].target.startsWith(upperChar)
+      );
+      
+      if (foundKey) {
+        const wordToMatch = SECRET_MODES[foundKey as keyof typeof SECRET_MODES].target;
+        currentTarget = wordToMatch;
+        setTargetWord(wordToMatch);
+      } else {
+        return; 
+      }
+    }
+
+    // 2. Verificar secuencia
+    if (currentTarget && currentTarget[nextCharIndex] === upperChar) {
+      // ACIERTO
+      const newBuffer = buffer + upperChar;
+      setBuffer(newBuffer);
+      if (index !== -1) setUsedIndices([...usedIndices, index]); 
+
+      // 3. VICTORIA
+      if (newBuffer === currentTarget) {
+        const winningModeKey = Object.keys(SECRET_MODES).find(key => 
+            key !== 'default' && SECRET_MODES[key as keyof typeof SECRET_MODES].target === currentTarget
+        );
+
+        if (winningModeKey) {
+          setTimeout(() => {
+            setShake(true);      
+            setMode(winningModeKey); 
+            
+            setTimeout(() => {
+              setShake(false);
+              setShowOverlay(true); 
+              setBuffer("");
+              setTargetWord("");
+              setUsedIndices([]); 
+            }, 600);
+          }, 200);
+        }
+      }
+    } else {
+      // ERROR: Resetear
+      setBuffer("");
+      setTargetWord("");
+      setUsedIndices([]);
+    }
   };
 
+  // Listener Teclado
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setMode('default');
-        setBuffer("");
-        return;
-      }
-      if (/^[a-zA-Z]$/.test(e.key)) {
-        handleInput(e.key);
-      }
+      // Solo aceptamos letras, Escape, y no procesamos si hay modificadores (Ctrl, Shift, etc)
+      if (e.key === 'Escape') processInput('ESCAPE');
+      if (/^[a-zA-Z]$/.test(e.key) && !e.ctrlKey && !e.altKey && !e.metaKey) processInput(e.key);
     };
-
     window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [mode]);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mode, buffer, targetWord]);
 
   const scrollTo = (id: string) => {
-    const el = document.querySelector(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
   };
-  
-  const navIcons = [
-      { icon: Guitar, label: dictionary.nav.music, id: "#releases" },
-      { icon: Laptop, label: dictionary.nav.projects, id: "#projects" },
-      { icon: Book, label: dictionary.nav.diary, id: "#diary" },
-      { icon: Terminal, label: dictionary.nav.bunker, id: "#bunker" }
-    ];
+
+  // TEXTO DEL TÍTULO: Depende del modo actual
+  const currentTitleText = SECRET_MODES[mode as keyof typeof SECRET_MODES]?.title || SECRET_MODES.default.title;
 
   return (
     <section className={`relative min-h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden transition-colors duration-1000 z-20
@@ -179,116 +305,103 @@ export default function Hero({ dictionary }: HeroProps) {
       ${mode === 'ghost' ? 'bg-[#0a0a0a] text-white' : ''}
     `}>
       
-      <audio ref={audioRef} src="/key-press.mp3" preload="auto"></audio>
+      {/* EFECTOS DE FONDO ESPECIALES */}
+      {showOverlay && mode === 'hacker' && <MatrixRain />}
 
-      {/* OVERLAYS GLOBALES */}
       <AnimatePresence>
-        {mode === 'hacker' && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-0 pointer-events-none">
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,0,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,0,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20"></div>
-            <div className="absolute top-20 left-1/2 -translate-x-1/2 bg-black border border-green-500 text-green-500 px-6 py-2 font-mono text-sm shadow-[0_0_20px_rgba(0,255,0,0.6)] animate-pulse z-50">
+        {/* OVERLAYS GLOBALES */}
+        {showOverlay && mode === 'hacker' && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed top-24 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+            <div className="bg-black border border-green-500 text-green-500 px-6 py-2 font-mono text-sm shadow-[0_0_20px_rgba(0,255,0,0.6)] animate-pulse">
               &gt; SYSTEM BREACH DETECTED.
             </div>
           </motion.div>
         )}
 
-        {mode === 'ghost' && (
+        {showOverlay && mode === 'ghost' && (
           <motion.div initial={{ y: 100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 100, opacity: 0 }} className="fixed bottom-12 right-6 md:right-12 z-50 pointer-events-none">
-            <div className="w-72 h-44 bg-zinc-900 border-4 border-zinc-700 rounded-xl p-3 shadow-2xl relative rotate-3">
-              <div className="w-full h-full border border-neutral-800 rounded bg-black flex items-center justify-center gap-6 relative overflow-hidden">
-                <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 4, ease: "linear" }} className="w-12 h-12 rounded-full border-4 border-neutral-700 bg-black z-10" />
-                <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 4, ease: "linear" }} className="w-12 h-12 rounded-full border-4 border-neutral-700 bg-black z-10" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-12 bg-white/5 backdrop-blur rounded z-0"></div>
-              </div>
-              <div className="absolute bottom-5 left-0 w-full text-center z-20">
-                <span className="text-[9px] font-mono text-white/70 bg-black/80 px-2 py-1 rounded border border-white/10">PLAYING: GHOST_TRACK.MP3</span>
-              </div>
+            <div className="bg-zinc-900 border-4 border-zinc-700 rounded-xl p-4 shadow-2xl rotate-3">
+               <div className="flex gap-4 mb-2 justify-center">
+                  <div className="w-8 h-8 rounded-full bg-black border-2 border-zinc-600 animate-spin"></div>
+                  <div className="w-8 h-8 rounded-full bg-black border-2 border-zinc-600 animate-spin"></div>
+               </div>
+               <span className="text-white font-mono text-[10px] block text-center bg-black/50 rounded px-2">PLAYING: GHOST_TRACK...</span>
             </div>
             <audio src="/ghost-track.mp3" autoPlay loop />
           </motion.div>
         )}
 
-        {mode === 'blood' && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-0 flex items-center justify-center pointer-events-none mix-blend-multiply bg-red-950/20">
-             <div className="absolute w-[600px] h-[600px] bg-red-600 rounded-full blur-[180px] opacity-20 animate-pulse"></div>
-             <Moon size={400} className="text-red-500 opacity-5 rotate-12" />
+        {showOverlay && mode === 'blood' && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-0 flex items-center justify-center pointer-events-none bg-red-900/20">
+             <Moon size={300} className="text-red-600 opacity-20 animate-pulse" />
           </motion.div>
         )}
 
-        {mode === 'ritual' && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed bottom-0 inset-x-0 h-1/2 bg-gradient-to-t from-gray-950 via-gray-900/50 to-transparent z-0 flex justify-center items-end pb-20 gap-20 pointer-events-none">
-             <Flame className="text-white/80 w-16 h-16 animate-bounce opacity-50 blur-sm" />
-             <Flame className="text-white w-24 h-24 animate-pulse opacity-90 blur-sm -mt-10" />
-             <Flame className="text-white/80 w-16 h-16 animate-bounce opacity-50 blur-sm" />
+        {showOverlay && mode === 'ritual' && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed bottom-0 inset-x-0 flex justify-center pb-20 gap-10 pointer-events-none">
+             <Flame className="text-white w-20 h-20 animate-bounce opacity-50" />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* --- VISUALIZER --- */}
-      <div className="mb-8 flex gap-1 h-8 items-end opacity-70">
-           {[1,2,3,4,5].map(i => (
-             <motion.div 
-               key={i} 
-               className={`w-2 bg-current ${mode === 'hacker' ? 'bg-green-500' : 'bg-white'}`}
-               animate={{ height: [10, 32, 15, 28, 10] }}
-               transition={{ repeat: Infinity, duration: 0.5 + Math.random(), ease: "easeInOut" }}
-             />
-           ))}
-      </div>
-
-      {/* TÍTULO CON FEEDBACK VISUAL */}
-      <DraggableTitle 
-        mode={mode} 
-        onLetterClick={handleInput} 
-        activeBuffer={buffer}
+      {/* TÍTULO DINÁMICO */}
+      <InteractiveTitle 
+        text={currentTitleText} 
+        usedIndices={usedIndices} 
+        onLetterClick={processInput} 
+        mode={mode}
+        shake={shake}
       />
 
+      {/* PROGRESO DE LA PALABRA (Solo visible en modo default) */}
+      {mode === 'default' && <WordProgressDisplay target={targetWord} current={buffer} />}
+      {mode !== 'default' && <div className="h-12 mb-12 opacity-0"></div>}
+      
+
+      {/* CONTENIDO NORMAL */}
       <motion.div 
-          animate={{ opacity: mode === 'default' ? 1 : 0.3, filter: mode === 'default' ? 'blur(0px)' : 'blur(4px)' }}
+          animate={{ opacity: mode === 'default' ? 1 : 0.2, filter: mode === 'default' ? 'blur(0px)' : 'blur(5px)' }}
+          transition={{ duration: 0.5 }}
           className="relative z-10 flex flex-col items-center max-w-4xl"
       >
-          {/* Subtítulos */}
           <div className="flex flex-wrap justify-center gap-3 md:gap-6 font-bold tracking-[0.3em] text-[10px] md:text-xs uppercase mb-12 opacity-80">
-            <span>Lo-fi Folk</span>
-            <span className={mode === 'default' ? 'text-purple-500' : 'text-current'}>•</span>
-            <span>Electronic</span>
-            <span className={mode === 'default' ? 'text-purple-500' : 'text-current'}>•</span>
-            <span>Ambient</span>
+            <span>Lo-fi Folk</span> • <span>Electronic</span> • <span>Ambient</span>
           </div>
 
-          {/* Iconos de Navegación */}
           <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-16">
-            {navIcons.map((tool, i) => (
-              <Button
-                variant="ghost"
+            {[
+              { icon: Guitar, label: "Música", id: "#releases" },
+              { icon: Laptop, label: "Proyectos", id: "#projects" },
+              { icon: Book, label: "Diary", id: "#diary" },
+              { icon: Terminal, label: "Bunker", id: "#bunker" }
+            ].map((tool, i) => (
+              <button 
                 key={i}
                 onClick={() => scrollTo(tool.id)}
-                className="group flex flex-col items-center gap-2 text-current hover:text-purple-400 hover:-translate-y-1 transition-all duration-300 w-auto h-auto p-0"
+                className="group flex flex-col items-center gap-2 text-current hover:text-purple-400 transition-all duration-300"
+                title={tool.label}
               >
                 <div className="p-3 bg-white/5 border border-white/10 rounded-full group-hover:border-purple-500/50 backdrop-blur-sm">
                    <tool.icon size={20} />
                 </div>
-                <span className="text-[9px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity absolute -bottom-6 whitespace-nowrap">{tool.label}</span>
-              </Button>
+              </button>
             ))}
           </div>
 
-          {/* Botones CTA */}
           <div className="flex flex-col sm:flex-row gap-6">
-            <Button
+            <button 
               onClick={() => scrollTo('#releases')}
               className="px-8 py-4 bg-white text-black font-black uppercase tracking-wider hover:scale-105 transition-transform flex items-center gap-2 rounded-sm"
             >
-              <Play size={16} fill="currentColor" /> {dictionary.cta.bloodmoon}
-            </Button>
+              <Play size={16} fill="currentColor" /> Bloodmoon EP
+            </button>
             
-            <Button
+            <button 
               onClick={() => scrollTo('#cosmic')}
-              variant='outline'
-              className="px-8 py-4 border-white/20 text-current font-bold uppercase tracking-wider hover:bg-white/10 backdrop-blur-md flex items-center gap-2 rounded-sm"
+              className="px-8 py-4 border border-white/20 text-current font-bold uppercase tracking-wider hover:bg-white/10 backdrop-blur-md flex items-center gap-2 rounded-sm"
             >
-              <Headphones size={16} /> {dictionary.cta.producer}
-            </Button>
+              <Headphones size={16} /> Productora
+            </button>
           </div>
       </motion.div>
 

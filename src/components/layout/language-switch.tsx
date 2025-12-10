@@ -17,6 +17,9 @@ export default function LanguageSwitch() {
     return segments.join('/')
   }
 
+  // Currently disabled
+  if (true) return null;
+
   return (
     <div className="flex items-center gap-1">
       {i18n.locales.map(locale => {
