@@ -3,103 +3,103 @@
     {
       "id": "bloodmoon-cover",
       "description": "Cover art for the Bloodmoon EP",
-      "imageUrl": "https://images.unsplash.com/photo-1494232410401-ad00d5433cfa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxhbGJ1bSUyMGNvdmVyfGVufDB8fHx8MTc2NTI5NjY4NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/bloodmoon-cover.jpg",
       "imageHint": "album cover"
     },
     {
       "id": "habitar-remix-cover",
       "description": "Cover art for Habitar P2P Remix EP",
-      "imageUrl": "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxhYnN0cmFjdCUyMGFyY2hpdGVjdHVyZXxlbnwwfHx8fDE3NjUzMzc2NzZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/habitar-remix-cover.jpg",
       "imageHint": "abstract architecture"
     },
     {
       "id": "algo-se-fue-cover",
       "description": "Cover art for Algo Se Fue single",
-      "imageUrl": "https://images.unsplash.com/photo-1624778692570-8c51cc2ffde5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxibHVycnklMjBzdHJlZXR8ZW58MHx8fHwxNzY1MjYzOTA3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/algo-se-fue-cover.jpg",
       "imageHint": "blurry street"
     },
     {
       "id": "ocupado-tu-corazon-cover",
       "description": "Cover art for Ocupado Tu Corazón single",
-      "imageUrl": "https://images.unsplash.com/photo-1518706016428-64215811367b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxuZW9uJTIwaGVhcnR8ZW58MHx8fHwxNzY1MzYwMDk0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/ocupado-tu-corazon-cover.jpg",
       "imageHint": "neon heart"
     },
     {
       "id": "memory-of-changes-cover",
       "description": "Cover art for Memory of Changes LP",
-      "imageUrl": "https://images.unsplash.com/photo-1692153142567-4443bee183d2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxmYWRlZCUyMHBob3RvZ3JhcGh8ZW58MHx8fHwxNzY1MzYwMDkzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/memory-of-changes-cover.jpg",
       "imageHint": "faded photograph"
     },
     {
       "id": "nothing-ever-happened-cover",
       "description": "Cover art for Nothing Ever Happened single",
-      "imageUrl": "https://images.unsplash.com/flagged/photo-1556438758-872c68902f60?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxlbXB0eSUyMHJvb218ZW58MHx8fHwxNzY1Mjk5MjI5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/nothing-ever-happened-cover.jpg",
       "imageHint": "empty room"
     },
     {
       "id": "we-gonna-make-it-cover",
       "description": "Cover art for We Gonna Make It single",
-      "imageUrl": "https://images.unsplash.com/photo-1602248075851-ecfe533f7898?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzdW5yaXNlJTIwY2l0eXxlbnwwfHx8fDE3NjUzNjAwOTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/we-gonna-make-it-cover.jpg",
       "imageHint": "sunrise city"
     },
     {
       "id": "where-was-i-cover",
       "description": "Cover art for Where Was I single",
-      "imageUrl": "https://images.unsplash.com/photo-1429743305873-d4065c15f93e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmb3Jlc3QlMjBwYXRofGVufDB8fHx8MTc2NTI3NjUxMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/where-was-i-cover.jpg",
       "imageHint": "forest path"
     },
     {
       "id": "ok-cover",
       "description": "Cover art for OK LP",
-      "imageUrl": "https://images.unsplash.com/photo-1525498128493-380d1990a112?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtaW5pbWFsaXN0JTIwYXJ0fGVufDB8fHx8MTc2NTMwMjY3M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/ok-cover.jpg",
       "imageHint": "minimalist art"
     },
     {
       "id": "spheres-cover",
       "description": "Cover art for Spheres EP",
-      "imageUrl": "https://images.unsplash.com/photo-1585786367335-edf2572a4fe9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjb3NtaWMlMjBzcGhlcmVzfGVufDB8fHx8MTc2NTM2MDA5M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/spheres-cover.jpg",
       "imageHint": "cosmic spheres"
     },
     {
       "id": "summertime-cover",
       "description": "Cover art for Summertime double single",
-      "imageUrl": "https://images.unsplash.com/photo-1518022525094-218670c9b745?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxiZWFjaCUyMHN1bnNldHxlbnwwfHx8fDE3NjUzNTYxNjF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/summertime-cover.jpg",
       "imageHint": "beach sunset"
     },
     {
       "id": "jules-basement-cover",
       "description": "Cover art for Jules' Basement compilation",
-      "imageUrl": "https://images.unsplash.com/photo-1527455042408-9375040e774d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkYXJrJTIwYmFzZW1lbnR8ZW58MHx8fHwxNzY1Mjc1MzU5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/jules-basement-cover.jpg",
       "imageHint": "dark basement"
     },
     {
       "id": "norah-game-screenshot",
       "description": "Screenshot from the NORAH video game",
-      "imageUrl": "https://images.unsplash.com/photo-1564585447193-cd9a0cf42a36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwaXhlbCUyMGFydHxlbnwwfHx8fDE3NjUyNDE4NjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/norah-game-screenshot.png",
       "imageHint": "pixel art"
     },
     {
       "id": "habitar-p2p-docu",
       "description": "Still from the Habitar P2P documentary",
-      "imageUrl": "https://images.unsplash.com/photo-1479293581560-aee98bb24f7f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtb2Rlcm4lMjBidWlsZGluZ3xlbnwwfHx8fDE3NjUzMDQ3ODZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/habitar-p2p-docu.jpg",
       "imageHint": "modern building"
     },
     {
       "id": "memory-short-film",
       "description": "Still from the Memory short film",
-      "imageUrl": "https://images.unsplash.com/photo-1566262258598-53deb7089bf8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzY2klMjBmaXxlbnwwfHx8fDE3NjUyNzI4NjZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/memory-short-film.jpg",
       "imageHint": "sci fi"
     },
     {
       "id": "goodbye-cities-film",
       "description": "Still from the Goodbye Cities film",
-      "imageUrl": "https://images.unsplash.com/photo-1502228362178-086346ac6862?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjaXR5JTIwc2t5bGluZXxlbnwwfHx8fDE3NjUyNDU3NTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/goodbye-cities-film.jpg",
       "imageHint": "city skyline"
     },
     {
       "id": "retroaventuras-cover",
       "description": "Cover for Retroaventuras youtube channel",
-      "imageUrl": "https://images.unsplash.com/photo-1625805866449-3589fe3f71a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxyZXRybyUyMGdhbWluZ3xlbnwwfHx8fDE3NjUzMjk3NDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/fotos/retroaventuras-cover.jpg",
       "imageHint": "retro gaming"
     }
   ]
