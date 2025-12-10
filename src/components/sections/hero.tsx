@@ -13,6 +13,32 @@ const creativeTools = [
   { icon: Terminal, section: "#bunker", tooltip: "Bunker" },
 ];
 
+const DraggableTitle = ({ text }: { text: string }) => {
+  return (
+    <h1 className="relative z-50 text-6xl sm:text-7xl md:text-9xl font-black font-headline text-foreground tracking-tighter mb-6 leading-none select-none">
+      {text.split("").map((char, index) => {
+        if (char === " ") {
+          return <span key={index} className="inline-block w-4 md:w-6"></span>;
+        }
+        return (
+          <motion.span
+            key={index}
+            drag
+            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+            dragElastic={0.1}
+            whileHover={{ scale: 1.2, color: "#a855f7", rotate: Math.random() * 20 - 10 }}
+            whileTap={{ scale: 0.9, cursor: "grabbing" }}
+            className="inline-block cursor-grab"
+          >
+            {char}
+          </motion.span>
+        );
+      })}
+    </h1>
+  );
+};
+
+
 const Hero = () => {
     const scrollToSection = (id: string) => {
         const element = document.querySelector(id);
@@ -23,14 +49,8 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 z-10 overflow-hidden">
-      <motion.h1
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative z-10 text-6xl sm:text-7xl md:text-9xl font-black font-headline text-foreground tracking-tighter mb-6 leading-none"
-      >
-        JULES<br className="md:hidden" /> WINEHEART
-      </motion.h1>
+      
+      <DraggableTitle text="JULES WINEHEART" />
 
       <motion.div
         initial={{ opacity: 0 }}
