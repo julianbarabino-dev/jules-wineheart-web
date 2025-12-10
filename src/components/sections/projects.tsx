@@ -1,11 +1,14 @@
 "use client";
 
 import React from 'react';
+import Image from 'next/image';
 import { projects } from '@/lib/data';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
+import { getPlaceholderImage } from '@/lib/placeholder-images';
+
 
 const Projects = () => {
 
@@ -19,8 +22,8 @@ const Projects = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((project) => {
-            const Icon = project.icon;
             const TagIcon = project.tagIcon;
+            const image = getPlaceholderImage(project.imgId);
             
             return (
               <Card
@@ -30,9 +33,15 @@ const Projects = () => {
                   project.style
                 )}
               >
-                <div className="relative aspect-video w-full bg-card-foreground/5 flex items-center justify-center p-8 overflow-hidden">
-                    <div className={cn("absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300", project.glowStyle)}></div>
-                    <Icon size={48} className="text-foreground/20 group-hover:text-foreground/80 transition-colors duration-300" />
+                <div className="relative aspect-video w-full overflow-hidden">
+                    <Image
+                        src={image.imageUrl}
+                        alt={project.title}
+                        fill
+                        className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                        data-ai-hint={image.imageHint}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
 
                   {project.tag && (
                     <div className="absolute top-3 right-3 z-20">
@@ -43,15 +52,15 @@ const Projects = () => {
                   )}
                 </div>
 
-                <div className="p-6 bg-card-foreground/5 border-t border-border flex flex-col justify-center min-h-[100px] transition-colors group-hover:bg-card-foreground/10">
-                  <h3 className="text-xl font-black text-foreground font-headline uppercase italic mb-1">{project.title}</h3>
+                <div className="p-6 bg-card flex flex-col justify-center min-h-[100px] flex-grow">
+                  <h3 className="text-xl font-black text-foreground font-headline uppercase italic mb-2">{project.title}</h3>
                   
-                  <div className="mt-2">
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                  <div className="mt-2 flex flex-col flex-grow">
+                    <p className="text-muted-foreground text-sm leading-relaxed flex-grow">
                       {project.desc}
                     </p>
                     {project.btn && (
-                      <Button asChild variant="link" className="mt-3 px-0 text-accent font-bold uppercase tracking-widest h-auto">
+                      <Button asChild variant="link" className="mt-4 px-0 text-accent font-bold uppercase tracking-widest h-auto self-start">
                         <a href={project.btn.link} target="_blank" rel="noopener noreferrer">
                           <Play size={12} fill="currentColor"/> {project.btn.text}
                         </a>
