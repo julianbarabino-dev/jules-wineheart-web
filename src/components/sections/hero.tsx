@@ -24,7 +24,6 @@ const DraggableTitle = ({ text }: { text: string }) => {
           <motion.span
             key={index}
             drag
-            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
             dragElastic={0.1}
             whileHover={{ scale: 1.2, color: "#a855f7", rotate: Math.random() * 20 - 10 }}
             whileTap={{ scale: 0.9, cursor: "grabbing" }}
