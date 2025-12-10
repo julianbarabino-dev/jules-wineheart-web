@@ -20,20 +20,6 @@ const Hero = () => {
         transition={{ duration: 1, delay: 0.2 }}
         className="absolute inset-0 w-full h-full z-0"
       >
-        <motion.div
-          animate={{
-            scale: [1, 1.1, 1],
-            y: [0, -20, 0],
-            rotate: [0, 5, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            repeatType: "mirror",
-            ease: "easeInOut",
-          }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vh] max-w-[800px] max-h-[800px] bg-gradient-to-tr from-purple-900/80 to-blue-900/60 rounded-full blur-[120px] opacity-40"
-        ></motion.div>
       </motion.div>
 
       <motion.h1
