@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Headphones, ChevronDown, Guitar, Laptop, Book, Keyboard, Terminal, Moon, Flame } from "lucide-react";
+import { Play, Headphones, ChevronDown, Guitar, Laptop, Book, Terminal, Moon, Flame } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from '@/components/ui/button';
 
@@ -65,8 +65,7 @@ const DraggableTitle = ({
             if (char === " ") return <span key={index} className="w-4 md:w-8" />;
             
             const isSecret = mode !== 'default';
-            // ¿Está esta letra en el buffer reciente? (Ej: Si escribí "LIS", la L, I y S se iluminan)
-            const isActive = !isSecret && activeBuffer.includes(char);
+            const isActive = !isSecret && activeBuffer[index] === char;
 
             // Animación de "Sacudida" para modos secretos
             const shake = isSecret ? {
@@ -82,7 +81,6 @@ const DraggableTitle = ({
                 drag={!isSecret}
                 dragConstraints={constraintsRef}
                 dragElastic={0.2}
-                // Si está activa (tocada), se pone Púrpura y brilla. Si no, blanco normal.
                 animate={isActive ? { color: "#d8b4fe", textShadow: "0 0 20px #a855f7", scale: 1.1 } : shake}
                 whileHover={!isSecret ? { scale: 1.2, color: "#a855f7", rotate: Math.random() * 15 - 7.5 } : {}}
                 whileTap={{ scale: 0.9, cursor: "grabbing", color: "#fff" }}
@@ -101,10 +99,16 @@ const DraggableTitle = ({
 // --- HERO PRINCIPAL ---
 export default function Hero() {
   const [mode, setMode] = useState('default'); 
-  const [buffer, setBuffer] = useState(""); // Estado para guardar las letras tocadas
-  const [showHelper, setShowHelper] = useState(true);
-  
-  // LOGICA CENTRAL DE INPUT
+  const [buffer, setBuffer] = useState("");
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const playSound = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play().catch(() => {});
+    }
+  };
+
   const handleInput = (char: string) => {
     if (mode !== 'default') {
         setMode('default');
@@ -112,13 +116,12 @@ export default function Hero() {
         return;
     }
 
+    playSound();
     const upperChar = char.toUpperCase();
     
-    // Actualizamos el buffer visual y lógico
     setBuffer(prev => {
-        const newBuffer = (prev + upperChar).slice(-10); // Guardamos ultimas 10
+        const newBuffer = (prev + upperChar).slice(-10);
         
-        // Chequeo de códigos
         if (newBuffer.endsWith('LISTEN')) setMode('ghost');
         else if (newBuffer.endsWith('TRUELIES')) setMode('hacker');
         else if (newBuffer.endsWith('LUNA')) setMode('blood');
@@ -127,7 +130,6 @@ export default function Hero() {
         return newBuffer;
     });
 
-    // Reset automático del buffer si deja de escribir por 3 segundos (para apagar las luces)
     clearTimeout((window as any).resetTimer);
     (window as any).resetTimer = setTimeout(() => setBuffer(""), 3000);
   };
@@ -145,10 +147,9 @@ export default function Hero() {
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    const timer = setTimeout(() => setShowHelper(false), 8000);
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      clearTimeout(timer);
     };
   }, [mode]);
 
@@ -166,6 +167,8 @@ export default function Hero() {
       ${mode === 'ghost' ? 'bg-[#0a0a0a] text-white' : ''}
     `}>
       
+      <audio ref={audioRef} src="/key-press.mp3" preload="auto"></audio>
+
       {/* OVERLAYS GLOBALES */}
       <AnimatePresence>
         {mode === 'hacker' && (
@@ -225,7 +228,7 @@ export default function Hero() {
       <DraggableTitle 
         mode={mode} 
         onLetterClick={handleInput} 
-        activeBuffer={buffer} // Pasamos las letras activas
+        activeBuffer={buffer}
       />
 
       <motion.div 
@@ -288,5 +291,3 @@ export default function Hero() {
     </section>
   );
 }
-
-    
