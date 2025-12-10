@@ -1,8 +1,4 @@
 import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* Opciones de configuración */
-  // Quitamos toda la parte de "i18n" o "locales"
-};
-
+const nextConfig: NextConfig = {};
 export default nextConfig;
+

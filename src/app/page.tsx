@@ -1,41 +1,32 @@
-import Header from '@/components/layout/header';
-import Hero from '@/app/hero';
-import Releases from '@/components/sections/releases';
-import Projects from '@/components/sections/projects';
-import CosmicVicar from '@/components/sections/cosmic-vicar';
-import Bunker from '@/components/sections/bunker';
-import SoundDiary from '@/components/sections/sound-diary';
-import Footer from '@/components/sections/footer';
-import { generateBunkerSignals } from '@/ai/flows/generate-bunker-signals';
-import AnimatedSection from '@/components/layout/animated-section';
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer"; 
+import Hero from "@/components/sections/hero";
+import Releases from "@/components/sections/releases";
+import CTAInstagram from "@/components/ui/cta-instagram"; 
+import Projects from "@/components/sections/projects";
+import CosmicVicar from "@/components/sections/cosmic-vicar"; 
+import Bunker from "@/components/sections/bunker";
+import ConsoleMessage from "@/components/utils/console-message";
+import { bunkerSignals } from "@/lib/data";
 
-export default async function Home() {
-  const bunkerSignals = await generateBunkerSignals();
-
+export default function Home() {
   return (
-    <>
+    // CAMBIO AQUÍ: Quité 'bg-black'. Ahora es transparente y deja ver el fondo del layout.
+    <main className="flex flex-col min-h-screen text-white selection:bg-purple-500/30">
+      
+      <ConsoleMessage /> 
       <Header />
-      <main className="flex flex-col">
-        <Hero />
-        <AnimatedSection>
-          <Releases />
-        </AnimatedSection>
-        <AnimatedSection>
-          <Projects />
-        </AnimatedSection>
-        <AnimatedSection>
-          <CosmicVicar />
-        </AnimatedSection>
-        <AnimatedSection>
-          <Bunker signals={bunkerSignals} />
-        </AnimatedSection>
-        <AnimatedSection>
-          <SoundDiary />
-        </AnimatedSection>
-        <AnimatedSection>
-          <Footer />
-        </AnimatedSection>
-      </main>
-    </>
+      
+      <Hero />
+      <Releases />
+      
+      <CTAInstagram /> 
+      
+      <Projects />
+      <CosmicVicar />
+      <Bunker signals={bunkerSignals} />
+      
+      <Footer />
+    </main>
   );
 }
