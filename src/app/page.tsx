@@ -8,36 +8,32 @@ import SoundDiary from '@/components/sections/sound-diary';
 import Footer from '@/components/sections/footer';
 import { generateBunkerSignals } from '@/ai/flows/generate-bunker-signals';
 import AnimatedSection from '@/components/layout/animated-section';
-import { getDictionary } from '@/lib/get-dictionary';
-import type { Locale } from '@/lib/i18n-config';
 
 export default async function Home() {
-  const lang: Locale = 'es'; // Hardcoded to spanish for now
   const bunkerSignals = await generateBunkerSignals();
-  const dictionary = await getDictionary(lang);
 
   return (
     <>
-      <Header dictionary={dictionary.header} />
+      <Header />
       <main className="flex flex-col">
-        <Hero dictionary={dictionary.hero} />
+        <Hero />
         <AnimatedSection>
-          <Releases dictionary={dictionary.releases} />
+          <Releases />
         </AnimatedSection>
         <AnimatedSection>
-          <Projects dictionary={dictionary.projects} />
+          <Projects />
         </AnimatedSection>
         <AnimatedSection>
-          <CosmicVicar dictionary={dictionary.cosmicVicar} />
+          <CosmicVicar />
         </AnimatedSection>
         <AnimatedSection>
-          <Bunker signals={bunkerSignals} dictionary={dictionary.bunker} />
+          <Bunker signals={bunkerSignals} />
         </AnimatedSection>
         <AnimatedSection>
-          <SoundDiary dictionary={dictionary.soundDiary} />
+          <SoundDiary />
         </AnimatedSection>
         <AnimatedSection>
-          <Footer dictionary={dictionary.footer} />
+          <Footer />
         </AnimatedSection>
       </main>
     </>

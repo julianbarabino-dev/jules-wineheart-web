@@ -6,22 +6,16 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import type { Dictionary } from "@/lib/get-dictionary";
-import LanguageSwitch from "./language-switch";
 
-interface HeaderProps {
-  dictionary: Dictionary['header'];
-}
-
-const Header = ({ dictionary }: HeaderProps) => {
+const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   
   const navLinks = [
-    { href: "#releases", label: dictionary.music, className: "hover:text-foreground transition-colors hover:line-through decoration-primary" },
-    { href: "#projects", label: dictionary.projects, className: "hover:text-foreground transition-colors hover:line-through decoration-blue-500" },
-    { href: "#cosmic", label: dictionary.cosmicVicar, className: "hover:text-primary transition-colors hover:line-through decoration-foreground" },
-    { href: "#bunker", label: dictionary.bunker, className: "hover:text-accent transition-colors hover:line-through decoration-accent" },
-    { href: "#diary", label: dictionary.soundDiary, className: "hover:text-foreground transition-colors hover:line-through decoration-red-500" },
+    { href: "#releases", label: "Música", className: "hover:text-foreground transition-colors hover:line-through decoration-primary" },
+    { href: "#projects", label: "Proyectos", className: "hover:text-foreground transition-colors hover:line-through decoration-blue-500" },
+    { href: "#cosmic", label: "Cosmic Vicar", className: "hover:text-primary transition-colors hover:line-through decoration-foreground" },
+    { href: "#bunker", label: "Bunker", className: "hover:text-accent transition-colors hover:line-through decoration-accent" },
+    { href: "#diary", label: "Sound Diary", className: "hover:text-foreground transition-colors hover:line-through decoration-red-500" },
   ];
 
   useEffect(() => {
@@ -43,7 +37,6 @@ const Header = ({ dictionary }: HeaderProps) => {
     <header
       className={cn(
         "fixed top-0 left-0 w-full z-50 transition-all duration-300",
-        // Aumentamos py-8 a py-16 para crear más espacio arriba y abajo del menú (empujando el Hero hacia abajo).
         scrolled ? "bg-background/95 backdrop-blur-md border-b border-border py-4" : "bg-transparent py-16"  
       )}
     >
@@ -59,12 +52,10 @@ const Header = ({ dictionary }: HeaderProps) => {
               {link.label}
             </button>
           ))}
-          {/* <LanguageSwitch /> */}
         </nav>
 
         {/* Mobile Menu */}
         <div className="md:hidden flex items-center gap-2">
-           {/* <LanguageSwitch /> */}
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">

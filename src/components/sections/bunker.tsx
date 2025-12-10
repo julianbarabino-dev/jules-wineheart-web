@@ -4,14 +4,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Terminal } from 'lucide-react';
 import type { BunkerSignalsOutput } from '@/ai/flows/generate-bunker-signals';
 import { Typewriter } from '@/components/ui/typewriter';
-import type { Dictionary } from '@/lib/get-dictionary';
 
 interface BunkerProps {
   signals: BunkerSignalsOutput;
-  dictionary: Dictionary['bunker'];
 }
 
-const Bunker = ({ signals, dictionary }: BunkerProps) => {
+const Bunker = ({ signals }: BunkerProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const bunkerRef = useRef<HTMLDivElement>(null);
 
@@ -43,7 +41,7 @@ const Bunker = ({ signals, dictionary }: BunkerProps) => {
         <div className="flex items-center gap-3 mb-8">
           <Terminal size={20} className="text-accent" />
           <h3 className="text-xl font-bold font-code uppercase tracking-widest text-accent">
-            {dictionary.title}
+            Señal desde el Bunker
           </h3>
           <div className="w-2 h-2 bg-accent rounded-full animate-cursor-blink ml-auto"></div>
         </div>

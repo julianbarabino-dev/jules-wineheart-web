@@ -8,26 +8,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import type { Dictionary } from "@/lib/get-dictionary";
-import { useLanguage } from "@/context/language-context";
 
-interface SoundDiaryProps {
-  dictionary: Dictionary['soundDiary'];
-}
-
-function SubmitButton({ dictionary }: { dictionary: Dictionary['soundDiary']['form'] }) {
+function SubmitButton() {
   const { pending } = useFormStatus();
 
   return (
     <Button type="submit" disabled={pending} className="mt-2 self-start bg-primary-foreground text-background font-black uppercase tracking-widest transition-all hover:bg-primary hover:text-primary-foreground">
-      {pending ? dictionary.submitting : <><Play size={14} fill="currentColor" /> {dictionary.submit}</>}
+      {pending ? "Enviando..." : <><Play size={14} fill="currentColor" /> Tune In</>}
     </Button>
   );
 }
 
-const SoundDiary = ({ dictionary }: SoundDiaryProps) => {
-  const { lang } = useLanguage();
-  const formAction = subscribeToSoundDiary.bind(null, lang);
+const SoundDiary = () => {
+  const formAction = subscribeToSoundDiary.bind(null, 'es'); // Hardcoding 'es'
   const initialState = { message: null, errors: {}, success: false };
   const [state, dispatch] = useFormState(formAction, initialState);
   const { toast } = useToast();
@@ -37,19 +30,19 @@ const SoundDiary = ({ dictionary }: SoundDiaryProps) => {
     if (state.message) {
       if (state.success) {
         toast({
-          title: dictionary.toast.success.title,
+          title: "¡Subscripción Exitosa!",
           description: state.message,
         });
         formRef.current?.reset();
       } else {
         toast({
-            title: dictionary.toast.error.title,
+            title: "Falló la Subscripción",
             description: state.message,
             variant: "destructive",
         });
       }
     }
-  }, [state, toast, dictionary.toast]);
+  }, [state, toast]);
 
   return (
     <section id="diary" className="bg-secondary/20 pt-24 pb-20 border-t border-border/50 relative z-10">
@@ -57,26 +50,26 @@ const SoundDiary = ({ dictionary }: SoundDiaryProps) => {
         <Card className="bg-card border-border relative overflow-hidden">
           <CardHeader>
              <div className="flex items-center gap-2 mb-4 text-primary font-mono text-[10px] tracking-widest uppercase">
-                <Radio size={12}/> {dictionary.pretitle}
+                <Radio size={12}/> Private_Access
             </div>
-            <CardTitle className="font-headline uppercase italic text-2xl">{dictionary.title}</CardTitle>
+            <CardTitle className="font-headline uppercase italic text-2xl">Sound Diary</CardTitle>
             <CardDescription>
-              {dictionary.description}
+              Un archivo personal de texturas, demos crudos y b-sides.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form ref={formRef} action={dispatch} className="flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1">
-                  <Input type="text" name="name" placeholder={dictionary.form.namePlaceholder} required className="font-code text-xs uppercase" />
+                  <Input type="text" name="name" placeholder="Nombre / Alias" required className="font-code text-xs uppercase" />
                    {state.errors?.name && <p className="text-destructive text-xs mt-1">{state.errors.name[0]}</p>}
                 </div>
                 <div className="flex-1">
-                  <Input type="email" name="email" placeholder={dictionary.form.emailPlaceholder} required className="font-code text-xs uppercase" />
+                  <Input type="email" name="email" placeholder="Email" required className="font-code text-xs uppercase" />
                   {state.errors?.email && <p className="text-destructive text-xs mt-1">{state.errors.email[0]}</p>}
                 </div>
               </div>
-              <SubmitButton dictionary={dictionary.form} />
+              <SubmitButton />
             </form>
           </CardContent>
         </Card>

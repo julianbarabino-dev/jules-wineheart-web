@@ -1,17 +1,9 @@
 "use server";
 
 import { z } from "zod";
-import type { Locale } from "./i18n-config";
 
-const getErrorMessages = (lang: Locale) => {
-  if (lang === 'en') {
-    return {
-      nameMin: "Name must be at least 2 characters.",
-      emailInvalid: "Please enter a valid email.",
-      genericError: "Missing fields. Failed to subscribe.",
-      success: (name: string) => `Done, ${name}! We've received your email.`,
-    };
-  }
+// Hardcoding Spanish error messages since i18n is removed.
+const getErrorMessages = () => {
   return {
     nameMin: "El nombre debe tener al menos 2 caracteres.",
     emailInvalid: "Por favor, ingresa un email válido.",
@@ -20,8 +12,9 @@ const getErrorMessages = (lang: Locale) => {
   };
 }
 
-export async function subscribeToSoundDiary(lang: Locale, prevState: any, formData: FormData) {
-  const errorMessages = getErrorMessages(lang);
+// The 'lang' parameter is kept but unused for now to avoid breaking the form binding.
+export async function subscribeToSoundDiary(lang: 'es' | 'en', prevState: any, formData: FormData) {
+  const errorMessages = getErrorMessages();
 
   const subscribeSchema = z.object({
     name: z.string().min(2, { message: errorMessages.nameMin }),

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Headphones, ChevronDown, Guitar, Laptop, Book, Keyboard, Terminal, Moon, Flame } from "lucide-react";
+import { Play, Headphones, ChevronDown, Guitar, Laptop, Book, Terminal, Moon, Flame } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // --- CONFIGURACIÓN DE LOS MODOS SECRETOS ---
@@ -210,9 +210,22 @@ export default function Hero() {
   
   const [shake, setShake] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Precargar el audio
+  useEffect(() => {
+    audioRef.current = new Audio('/key-press.mp3');
+    audioRef.current.volume = 0.3;
+  }, []);
 
   // MANEJO DE ENTRADA (Teclado o Clic)
   const processInput = (char: string, index: number = -1) => {
+    // Reproducir sonido con cada entrada
+    if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(e => console.log("Audio play failed"));
+    }
+
     // Si ya estamos en un modo, resetear al default con cualquier tecla
     if (mode !== 'default') {
         setMode('default');
@@ -226,7 +239,6 @@ export default function Hero() {
     const upperChar = char.toUpperCase();
     const nextCharIndex = buffer.length;
 
-    // 1. Empezar nueva palabra
     let currentTarget = targetWord;
     if (buffer === "") {
       const foundKey = Object.keys(SECRET_MODES).find(key => 
@@ -242,17 +254,31 @@ export default function Hero() {
       }
     }
 
-    // 2. Verificar secuencia
+    // Verificar secuencia
     if (currentTarget && currentTarget[nextCharIndex] === upperChar) {
-      // ACIERTO
       const newBuffer = buffer + upperChar;
       setBuffer(newBuffer);
-      if (index !== -1) setUsedIndices([...usedIndices, index]); 
+      if (index !== -1) {
+        // Si se hizo clic, busca el primer índice no utilizado para esa letra
+        const titleChars = (SECRET_MODES.default.title.replace(/ /g, '')).split('');
+        let charIndexToUse = -1;
 
-      // 3. VICTORIA
+        // Encuentra el primer índice de la letra clickeada que no esté en usedIndices
+        for (let i = 0; i < titleChars.length; i++) {
+          if (titleChars[i] === upperChar && !usedIndices.includes(i)) {
+            charIndexToUse = i;
+            break;
+          }
+        }
+        
+        if (charIndexToUse !== -1) {
+          setUsedIndices(prev => [...prev, charIndexToUse]);
+        }
+      }
+
       if (newBuffer === currentTarget) {
         const winningModeKey = Object.keys(SECRET_MODES).find(key => 
-            key !== 'default' && SECRET_MODES[key as keyof typeof SECRET_MODES].target === currentTarget
+            SECRET_MODES[key as keyof typeof SECRET_MODES].target === currentTarget
         );
 
         if (winningModeKey) {
@@ -271,7 +297,6 @@ export default function Hero() {
         }
       }
     } else {
-      // ERROR: Resetear
       setBuffer("");
       setTargetWord("");
       setUsedIndices([]);
@@ -281,35 +306,41 @@ export default function Hero() {
   // Listener Teclado
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Solo aceptamos letras, Escape, y no procesamos si hay modificadores (Ctrl, Shift, etc)
-      if (e.key === 'Escape') processInput('ESCAPE');
-      if (/^[a-zA-Z]$/.test(e.key) && !e.ctrlKey && !e.altKey && !e.metaKey) processInput(e.key);
+      if (e.key === 'Escape') {
+          processInput('ESCAPE', -1);
+          return;
+      }
+      if (/^[a-zA-Z]$/.test(e.key) && !e.ctrlKey && !e.altKey && !e.metaKey) {
+        // En lugar de pasar un índice, pasamos la letra para que la lógica la encuentre
+        const upperChar = e.key.toUpperCase();
+        const titleChars = SECRET_MODES.default.title.split('');
+        const clickedIndex = titleChars.findIndex((char, idx) => char === upperChar && !usedIndices.includes(idx));
+        
+        processInput(e.key, clickedIndex);
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [mode, buffer, targetWord]);
+  }, [mode, buffer, targetWord, usedIndices]);
+
 
   const scrollTo = (id: string) => {
     document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // TEXTO DEL TÍTULO: Depende del modo actual
   const currentTitleText = SECRET_MODES[mode as keyof typeof SECRET_MODES]?.title || SECRET_MODES.default.title;
 
   return (
     <section className={`relative min-h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden transition-colors duration-1000 z-20
-      ${mode === 'default' ? '' : ''}
       ${mode === 'hacker' ? 'bg-black text-green-500 font-mono' : ''}
       ${mode === 'blood' ? 'bg-[#1a0505] text-red-400' : ''}
       ${mode === 'ritual' ? 'bg-gray-950 text-neutral-500 grayscale' : ''}
       ${mode === 'ghost' ? 'bg-[#0a0a0a] text-white' : ''}
     `}>
       
-      {/* EFECTOS DE FONDO ESPECIALES */}
       {showOverlay && mode === 'hacker' && <MatrixRain />}
 
       <AnimatePresence>
-        {/* OVERLAYS GLOBALES */}
         {showOverlay && mode === 'hacker' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed top-24 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
             <div className="bg-black border border-green-500 text-green-500 px-6 py-2 font-mono text-sm shadow-[0_0_20px_rgba(0,255,0,0.6)] animate-pulse">
@@ -344,21 +375,17 @@ export default function Hero() {
         )}
       </AnimatePresence>
 
-      {/* TÍTULO DINÁMICO */}
       <InteractiveTitle 
         text={currentTitleText} 
         usedIndices={usedIndices} 
-        onLetterClick={processInput} 
+        onLetterClick={(char, index) => processInput(char, index)} 
         mode={mode}
         shake={shake}
       />
 
-      {/* PROGRESO DE LA PALABRA (Solo visible en modo default) */}
       {mode === 'default' && <WordProgressDisplay target={targetWord} current={buffer} />}
       {mode !== 'default' && <div className="h-12 mb-12 opacity-0"></div>}
       
-
-      {/* CONTENIDO NORMAL */}
       <motion.div 
           animate={{ opacity: mode === 'default' ? 1 : 0.2, filter: mode === 'default' ? 'blur(0px)' : 'blur(5px)' }}
           transition={{ duration: 0.5 }}

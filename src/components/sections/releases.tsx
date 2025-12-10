@@ -36,7 +36,7 @@ export default function Releases() {
                 <div className="relative flex-1 overflow-hidden">
                     {/* Usamos img estándar para evitar problemas */}
                     <img 
-                        src="bloodmoon-cover.jpg" 
+                        src="/fotos/bloodmoon-cover.jpg" 
                         alt="Bloodmoon" 
                         className="absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-105 opacity-90 group-hover:opacity-100" 
                     />

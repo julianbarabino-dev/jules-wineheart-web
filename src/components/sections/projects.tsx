@@ -1,7 +1,7 @@
 "use client";
 
 import { projects } from '@/lib/data';
-import { Play, Award, Gamepad2, Film, MonitorPlay } from 'lucide-react';
+import { Play, Award } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Projects() {
@@ -33,7 +33,6 @@ export default function Projects() {
                                 className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" 
                             />
                             <div className="absolute inset-0 flex items-center justify-center z-[-1]">
-                                {/* Icono placeholder si no carga la imagen */}
                                 <project.icon size={40} className="text-white/20" />
                             </div>
                             

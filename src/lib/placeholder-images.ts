@@ -20,5 +20,9 @@ export function getPlaceholderImage(id: string): ImagePlaceholder {
             imageHint: 'placeholder',
         };
     }
-    return image;
+    // Return a modified object with the corrected path
+    return {
+        ...image,
+        imageUrl: image.imageUrl, // The JSON already has the correct paths
+    };
 }
