@@ -2,9 +2,9 @@
 
 import { Play, Headphones, ChevronDown, Guitar, Laptop, Book, Keyboard, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion, useScroll, useAnimation, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useEffect, useState } from "react";
+import { useRef } from "react";
 
 const creativeTools = [
   { icon: Guitar, section: "#releases", tooltip: "Música" },
@@ -15,54 +15,32 @@ const creativeTools = [
 ];
 
 const DraggableTitle = ({ text }: { text: string }) => {
-  const controls = useAnimation();
-  const { scrollYProgress } = useScroll();
-  const [isFalling, setIsFalling] = useState(false);
-
-  useEffect(() => {
-    return scrollYProgress.on("change", (latest) => {
-      if (latest > 0.05 && !isFalling) {
-        setIsFalling(true);
-        controls.start("fall");
-      }
-    });
-  }, [scrollYProgress, controls, isFalling]);
-
+  const constraintsRef = useRef(null);
 
   return (
-    <h1 className="relative z-50 text-6xl sm:text-7xl md:text-9xl font-black font-headline text-foreground tracking-tighter mb-6 leading-none select-none">
-      {text.split("").map((char, index) => {
-        if (char === " ") {
-          return <span key={index} className="inline-block w-4 md:w-6"></span>;
-        }
-        return (
-          <motion.span
-            key={index}
-            drag={!isFalling}
-            dragElastic={0.1}
-            whileHover={{ scale: 1.2, color: "#a855f7", rotate: Math.random() * 20 - 10 }}
-            whileTap={{ scale: 0.9, cursor: "grabbing" }}
-            className="inline-block cursor-grab"
-            style={{ position: isFalling ? 'fixed' : 'relative' }}
-            animate={controls}
-            variants={{
-              fall: {
-                y: typeof window !== 'undefined' ? window.innerHeight - 150 + (Math.random() * 50) : 1000,
-                x: typeof window !== 'undefined' ? (Math.random() * window.innerWidth) - (window.innerWidth / 2) : 0,
-                rotate: Math.random() * 360 - 180,
-                transition: {
-                  delay: Math.random() * 1.5,
-                  duration: 2 + Math.random() * 2,
-                  ease: [0.1, 0.25, 0.3, 1] // Ease out cubic
-                }
-              }
-            }}
-          >
-            {char}
-          </motion.span>
-        );
-      })}
-    </h1>
+    <>
+      <motion.div className="w-full h-full absolute" ref={constraintsRef} />
+      <h1 className="relative z-50 text-6xl sm:text-7xl md:text-9xl font-black font-headline text-foreground tracking-tighter mb-6 leading-none select-none">
+        {text.split("").map((char, index) => {
+          if (char === " ") {
+            return <span key={index} className="inline-block w-4 md:w-6"></span>;
+          }
+          return (
+            <motion.span
+              key={index}
+              drag
+              dragConstraints={constraintsRef}
+              dragElastic={0.1}
+              whileHover={{ scale: 1.2, color: "#a855f7", rotate: Math.random() * 20 - 10 }}
+              whileTap={{ scale: 0.9, cursor: "grabbing" }}
+              className="inline-block cursor-grab"
+            >
+              {char}
+            </motion.span>
+          );
+        })}
+      </h1>
+    </>
   );
 };
 

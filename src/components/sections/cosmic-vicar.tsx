@@ -28,7 +28,7 @@ const CosmicVicar = () => {
                 <div className="w-2 h-2 bg-red-500 rounded-full shadow-[0_0_10px_rgba(239,68,68,0.8)] mr-2"></div>
                 <span className="text-[10px] font-mono text-red-400 tracking-widest uppercase font-bold">REC</span>
               </Badge>
-              <h2 className="text-3xl md:text-5xl font-black font-headline uppercase tracking-tighter text-foreground leading-none">
+              <h2 className="text-3xl md:text-5xl font-black font-alt-headline uppercase tracking-tighter text-foreground leading-none">
                 Cosmic Vicar Records
               </h2>
             </div>

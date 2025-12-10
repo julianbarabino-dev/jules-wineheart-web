@@ -21,6 +21,7 @@ const config = {
       fontFamily: {
         body: ['Inter', 'sans-serif'],
         headline: ['Space Grotesk', 'sans-serif'],
+        'alt-headline': ['Audiowide', 'sans-serif'],
         code: ['Fira Code', 'monospace'],
       },
       colors: {
