@@ -65,7 +65,7 @@ const DraggableTitle = ({
             if (char === " ") return <span key={index} className="w-4 md:w-8" />;
             
             const isSecret = mode !== 'default';
-            const isActive = !isSecret && activeBuffer[index] === char;
+            const isActive = !isSecret && activeBuffer.length > 0 && currentConfig.text.indexOf(activeBuffer[activeBuffer.length-1]) === index;
 
             // Animación de "Sacudida" para modos secretos
             const shake = isSecret ? {
@@ -291,3 +291,5 @@ export default function Hero() {
     </section>
   );
 }
+
+    
