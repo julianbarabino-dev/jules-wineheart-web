@@ -82,27 +82,26 @@ const Hero = () => {
         return;
       }
       
-      // Use functional update to get the latest state
-      setKeySequence(prevSequence => {
-          const newSequence = (prevSequence + e.key.toUpperCase()).slice(-HACKER_CODE.length);
-          
-          if (newSequence.endsWith(GHOST_CODE)) {
-              setHackerMode(false);
-              setGhostMode(true);
-          }
-          
-          if (newSequence.endsWith(HACKER_CODE)) {
-              setGhostMode(false);
-              setHackerMode(true);
-          }
+      if (e.key.length === 1 && /[a-zA-Z]/.test(e.key)) {
+        setKeySequence(prevSequence => {
+            const newSequence = (prevSequence + e.key.toUpperCase()).slice(-HACKER_CODE.length);
+            
+            if (newSequence.endsWith(GHOST_CODE)) {
+                setHackerMode(false);
+                setGhostMode(true);
+            } else if (newSequence.endsWith(HACKER_CODE)) {
+                setGhostMode(false);
+                setHackerMode(true);
+            }
 
-          return newSequence;
-      });
+            return newSequence;
+        });
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []); // Empty dependency array is correct here
+  }, []);
   
   const getTitleMode = () => {
     if (ghostMode) return 'ghost';
