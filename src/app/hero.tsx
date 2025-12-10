@@ -99,7 +99,7 @@ const DraggableTitle = ({
 };
 
 // --- HERO PRINCIPAL ---
-const Hero = () => {
+export default function Hero() {
   const [mode, setMode] = useState('default'); 
   const [buffer, setBuffer] = useState(""); // Estado para guardar las letras tocadas
   const [showHelper, setShowHelper] = useState(true);
@@ -274,7 +274,7 @@ const Hero = () => {
             
             <Button
               onClick={() => scrollTo('#cosmic')}
-              variant="outline"
+              variant='outline'
               className="px-8 py-4 border-white/20 text-current font-bold uppercase tracking-wider hover:bg-white/10 backdrop-blur-md flex items-center gap-2 rounded-sm"
             >
               <Headphones size={16} /> Productora
@@ -287,6 +287,6 @@ const Hero = () => {
       </div>
     </section>
   );
-};
+}
 
     

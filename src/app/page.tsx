@@ -1,5 +1,5 @@
 import Header from '@/components/layout/header';
-import Hero from '@/components/sections/hero';
+import Hero from '@/app/hero';
 import Releases from '@/components/sections/releases';
 import Projects from '@/components/sections/projects';
 import CosmicVicar from '@/components/sections/cosmic-vicar';
@@ -39,3 +39,5 @@ export default async function Home() {
     </>
   );
 }
+
+    
