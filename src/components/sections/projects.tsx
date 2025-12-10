@@ -1,13 +1,11 @@
 "use client";
 
 import React from 'react';
-import Image from 'next/image';
 import { projects } from '@/lib/data';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
-import { getPlaceholderImage } from '@/lib/placeholder-images';
 
 const Projects = () => {
 
@@ -23,29 +21,19 @@ const Projects = () => {
           {projects.map((project) => {
             const Icon = project.icon;
             const TagIcon = project.tagIcon;
-            const image = getPlaceholderImage(project.imgId);
             
             return (
               <Card
                 key={project.id}
                 className={cn(
-                  'group rounded-2xl bg-card border transition-all duration-300 overflow-hidden flex flex-col',
-                  project.style,
-                  'border-border'
+                  'group rounded-2xl bg-card border border-border/50 transition-all duration-300 overflow-hidden flex flex-col',
+                  project.style
                 )}
               >
-                <div className="relative aspect-video w-full bg-secondary overflow-hidden">
-                  <Image
-                    src={image.imageUrl}
-                    alt={project.title}
-                    width={600}
-                    height={338}
-                    className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
-                    data-ai-hint={image.imageHint}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center z-[-1]">
-                    <Icon size={40} className="text-foreground/10" />
-                  </div>
+                <div className="relative aspect-video w-full bg-card-foreground/5 flex items-center justify-center p-8 overflow-hidden">
+                    <div className={cn("absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300", project.glowStyle)}></div>
+                    <Icon size={48} className="text-foreground/20 group-hover:text-foreground/80 transition-colors duration-300" />
+
                   {project.tag && (
                     <div className="absolute top-3 right-3 z-20">
                       <span className={cn('border text-[9px] font-black px-2 py-0.5 uppercase flex items-center gap-1.5 shadow-lg rounded', project.tagStyle)}>

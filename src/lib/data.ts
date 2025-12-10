@@ -131,60 +131,60 @@ export const projects = [
         title: 'NORAH',
         tag: 'Premio CreAr',
         tagIcon: Award,
-        imgId: 'norah-game-screenshot.jpg',
         icon: Gamepad2,
         desc: 'Videojuego educativo sobre artistas argentinas (Construct 3). Arte, música, concepto y programación. Premio a Mejor Sonorización.',
         btn: null,
         style: 'hover:border-blue-500/80',
-        tagStyle: 'bg-yellow-500/10 border-yellow-500/20 text-yellow-500'
+        tagStyle: 'bg-yellow-500/10 border-yellow-500/20 text-yellow-500',
+        glowStyle: 'bg-gradient-to-t from-blue-900/50 to-blue-800/20 blur-3xl'
     },
     {
         id: 'habitar',
         title: 'HABITAR P2P',
         tag: '',
         tagIcon: null,
-        imgId: 'habitar-p2p-docu.jpg',
         icon: Film,
         desc: 'Música original para 4 mini documentales sobre arquitectos de BsAs. Prod. por Estudio Fiørd.',
         btn: { text: 'Escuchar en Spotify', link: links.spotify },
-        style: 'hover:border-white/50',
-        tagStyle: ''
+        style: 'hover:border-primary/50',
+        tagStyle: '',
+        glowStyle: 'bg-gradient-to-t from-purple-900/50 to-purple-800/20 blur-3xl'
     },
     {
         id: 'memory',
         title: 'MEMORY',
         tag: 'Unreal Connectors',
         tagIcon: Film,
-        imgId: 'memory-short-film.jpg',
         icon: Film,
         desc: 'Música y diseño de sonido para cortometraje en Unreal 5. Dirigido por Aldana Drisaldi.',
         btn: null,
         style: 'hover:border-purple-500/50',
-        tagStyle: 'bg-purple-900/20 text-purple-400 border-purple-500/20'
+        tagStyle: 'bg-purple-900/20 text-purple-400 border-purple-500/20',
+        glowStyle: 'bg-gradient-to-t from-purple-900/50 to-purple-800/20 blur-3xl'
     },
     {
         id: 'goodbye',
         title: 'GOODBYE CITIES',
         tag: 'BAFICI 2018',
         tagIcon: Film,
-        imgId: 'goodbye-cities-film.jpg',
         icon: Film,
         desc: 'Carta a los nonatos. Cortometraje de Sebastian Pérez Opačak. Selección Oficial.',
         btn: null,
-        style: 'hover:border-purple-500/50',
-        tagStyle: 'bg-purple-900/20 text-purple-400 border-purple-500/20'
+        style: 'hover:border-red-500/50',
+        tagStyle: 'bg-purple-900/20 text-purple-400 border-purple-500/20',
+        glowStyle: 'bg-gradient-to-t from-red-900/50 to-red-800/20 blur-3xl'
     },
     {
         id: 'retro',
         title: 'RETROAVENTURAS',
         tag: '',
         tagIcon: null,
-        imgId: 'retroaventuras-cover.jpg',
         icon: MonitorPlay,
         desc: 'Música original para canal de YouTube dedicado a la cultura gaming retro en Argentina.',
         btn: null,
         style: 'hover:border-blue-500/50',
-        tagStyle: ''
+        tagStyle: '',
+        glowStyle: 'bg-gradient-to-t from-blue-900/50 to-blue-800/20 blur-3xl'
     }
 ];
 
