@@ -33,19 +33,19 @@
     {
       "id": "nothing-ever-happened-cover",
       "description": "Cover art for Nothing Ever Happened single",
-      "imageUrl": "/fotos/nothing-ever-happened-cover.jpg",
+      "imageUrl": "/fotos/nothingeverhappened-cover.jpg",
       "imageHint": "empty room"
     },
     {
       "id": "we-gonna-make-it-cover",
       "description": "Cover art for We Gonna Make It single",
-      "imageUrl": "/fotos/we-gonna-make-it-cover.jpg",
+      "imageUrl": "/fotos/wegonnamakeit-cover.jpg",
       "imageHint": "sunrise city"
     },
     {
       "id": "where-was-i-cover",
       "description": "Cover art for Where Was I single",
-      "imageUrl": "/fotos/where-was-i-cover.jpg",
+      "imageUrl": "/fotos/wherewasi-cover.jpg",
       "imageHint": "forest path"
     },
     {
@@ -69,13 +69,13 @@
     {
       "id": "jules-basement-cover",
       "description": "Cover art for Jules' Basement compilation",
-      "imageUrl": "/fotos/jules-basement-cover.jpg",
+      "imageUrl": "/fotos/julesbasement-cover.jpg",
       "imageHint": "dark basement"
     },
     {
       "id": "norah-game-screenshot",
       "description": "Screenshot from the NORAH video game",
-      "imageUrl": "/fotos/norah-game-screenshot.png",
+      "imageUrl": "/fotos/norah-game-screenshot.jpg",
       "imageHint": "pixel art"
     },
     {
