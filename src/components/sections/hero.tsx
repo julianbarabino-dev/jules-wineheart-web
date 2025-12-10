@@ -6,7 +6,12 @@ import { motion, AnimatePresence } from "framer-motion";
 
 // --- PALABRAS SECRETAS ---
 const SECRET_MODES = {
-  default: { target: "", title: "JULES WINEHEART", style: "text-white" },
+  // Mantenemos tu tipografía original favorita: Industrial, Itálica y Gruesa
+  default: { 
+    target: "", 
+    title: "JULES WINEHEART", 
+    style: "text-white font-black uppercase italic tracking-tighter" 
+  },
   ghost: { target: "LISTEN", title: "LISTEN", style: "text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500 drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] font-serif" },
   hacker: { target: "TRUELIES", title: "TRUE LIES", style: "text-green-500 font-mono tracking-widest drop-shadow-[0_0_15px_rgba(34,197,94,0.9)]" },
   blood: { target: "LUNA", title: "LUNA", style: "text-red-600 font-black tracking-tighter drop-shadow-[0_0_30px_rgba(220,38,38,1)]" },
@@ -66,7 +71,7 @@ const InteractiveTitle = ({ text, usedIndices, onLetterClick, mode, shake }: any
                     drag={!isSecretMode} dragConstraints={constraintsRef} dragElastic={0.2}
                     animate={isUsed ? { color: "#d8b4fe", textShadow: "0 0 30px #a855f7", scale: 1.1, y: -5 } : { y: 0, color: isSecretMode ? "currentColor" : "#ffffff" }}
                     whileHover={!isUsed && !isSecretMode ? { scale: 1.2, color: "#a855f7", textShadow: "0 0 15px #a855f7", cursor: "pointer" } : {}}
-                    className="inline-block text-5xl sm:text-7xl md:text-9xl font-black leading-none p-1 transition-colors"
+                    className="inline-block text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-none p-1 transition-colors"
                   >
                     {char}
                   </motion.span>
@@ -163,7 +168,6 @@ export default function Hero() {
       <AnimatePresence>
         {showOverlay && mode === 'hacker' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed top-24 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
-            {/* CORRECCIÓN AQUÍ: Usamos &gt; en lugar de > */}
             <div className="bg-black border border-green-500 text-green-500 px-6 py-2 font-mono text-sm shadow-[0_0_20px_rgba(0,255,0,0.6)] animate-pulse">
               &gt; SYSTEM BREACH DETECTED.
             </div>
@@ -194,9 +198,16 @@ export default function Hero() {
       {mode !== 'default' && <div className="h-12 mb-8 opacity-0"></div>}
       
       <motion.div animate={{ opacity: mode === 'default' ? 1 : 0.2, filter: mode === 'default' ? 'blur(0px)' : 'blur(5px)' }} transition={{ duration: 0.5 }} className="relative z-10 flex flex-col items-center max-w-4xl">
+          
           <div className="flex flex-wrap justify-center gap-3 md:gap-6 font-bold tracking-[0.3em] text-[10px] md:text-xs uppercase mb-12 opacity-80">
-            <span>Lo-fi Folk</span> • <span>Electronic</span> • <span>Ambient</span>
+            <span>Lo-fi Folk</span>
+            {/* CORRECCIÓN: Usamos drop-shadow en vez de shadow para evitar la caja cuadrada */}
+            <span className="text-green-500 animate-pulse drop-shadow-[0_0_5px_rgba(34,197,94,1)]">•</span>
+            <span>Electronic</span>
+            <span className="text-green-500 animate-pulse drop-shadow-[0_0_5px_rgba(34,197,94,1)]">•</span>
+            <span>Ambient</span>
           </div>
+
           <div className="flex flex-wrap justify-center gap-8 sm:gap-12 mb-16">
             {[
               { icon: Guitar, label: "Música", id: "#releases" },
@@ -205,13 +216,14 @@ export default function Hero() {
               { icon: Terminal, label: "Bunker", id: "#bunker" }
             ].map((tool, i) => (
               <button key={i} onClick={() => scrollTo(tool.id)} className="group flex flex-col items-center gap-2 text-current transition-all duration-300">
-                <div className="transition-all duration-300 opacity-60 group-hover:opacity-100 group-hover:scale-110 group-hover:text-purple-400 group-hover:drop-shadow-[0_0_15px_rgba(168,85,247,0.8)]">
+                <div className="transition-all duration-300 opacity-80 group-hover:opacity-100 group-hover:scale-110 text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.6)] group-hover:text-green-400 group-hover:drop-shadow-[0_0_15px_rgba(34,197,94,1)]">
                   <tool.icon size={28} />
                 </div>
                 <span className="text-[9px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-300 absolute -bottom-6 whitespace-nowrap">{tool.label}</span>
               </button>
             ))}
           </div>
+
           <div className="flex flex-col sm:flex-row gap-6 mb-12">
             <button onClick={() => scrollTo('#releases')} className="px-8 py-4 bg-white text-black font-black uppercase tracking-wider hover:scale-105 transition-transform flex items-center gap-2 rounded-sm"><Play size={16} fill="currentColor" /> Bloodmoon EP</button>
             <button 
@@ -230,4 +242,3 @@ export default function Hero() {
     </section>
   );
 }
-
