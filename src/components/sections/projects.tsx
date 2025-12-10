@@ -1,21 +1,15 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { projects } from '@/lib/data';
-import { getPlaceholderImage } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
+import { getPlaceholderImage } from '@/lib/placeholder-images';
 
 const Projects = () => {
-  const [activeProject, setActiveProject] = useState<string | null>(null);
-
-  const handleProjectClick = (e: React.MouseEvent, id: string) => {
-    e.stopPropagation();
-    activeProject === id ? setActiveProject(null) : setActiveProject(id);
-  };
 
   return (
     <section id="projects" className="py-24 sm:py-32 relative z-10 border-t border-border/50 bg-secondary/20">
@@ -27,26 +21,25 @@ const Projects = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((project) => {
-            const image = getPlaceholderImage(project.imgId);
             const Icon = project.icon;
             const TagIcon = project.tagIcon;
-            const isActive = activeProject === project.id;
+            const image = getPlaceholderImage(project.imgId);
             
             return (
               <Card
                 key={project.id}
-                onClick={(e) => handleProjectClick(e, project.id)}
                 className={cn(
-                  'group rounded-2xl bg-card border transition-all duration-300 cursor-pointer overflow-hidden flex flex-col',
+                  'group rounded-2xl bg-card border transition-all duration-300 overflow-hidden flex flex-col',
                   project.style,
-                  isActive ? 'border-opacity-80 shadow-lg' : 'border-border'
+                  'border-border'
                 )}
               >
                 <div className="relative aspect-video w-full bg-secondary overflow-hidden">
                   <Image
                     src={image.imageUrl}
                     alt={project.title}
-                    fill
+                    width={600}
+                    height={338}
                     className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
                     data-ai-hint={image.imageHint}
                   />
@@ -65,10 +58,7 @@ const Projects = () => {
                 <div className="p-6 bg-card-foreground/5 border-t border-border flex flex-col justify-center min-h-[100px] transition-colors group-hover:bg-card-foreground/10">
                   <h3 className="text-xl font-black text-foreground font-headline uppercase italic mb-1">{project.title}</h3>
                   
-                  <div className={cn(
-                    'overflow-hidden transition-all duration-500 ease-in-out',
-                    isActive ? 'max-h-40 opacity-100 mt-2' : 'max-h-0 opacity-0'
-                  )}>
+                  <div className="mt-2">
                     <p className="text-muted-foreground text-sm leading-relaxed">
                       {project.desc}
                     </p>

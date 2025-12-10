@@ -8,8 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { links, secondaryReleases } from '@/lib/data';
-import { getPlaceholderImage } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
+import { getPlaceholderImage } from '@/lib/placeholder-images';
 
 const Releases = () => {
   const [activeRelease, setActiveRelease] = useState<number | null>(null);
@@ -73,7 +73,7 @@ const Releases = () => {
             <Carousel opts={{ align: "start", loop: false }} className="w-full">
               <CarouselContent className="-ml-6">
                 {secondaryReleases.map((release, index) => {
-                  const image = getPlaceholderImage(release.imgId);
+                   const image = getPlaceholderImage(release.imgId);
                   return (
                     <CarouselItem key={index} className="pl-6 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/2 xl:basis-[40%]">
                       <div className="p-1">

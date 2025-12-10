@@ -14,7 +14,7 @@ export const secondaryReleases = [
   {
     title: 'Habitar P2P (Remix)',
     type: 'EP • 2025',
-    imgId: 'habitar-remix-cover',
+    imgId: 'habitar-remix-cover.jpg',
     altText: 'Habitar',
     streamUrl: links.spotify,
     buyUrl: links.bandcamp,
@@ -24,7 +24,7 @@ export const secondaryReleases = [
   {
     title: 'Algo Se Fue',
     type: 'Single • 2024',
-    imgId: 'algo-se-fue-cover',
+    imgId: 'algo-se-fue-cover.jpg',
     altText: 'ASF',
     streamUrl: links.spotify,
     buyUrl: links.bandcamp,
@@ -34,7 +34,7 @@ export const secondaryReleases = [
   {
     title: 'Ocupado Tu Corazón',
     type: 'Single • 2024',
-    imgId: 'ocupado-tu-corazon-cover',
+    imgId: 'ocupado-tu-corazon-cover.jpg',
     altText: 'OTC',
     streamUrl: links.spotify,
     buyUrl: links.bandcamp,
@@ -44,7 +44,7 @@ export const secondaryReleases = [
   {
     title: 'Memory of Changes',
     type: 'LP • 2022',
-    imgId: 'memory-of-changes-cover',
+    imgId: 'memory-of-changes-cover.jpg',
     altText: 'MoC',
     streamUrl: links.spotify,
     buyUrl: links.bandcamp,
@@ -54,7 +54,7 @@ export const secondaryReleases = [
   {
     title: 'Nothing Ever Happened',
     type: 'Single • 2021',
-    imgId: 'nothing-ever-happened-cover',
+    imgId: 'nothingeverhappened-cover.jpg',
     altText: 'NEH',
     streamUrl: links.spotify,
     buyUrl: links.bandcamp,
@@ -64,7 +64,7 @@ export const secondaryReleases = [
   {
     title: 'We Gonna Make It',
     type: 'Single • 2021',
-    imgId: 'we-gonna-make-it-cover',
+    imgId: 'wegonnamakeit-cover.jpg',
     altText: 'WGMI',
     streamUrl: links.spotify,
     buyUrl: links.bandcamp,
@@ -74,7 +74,7 @@ export const secondaryReleases = [
   {
     title: 'Where Was I',
     type: 'Single • 2021',
-    imgId: 'where-was-i-cover',
+    imgId: 'wherewasi-cover.jpg',
     altText: 'WWI',
     streamUrl: links.spotify,
     buyUrl: links.bandcamp,
@@ -84,7 +84,7 @@ export const secondaryReleases = [
   {
     title: 'OK',
     type: 'LP • 2015',
-    imgId: 'ok-cover',
+    imgId: 'ok-cover.jpg',
     altText: 'OK',
     streamUrl: links.spotify,
     buyUrl: links.bandcamp,
@@ -94,7 +94,7 @@ export const secondaryReleases = [
   {
     title: 'Spheres',
     type: 'EP • 2014',
-    imgId: 'spheres-cover',
+    imgId: 'spheres-cover.jpg',
     altText: 'Spheres',
     streamUrl: links.spotify,
     buyUrl: links.bandcamp,
@@ -104,7 +104,7 @@ export const secondaryReleases = [
   {
     title: 'Summertime',
     type: 'Double Single • 2014',
-    imgId: 'summertime-cover',
+    imgId: 'summertime-cover.jpg',
     altText: 'Summer',
     streamUrl:
       'https://judasandthewinehearts.bandcamp.com/album/summertime-your-words',
@@ -116,7 +116,7 @@ export const secondaryReleases = [
   {
     title: "Jules' Basement",
     type: 'Compilado • 2013',
-    imgId: 'jules-basement-cover',
+    imgId: 'julesbasement-cover.jpg',
     altText: 'Demos',
     streamUrl: links.bandcamp,
     buyUrl: links.bandcamp,
@@ -131,7 +131,7 @@ export const projects = [
         title: 'NORAH',
         tag: 'Premio CreAr',
         tagIcon: Award,
-        imgId: 'norah-game-screenshot',
+        imgId: 'norah-game-screenshot.jpg',
         icon: Gamepad2,
         desc: 'Videojuego educativo sobre artistas argentinas (Construct 3). Arte, música, concepto y programación. Premio a Mejor Sonorización.',
         btn: null,
@@ -143,7 +143,7 @@ export const projects = [
         title: 'HABITAR P2P',
         tag: '',
         tagIcon: null,
-        imgId: 'habitar-p2p-docu',
+        imgId: 'habitar-p2p-docu.jpg',
         icon: Film,
         desc: 'Música original para 4 mini documentales sobre arquitectos de BsAs. Prod. por Estudio Fiørd.',
         btn: { text: 'Escuchar en Spotify', link: links.spotify },
@@ -155,7 +155,7 @@ export const projects = [
         title: 'MEMORY',
         tag: 'Unreal Connectors',
         tagIcon: Film,
-        imgId: 'memory-short-film',
+        imgId: 'memory-short-film.jpg',
         icon: Film,
         desc: 'Música y diseño de sonido para cortometraje en Unreal 5. Dirigido por Aldana Drisaldi.',
         btn: null,
@@ -167,7 +167,7 @@ export const projects = [
         title: 'GOODBYE CITIES',
         tag: 'BAFICI 2018',
         tagIcon: Film,
-        imgId: 'goodbye-cities-film',
+        imgId: 'goodbye-cities-film.jpg',
         icon: Film,
         desc: 'Carta a los nonatos. Cortometraje de Sebastian Pérez Opačak. Selección Oficial.',
         btn: null,
@@ -179,7 +179,7 @@ export const projects = [
         title: 'RETROAVENTURAS',
         tag: '',
         tagIcon: null,
-        imgId: 'retroaventuras-cover',
+        imgId: 'retroaventuras-cover.jpg',
         icon: MonitorPlay,
         desc: 'Música original para canal de YouTube dedicado a la cultura gaming retro en Argentina.',
         btn: null,
