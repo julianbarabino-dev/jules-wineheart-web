@@ -80,8 +80,8 @@ const Releases = () => {
                         <Card
                           onClick={(e) => handleReleaseClick(e, index)}
                           className={cn(
-                            "group relative aspect-square bg-card/50 backdrop-blur-sm border transition-all duration-300 cursor-pointer overflow-hidden rounded-2xl",
-                            activeRelease === index ? release.color : "border-border hover:border-foreground/30"
+                            "group relative aspect-square bg-card/50 backdrop-blur-md border transition-all duration-300 cursor-pointer overflow-hidden rounded-2xl",
+                            activeRelease === index ? release.color : "border-border/50 hover:border-foreground/30"
                           )}
                         >
                           <Image
