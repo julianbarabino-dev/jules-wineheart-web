@@ -20,6 +20,7 @@ export default function SoundDiary() {
             <Mail size={14} />
             <span className="text-[10px] font-black uppercase tracking-widest">Sound Diary</span>
         </div>
+        
         <h3 className="text-3xl md:text-4xl font-black text-white uppercase italic tracking-tighter mb-4">
           Únete a la Transmisión
         </h3>
