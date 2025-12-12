@@ -14,7 +14,7 @@ export default function CTAInstagram() {
         <div className="container mx-auto px-6 flex flex-col items-center justify-center text-center relative z-10">
             <Instagram size={40} className="text-white mb-6 group-hover:scale-110 transition-transform duration-300" />
             <h3 className="text-2xl md:text-4xl font-black text-white uppercase italic tracking-tighter mb-2 group-hover:text-purple-400 transition-colors">
-                Sígueme en el estudio
+                Social Media
             </h3>
             <p className="text-neutral-500 font-mono text-xs uppercase tracking-widest flex items-center gap-2">
                 @JulesWineheart <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform"/>

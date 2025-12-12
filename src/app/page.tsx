@@ -8,32 +8,52 @@ import CosmicVicar from "@/components/sections/cosmic-vicar";
 import Bunker from "@/components/sections/bunker";
 import ConsoleMessage from "@/components/utils/console-message";
 import { bunkerSignals } from "@/lib/data";
+import WebglBackground from "@/components/ui/webgl-background";
 
-// En page.tsx
-
-import WebglBackground from "@/components/ui/webgl-background"; // Importalo
-
-
+// 1. IMPORTAMOS TU COMPONENTE NUEVO
+import SectionReturn from "@/components/ui/SectionReturn"; 
 
 export default function Home() {
   return (
-    // CAMBIO AQUÍ: Quité 'bg-black'. Ahora es transparente y deja ver el fondo del layout.
     <main className="flex flex-col min-h-screen text-white selection:bg-purple-500/30">
 
       <WebglBackground />
-      
       <ConsoleMessage /> 
       <Header />
       
-      <Hero />
-      <Releases />
+      {/* SECCIÓN 1: HERO (ID: hero) */}
+      <div id="hero">
+        <Hero />
+      </div>
+
+      {/* SECCIÓN 2: RELEASES (ID: releases) */}
+      <div id="releases">
+        <Releases />
+      </div>
+      {/* Botón: Vuelve a Hero */}
+      <SectionReturn href="#hero" />
       
       <CTAInstagram /> 
       
-      <Projects />
-      <CosmicVicar />
-      <Bunker signals={bunkerSignals} />
-      
+      {/* SECCIÓN 3: PROJECTS (ID: projects) */}
+      <div id="projects">
+        <Projects />
+      </div>
+      {/* Botón: Vuelve a Releases */}
+      <SectionReturn href="#releases" />
+
+      {/* SECCIÓN 4: COSMIC VICAR (ID: cosmic-vicar) */}
+      <div id="cosmic-vicar">
+        <CosmicVicar />
+      </div>
+      {/* Botón: Vuelve a Projects */}
+      <SectionReturn href="#projects" />
+
+      {/* SECCIÓN 5: BUNKER (ID: bunker) */}
+      <div id="bunker">
+        <Bunker signals={bunkerSignals} />
+      </div>
+     
       <Footer />
     </main>
   );

@@ -12,11 +12,11 @@ export const projects = [
   {
     id: 'norah',
     title: 'NORAH',
-    tag: 'Premio CreAr',
+    tag: 'Premio CreAr Videojuegos',
     tagIcon: 'Award',
     imgId: '/fotos/norah-game-screenshot.jpg',
     icon: Gamepad2,
-    desc: 'Videojuego educativo sobre artistas argentinas (Construct 3). Arte, música, concepto y programación. Premio a Mejor Sonorización.',
+    desc: 'Videojuego educativo sobre Norah Borges. Concepto, música y y desarrollo. Premio a Mejor Sonorización. 2022',
     btn: null,
     style: 'hover:border-blue-500/80',
     tagStyle: 'bg-yellow-500/10 border-yellow-500/20 text-yellow-500'
@@ -27,7 +27,7 @@ export const projects = [
     tag: '',
     imgId: '/fotos/habitar-p2p-docu.jpg',
     icon: Film,
-    desc: 'Música original para 4 mini documentales sobre arquitectos de BsAs. Prod. por Estudio Fiørd.',
+    desc: 'Música original para 4 micro documentales sobre arquitectos en Buenos Aires. Producidos por Estudio Fiørd.',
     btn: { text: 'Escuchar en Spotify', link: 'https://open.spotify.com/intl-es/artist/2pwi6uHFFNXPvoC2dECIf9' },
     style: 'hover:border-white/50',
     tagStyle: ''
@@ -39,7 +39,7 @@ export const projects = [
     tagIcon: 'Award',
     imgId: '/fotos/memory-short-film.jpg',
     icon: Film,
-    desc: 'Música y diseño de sonido para cortometraje en Unreal 5. Dirigido por Aldana Drisaldi.',
+    desc: 'Música y Diseño de sonido para cortometraje en Unreal 5. Dirigido por Aldana Drisaldi.',
     btn: null,
     style: 'hover:border-purple-500/50',
     tagStyle: 'bg-purple-900/20 text-purple-400 border-purple-500/20'
@@ -51,7 +51,7 @@ export const projects = [
     tagIcon: 'Award',
     imgId: '/fotos/goodbye-cities-film.jpg',
     icon: Film,
-    desc: 'Música orginal para "Carta a los nonatos": Cortometraje de Sebastian Pérez Opačak. Selección Oficial BAFICI.',
+    desc: 'Música orginal para "Carta a los Nonatos": Cortometraje de Sebastian Pérez Opačak. Selección Oficial BAFICI.',
     btn: null,
     style: 'hover:border-purple-500/50',
     tagStyle: 'bg-purple-900/20 text-purple-400 border-purple-500/20'
@@ -62,7 +62,7 @@ export const projects = [
     tag: '',
     imgId: '/fotos/retroaventuras-cover.jpg',
     icon: MonitorPlay,
-    desc: 'Música original para canal de YouTube dedicado a la cultura gaming retro en Argentina.',
+    desc: 'Música original para las Retroaventuras,canal dedicado a la cultura retro en Argentina.',
     btn: null,
     style: 'hover:border-blue-500/50',
     tagStyle: ''
@@ -71,7 +71,7 @@ export const projects = [
 
 export const bunkerSignals = [
   {
-      date: "07.12.2025",
+      date: "21.12.2025",
       time: "10:30 AM",
       status: "LIVE",
       text: "Exposición del arte de Bloodmoon 21 de diciembre en: Punkware Cyberzine - CABA"
@@ -80,13 +80,13 @@ export const bunkerSignals = [
       date: "01.12.2025",
       time: "11:20 PM",
       status: "NEXT MOVE?",
-      text: "Nuevo proyecto single o Moonshiner-dreamyAmbient- EP?"
+      text: "Nuevo proyecto single u otro dreamy-ambient EP?"
   },
   {
       date: "07.11.2025",
       time: "09:00 AM",
-      status: "REC",
-      text: "Bloodmoon EP acaba de salir."
+      status: "RELEASE DAY",
+      text: "Bloodmoon EP is OUT NOW!"
   }
 ];
 

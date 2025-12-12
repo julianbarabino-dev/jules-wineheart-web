@@ -41,7 +41,7 @@ export default function Bunker({ signals }: { signals: any[] }) {
         <div className="container mx-auto px-6 max-w-3xl">
             <div className="flex items-center gap-3 mb-8">
                 <Terminal size={20} className="text-green-500" />
-                <h3 className="text-xl font-bold uppercase tracking-widest text-green-500 font-mono">Signal from the Bunker</h3>
+                <h3 className="text-xl font-bold uppercase tracking-widest text-green-500 font-mono">Signals from the Bunker</h3>
                 {/* Luz de estado: Parpadea rápido si está activo */}
                 <div className={`w-2 h-2 bg-green-500 rounded-full ml-auto shadow-[0_0_10px_#22c55e] ${isInView ? 'animate-ping' : 'opacity-50'}`}></div>
             </div>

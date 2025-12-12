@@ -74,7 +74,6 @@ export default function Hero() {
 
   // --- TRUCO: FORZAR SCROLL ARRIBA AL REFRESCAR ---
   useEffect(() => {
-    // Le dice al navegador: "No recuerdes dónde estaba el usuario, empezá de cero"
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
@@ -176,12 +175,9 @@ export default function Hero() {
   ];
 
   return (
-    // CAMBIO 1: Convertí <section> en <motion.section> para agitar TODA la pantalla
     <motion.section 
-        // Animación de Shake Global (Vibra toda la pantalla)
         animate={shake ? { x: [-5, 5, -5, 5, 0] } : { x: 0 }}
         transition={{ duration: 0.4 }}
-        
         onClick={() => { if(mode === 'default' && buffer.length === 0) handleMobileFocus() }}
         className={`relative min-h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden transition-colors duration-1000 z-20 pt-32 
       ${mode === 'default' ? '' : ''}
@@ -205,12 +201,10 @@ export default function Hero() {
       <AnimatePresence>
         {showOverlay && mode === 'hacker' && <MatrixRain />}
         
-        {/* Notificación de PLAY MODE - DESAPARICIÓN LENTA */}
         {showOverlay && mode === 'play' && (
              <motion.div 
                  initial={{ opacity: 0 }} 
                  animate={{ opacity: 1 }} 
-                 // CAMBIO 2: exit con duration 2 para que se vaya muy lento
                  exit={{ opacity: 0, transition: { duration: 2, ease: "easeInOut" } }}
                  className="fixed inset-0 flex items-center justify-center z-[100] bg-black/90 backdrop-blur-sm pointer-events-none"
              >
@@ -251,7 +245,6 @@ export default function Hero() {
       </AnimatePresence>
 
       <motion.div 
-        // CAMBIO 3: Saqué el shake del logo (ahora está en el section padre)
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -301,10 +294,11 @@ export default function Hero() {
               >
                 <div className="relative w-7 h-7 transition-all duration-300 opacity-70 group-hover:opacity-100 group-hover:scale-125 
                   filter 
+                  group-hover:text-green-300
                   group-hover:sepia-[100%] 
                   group-hover:saturate-[1000%] 
                   group-hover:hue-rotate-[80deg] 
-                  group-hover:drop-shadow-[0_0_10px_#4ade80]">
+                  group-hover:drop-shadow-[0_0_25px_rgba(167,243,208,1)]">
                   <img src={tool.src} alt={tool.label} className="w-full h-full object-contain pointer-events-none" />
                 </div>
                 <span className="text-[9px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-300 absolute -bottom-6 whitespace-nowrap text-green-400 font-mono">

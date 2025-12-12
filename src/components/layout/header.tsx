@@ -14,7 +14,7 @@ const navItems = [
 
 // --- TU PLAYLIST CON BPM ---
 const PLAYLIST = [
-  { url: "/tracks/track-1.mp3", bpm: 129 }, 
+  { url: "/tracks/miraHaciaArriba.mp3", bpm: 129 }, 
   // { url: "/tracks/track-2.mp3", bpm: 85 }, 
   // { url: "/tracks/track-3.mp3", bpm: 140 }, 
 ];
@@ -190,7 +190,7 @@ export default function Header() {
               key={item.name}
               href={item.href}
               className="relative font-mono text-xs uppercase tracking-[0.2em] text-white/70 hover:text-green-400 transition-colors duration-300
-              after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[1px] after:bg-green-500 after:transition-all after:duration-300 hover:after:w-full after:shadow-[0_0_8px_#4ade80]"
+              after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[1px] after:bg-green-400 after:transition-all after:duration-300 hover:after:w-full after:shadow-[0_0_15px_#6ee7b7]"
             >
               {item.name}
             </a>
