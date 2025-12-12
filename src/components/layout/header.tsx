@@ -68,19 +68,19 @@ export default function Header() {
     const randomIndex = Math.floor(Math.random() * PLAYLIST.length);
     const selectedTrack = PLAYLIST[randomIndex];
     
-    // CORRECCIÓN 1: Actualizamos la referencia del BPM actual
+    // Actualizamos la referencia del BPM actual
     currentBpmRef.current = selectedTrack.bpm;
 
-    // CORRECCIÓN 2: Accedemos a .url porque selectedTrack ahora es un objeto
+    // Accedemos a .url porque selectedTrack ahora es un objeto
     const cleanName = selectedTrack.url.split('/').pop() || "unknown.mp3";
     setTrackName(cleanName); 
 
-    // CORRECCIÓN 3: Asignamos la URL, no el objeto entero
+    // Asignamos la URL al audio
     audioRef.current.src = selectedTrack.url;
     audioRef.current.play().catch(e => console.error("Error playing:", e));
     
     setIsPlaying(true);
-    // CORRECCIÓN 4: Pasamos el BPM como segundo argumento
+    // Pasamos el BPM como segundo argumento
     dispatchRadioEvent(true, selectedTrack.bpm); 
   };
 
@@ -90,7 +90,7 @@ export default function Header() {
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
-      // CORRECCIÓN 5: Pasamos el BPM guardado en la ref al pausar
+      // Pasamos el BPM guardado en la ref al pausar
       dispatchRadioEvent(false, currentBpmRef.current); 
     } else {
       if (!audioRef.current.src) {
@@ -98,7 +98,7 @@ export default function Header() {
       } else {
         audioRef.current.play();
         setIsPlaying(true);
-        // CORRECCIÓN 6: Pasamos el BPM guardado al reanudar
+        // Pasamos el BPM guardado al reanudar
         dispatchRadioEvent(true, currentBpmRef.current); 
       }
     }
@@ -170,7 +170,8 @@ export default function Header() {
                     initial={{ opacity: 0, x: -10 }} 
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -10 }}
-                    className="overflow-hidden whitespace-nowrap hidden sm:block" 
+                    // CAMBIO AQUÍ: Se eliminó "hidden sm:block" para que se vea siempre
+                    className="overflow-hidden whitespace-nowrap" 
                 >
                     <div className="font-mono text-[10px] md:text-xs text-green-500 font-bold tracking-wider bg-green-500/5 px-2 py-1 rounded border border-green-500/20 shadow-[0_0_10px_rgba(74,222,128,0.1)] min-w-[120px]">
                         <span className="opacity-70">C:\jvmusic&gt;</span>
@@ -227,3 +228,4 @@ export default function Header() {
     </header>
   );
 }
+
