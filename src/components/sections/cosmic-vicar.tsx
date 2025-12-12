@@ -5,7 +5,7 @@ import { Play, Instagram } from 'lucide-react';
 
 export default function CosmicVicar() {
   return (
-    <section id="cosmic" className="py-32 border-t border-white/5 relative z-10">
+    <section id="cosmic-vicar" className="py-32 border-t border-white/5 relative z-10">
         <div className="container mx-auto px-6 max-w-[1080px]">
             <div className="border border-white/10 bg-neutral-900/30 relative text-left overflow-hidden rounded-xl backdrop-blur-sm">
                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-purple-600"></div>
