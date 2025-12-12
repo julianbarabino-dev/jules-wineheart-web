@@ -12,22 +12,32 @@ const navItems = [
   { name: "Bunker", href: "#bunker" },
 ];
 
-// --- TU PLAYLIST ---
+// --- TU PLAYLIST CON BPM ---
 const PLAYLIST = [
-  "/tracks/track-1.mp3",
-  // "/tracks/track-2.mp3",
+  { url: "/tracks/track-1.mp3", bpm: 129 }, 
+  // { url: "/tracks/track-2.mp3", bpm: 85 }, 
+  // { url: "/tracks/track-3.mp3", bpm: 140 }, 
 ];
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   
-  // --- LÓGICA DE RADIO ---
   const [isPlaying, setIsPlaying] = useState(false);
-  const [trackName, setTrackName] = useState("");      // El nombre real completo
-  const [displayedText, setDisplayedText] = useState(""); // El nombre que se va escribiendo de a poco
+  const [trackName, setTrackName] = useState("");      
+  const [displayedText, setDisplayedText] = useState(""); 
   
+  // Guardamos el BPM actual en una referencia
+  const currentBpmRef = useRef(120);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // --- FUNCIÓN AUXILIAR: ENVIAR BPM AL FONDO ---
+  const dispatchRadioEvent = (isPlaying: boolean, bpm: number) => {
+    const event = new CustomEvent('radio-state-change', { 
+        detail: { isPlaying, bpm } 
+    });
+    window.dispatchEvent(event);
+  };
 
   // --- EFECTO MAQUINA DE ESCRIBIR (DOS STYLE) ---
   useEffect(() => {
@@ -36,26 +46,21 @@ export default function Header() {
         return;
     }
 
-    // Reseteamos el texto visible antes de empezar a escribir el nuevo
     setDisplayedText("");
-    
     let currentIndex = 0;
-    const typingSpeed = 150; // Velocidad en ms (más alto = más lento). 150ms es bien retro.
+    const typingSpeed = 150; 
 
     const typingInterval = setInterval(() => {
-      // Tomamos desde el inicio hasta el índice actual + 1
       setDisplayedText(trackName.slice(0, currentIndex + 1));
       currentIndex++;
 
-      // Si terminamos de escribir toda la palabra, limpiamos el intervalo
       if (currentIndex >= trackName.length) {
         clearInterval(typingInterval);
       }
     }, typingSpeed);
 
-    // Limpieza si el componente se desmonta o cambia el track rápido
     return () => clearInterval(typingInterval);
-  }, [trackName]); // Se ejecuta cada vez que cambia el trackName
+  }, [trackName]);
 
   const playRandomTrack = () => {
     if (!audioRef.current) return;
@@ -63,13 +68,20 @@ export default function Header() {
     const randomIndex = Math.floor(Math.random() * PLAYLIST.length);
     const selectedTrack = PLAYLIST[randomIndex];
     
-    // Extraemos el nombre limpio del archivo (ej: "track-1.mp3")
-    const cleanName = selectedTrack.split('/').pop() || "unknown.mp3";
-    setTrackName(cleanName); // Esto dispara el efecto de escritura
+    // CORRECCIÓN 1: Actualizamos la referencia del BPM actual
+    currentBpmRef.current = selectedTrack.bpm;
 
-    audioRef.current.src = selectedTrack;
+    // CORRECCIÓN 2: Accedemos a .url porque selectedTrack ahora es un objeto
+    const cleanName = selectedTrack.url.split('/').pop() || "unknown.mp3";
+    setTrackName(cleanName); 
+
+    // CORRECCIÓN 3: Asignamos la URL, no el objeto entero
+    audioRef.current.src = selectedTrack.url;
     audioRef.current.play().catch(e => console.error("Error playing:", e));
+    
     setIsPlaying(true);
+    // CORRECCIÓN 4: Pasamos el BPM como segundo argumento
+    dispatchRadioEvent(true, selectedTrack.bpm); 
   };
 
   const toggleRadio = () => {
@@ -78,12 +90,16 @@ export default function Header() {
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
+      // CORRECCIÓN 5: Pasamos el BPM guardado en la ref al pausar
+      dispatchRadioEvent(false, currentBpmRef.current); 
     } else {
       if (!audioRef.current.src) {
-        playRandomTrack();
+        playRandomTrack(); 
       } else {
         audioRef.current.play();
         setIsPlaying(true);
+        // CORRECCIÓN 6: Pasamos el BPM guardado al reanudar
+        dispatchRadioEvent(true, currentBpmRef.current); 
       }
     }
   };
@@ -132,17 +148,13 @@ export default function Header() {
           className="group flex items-center gap-4 outline-none text-left"
           title="JVLES Radio"
         >
-          
-          {/* GRUPO DE ICONOS (Play + Logo) */}
           <div className="flex items-center gap-3">
-            {/* 1. EL ÍCONO PLAY/PAUSE */}
             <div className={`transition-colors duration-300 ${
                 isPlaying ? "text-green-500 drop-shadow-[0_0_8px_#4ade80]" : "text-white/40 group-hover:text-green-500"
             }`}>
                 {isPlaying ? <Pause size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
             </div>
 
-            {/* 2. EL LOGO SVG */}
             <div className="relative h-6 w-auto md:h-7 transition-all duration-300 filter brightness-125 group-hover:sepia-[100%] group-hover:saturate-[1000%] group-hover:hue-rotate-[80deg] group-hover:scale-105">
                 <img 
                 src="/icons/jv-logo-icon.svg"
@@ -152,7 +164,6 @@ export default function Header() {
             </div>
           </div>
 
-          {/* 3. CONSOLA DOS (Typewriter Effect) */}
           <AnimatePresence>
             {isPlaying && (
                 <motion.div 
@@ -163,9 +174,7 @@ export default function Header() {
                 >
                     <div className="font-mono text-[10px] md:text-xs text-green-500 font-bold tracking-wider bg-green-500/5 px-2 py-1 rounded border border-green-500/20 shadow-[0_0_10px_rgba(74,222,128,0.1)] min-w-[120px]">
                         <span className="opacity-70">C:\jvmusic&gt;</span>
-                        {/* AQUI SE IMPRIME LA VARIABLE ANIMADA */}
                         <span className="text-green-400">{displayedText}</span>
-                        {/* Cursor parpadeante */}
                         <span className="animate-pulse ml-1 inline-block bg-green-500 w-1.5 h-3 align-middle"></span>
                     </div>
                 </motion.div>
@@ -174,7 +183,6 @@ export default function Header() {
           
         </button>
 
-        {/* --- NAVEGACIÓN ESCRITORIO --- */}
         <nav className="hidden md:flex items-center gap-8">
           {navItems.map((item) => (
             <a
@@ -188,13 +196,11 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* BOTÓN MENÚ MÓVIL */}
         <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white/70 hover:text-green-500 transition-colors">
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* MENÚ MÓVIL */}
       <AnimatePresence>
         {isOpen && (
           <motion.div

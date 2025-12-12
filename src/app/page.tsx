@@ -9,10 +9,18 @@ import Bunker from "@/components/sections/bunker";
 import ConsoleMessage from "@/components/utils/console-message";
 import { bunkerSignals } from "@/lib/data";
 
+// En page.tsx
+
+import WebglBackground from "@/components/ui/webgl-background"; // Importalo
+
+
+
 export default function Home() {
   return (
     // CAMBIO AQUÍ: Quité 'bg-black'. Ahora es transparente y deja ver el fondo del layout.
     <main className="flex flex-col min-h-screen text-white selection:bg-purple-500/30">
+
+      <WebglBackground />
       
       <ConsoleMessage /> 
       <Header />

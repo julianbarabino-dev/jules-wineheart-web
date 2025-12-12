@@ -28,28 +28,57 @@ export default function Releases() {
           </a>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
             
-            {/* BLOODMOON (Principal) */}
-            <div className="lg:col-span-1 group relative aspect-square md:aspect-[3/4] bg-white/5 border border-white/10 transition-all duration-500 overflow-hidden rounded-2xl flex flex-col backdrop-blur-md mb-8 lg:mb-0">
-                <div className="absolute top-3 right-3 bg-purple-600 text-white text-[9px] font-black px-2 py-0.5 uppercase z-20 animate-pulse rounded-full shadow-lg">Nuevo</div>
-                <div className="relative flex-1 overflow-hidden">
-                    <img src="/fotos/bloodmoon-cover.jpg" alt="Bloodmoon" className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
+            {/* --- BLOODMOON (Principal - Layout Nuevo) --- */}
+            <div className="lg:col-span-1 flex flex-col gap-6 mb-8 lg:mb-0">
+                
+                {/* 1. CONTENEDOR DE IMAGEN (Cuadrado 1:1) */}
+                <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-white/10 group bg-neutral-900">
+                    
+                    {/* Badge Nuevo */}
+                    <div className="absolute top-3 right-3 bg-purple-600 text-white text-[9px] font-black px-2 py-0.5 uppercase z-20 animate-pulse rounded-full shadow-lg pointer-events-none">
+                        Nuevo
+                    </div>
+                    
+                    {/* Imagen de Portada */}
+                    <img 
+                        src="/fotos/bloodmoon-cover.jpg" 
+                        alt="Bloodmoon" 
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                    />
+                    
+                    {/* Brillo sutil al hover */}
+                    <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300 pointer-events-none"></div>
                 </div>
-                <div className="p-6 flex flex-col justify-end relative z-10 bg-gradient-to-t from-black to-transparent">
-                    <h3 className="text-3xl font-black text-white uppercase italic leading-none mb-2 drop-shadow-lg">BLOODMOON</h3>
-                    <p className="text-purple-300 font-mono text-[10px] uppercase tracking-wider mb-6 font-bold">EP • 2025</p>
-                    <div className="flex gap-2">
-                        <button onClick={() => window.open(links.spotify)} className="flex-1 bg-white text-black py-3 text-[10px] font-bold uppercase hover:bg-purple-500 hover:text-white transition-colors flex items-center justify-center gap-1 rounded"><Play size={10} fill="currentColor"/> Stream</button>
-                        <button onClick={() => window.open(links.bandcamp)} className="flex-1 border border-white/30 text-white py-3 text-[10px] font-bold uppercase hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-1 rounded"><ShoppingBag size={10}/> Buy</button>
+
+                {/* 2. INFO Y BOTONES (Debajo de la imagen) */}
+                <div className="flex flex-col gap-4">
+                    <div>
+                        <h3 className="text-3xl font-black text-white uppercase italic leading-none mb-1">BLOODMOON</h3>
+                        <p className="text-purple-400 font-mono text-[10px] uppercase tracking-wider font-bold">EP • 2025</p>
+                    </div>
+
+                    <div className="flex gap-3">
+                        <button 
+                            onClick={() => window.open(links.spotify)} 
+                            className="flex-1 bg-white text-black py-3 text-[10px] font-bold uppercase hover:bg-purple-500 hover:text-white transition-all flex items-center justify-center gap-2 rounded shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(168,85,247,0.4)]"
+                        >
+                            <Play size={12} fill="currentColor"/> Stream
+                        </button>
+                        <button 
+                            onClick={() => window.open(links.bandcamp)} 
+                            className="flex-1 border border-white/20 text-white py-3 text-[10px] font-bold uppercase hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2 rounded hover:border-white"
+                        >
+                            <ShoppingBag size={12}/> Buy
+                        </button>
                     </div>
                 </div>
             </div>
 
-            {/* LISTA SECUNDARIA */}
-            <div className="lg:col-span-2 relative flex flex-col">
-                <div className="flex items-center justify-between mb-4">
+            {/* --- LISTA SECUNDARIA (Sin cambios estructurales) --- */}
+            <div className="lg:col-span-2 relative flex flex-col pt-2 lg:pl-8 lg:border-l border-white/5">
+                <div className="flex items-center justify-between mb-6">
                    <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-500 flex items-center gap-2">
                      <Disc size={12} /> Archivo
                    </h3>
@@ -78,7 +107,6 @@ export default function Releases() {
                         })}
                         <div className="w-4 shrink-0"></div>
                     </div>
-                    {/* ELIMINADO EL DIV DEL DEGRADADO NEGRO AQUÍ */}
                 </div>
 
                 <div className="flex lg:hidden items-center justify-center gap-3 text-[10px] font-mono text-neutral-500 mt-2 animate-pulse opacity-80">
