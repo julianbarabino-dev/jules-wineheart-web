@@ -25,7 +25,6 @@ export default function SectionReturn({ href }: SectionReturnProps) {
     <div className="w-full flex justify-center py-8 z-10 relative pointer-events-none">
       <motion.button
         onClick={scrollToSection}
-        // CAMBIO: Opacidad al 100% desde el inicio
         initial={{ opacity: 1, y: 0 }} 
         whileHover={{ y: -5, scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
@@ -33,9 +32,9 @@ export default function SectionReturn({ href }: SectionReturnProps) {
         className="pointer-events-auto p-2 rounded-full hover:bg-white/10 group transition-all cursor-pointer"
         title="Volver a la sección anterior"
       >
-        {/* CAMBIO: text-white/80 para que sea bien visible (antes era /30) */}
+        {/* CORREGIDO: Verde directo (text-green-400) por defecto */}
         <ChevronUp 
-          className="text-white/80 group-hover:text-green-400 transition-colors duration-300" 
+          className="text-green-400 group-hover:text-green-300 transition-colors duration-300" 
           size={30} 
         />
       </motion.button>

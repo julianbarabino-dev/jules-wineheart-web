@@ -31,12 +31,20 @@ export default function Header() {
   const currentBpmRef = useRef(120);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // --- FUNCIÓN AUXILIAR: ENVIAR BPM AL FONDO ---
+  // --- FUNCIÓN AUXILIAR: ENVIAR ESTADO A TODA LA APP ---
   const dispatchRadioEvent = (isPlaying: boolean, bpm: number) => {
-    const event = new CustomEvent('radio-state-change', { 
+    // 1. Evento para el fondo pulsante (si lo usas)
+    const eventState = new CustomEvent('radio-state-change', { 
         detail: { isPlaying, bpm } 
     });
-    window.dispatchEvent(event);
+    window.dispatchEvent(eventState);
+
+    // 2. NUEVO: Eventos específicos para el Glitch del Hero
+    if (isPlaying) {
+        window.dispatchEvent(new CustomEvent('trigger-jules-radio'));
+    } else {
+        window.dispatchEvent(new CustomEvent('trigger-jules-radio-stop'));
+    }
   };
 
   // --- EFECTO MAQUINA DE ESCRIBIR (DOS STYLE) ---
@@ -68,19 +76,16 @@ export default function Header() {
     const randomIndex = Math.floor(Math.random() * PLAYLIST.length);
     const selectedTrack = PLAYLIST[randomIndex];
     
-    // Actualizamos la referencia del BPM actual
     currentBpmRef.current = selectedTrack.bpm;
 
-    // Accedemos a .url porque selectedTrack ahora es un objeto
     const cleanName = selectedTrack.url.split('/').pop() || "unknown.mp3";
     setTrackName(cleanName); 
 
-    // Asignamos la URL al audio
     audioRef.current.src = selectedTrack.url;
     audioRef.current.play().catch(e => console.error("Error playing:", e));
     
     setIsPlaying(true);
-    // Pasamos el BPM como segundo argumento
+    // Disparamos evento de encendido
     dispatchRadioEvent(true, selectedTrack.bpm); 
   };
 
@@ -90,7 +95,7 @@ export default function Header() {
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
-      // Pasamos el BPM guardado en la ref al pausar
+      // Disparamos evento de apagado (Stop Glitch)
       dispatchRadioEvent(false, currentBpmRef.current); 
     } else {
       if (!audioRef.current.src) {
@@ -98,7 +103,7 @@ export default function Header() {
       } else {
         audioRef.current.play();
         setIsPlaying(true);
-        // Pasamos el BPM guardado al reanudar
+        // Disparamos evento de reanudación (Start Glitch)
         dispatchRadioEvent(true, currentBpmRef.current); 
       }
     }
@@ -109,6 +114,8 @@ export default function Header() {
     audioRef.current.volume = 0.5;
 
     const handleEnded = () => { playRandomTrack(); };
+    
+    // Este listener escucha si alguien escribe "PLAY" en el Hero para sincronizar este botón
     const handleRemotePlay = () => {
       if (audioRef.current && audioRef.current.paused) {
         playRandomTrack();
@@ -170,7 +177,6 @@ export default function Header() {
                     initial={{ opacity: 0, x: -10 }} 
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -10 }}
-                    // CAMBIO AQUÍ: Se eliminó "hidden sm:block" para que se vea siempre
                     className="overflow-hidden whitespace-nowrap" 
                 >
                     <div className="font-mono text-[10px] md:text-xs text-green-500 font-bold tracking-wider bg-green-500/5 px-2 py-1 rounded border border-green-500/20 shadow-[0_0_10px_rgba(74,222,128,0.1)] min-w-[120px]">
@@ -228,4 +234,3 @@ export default function Header() {
     </header>
   );
 }
-
