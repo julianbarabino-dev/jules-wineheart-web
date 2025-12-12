@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { motion, useInView } from "framer-motion"; // Agregamos useInView
+import { motion, useInView } from "framer-motion"; 
 import { Terminal } from "lucide-react";
 
 export default function CTAConsole() {
@@ -14,14 +14,13 @@ export default function CTAConsole() {
 
   // Referencia para saber cuándo la sección es visible
   const containerRef = useRef(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.3 }); // Se activa cuando el 30% es visible
+  const isInView = useInView(containerRef, { once: true, amount: 0.3 }); 
 
   // --- EFECTO DE ESCRITURA ---
   const fullIntroText = "Deja tu mail para enterarte de los próximos lanzamientos y novedades. Gracias por apoyar.";
   const [displayedIntro, setDisplayedIntro] = useState("");
   
   useEffect(() => {
-    // Si NO está visible, no arrancamos la escritura
     if (!isInView) return;
 
     let index = 0;
@@ -33,53 +32,71 @@ export default function CTAConsole() {
         clearInterval(intervalId);
         setIsIntroDone(true);
       }
-    }, 50); // Velocidad 50ms
+    }, 50); 
 
     return () => clearInterval(intervalId);
-  }, [isInView]); // Dependencia: isInView
+  }, [isInView]);
   
   const inputRef = useRef<HTMLInputElement>(null);
 
   // --- AUTOFOCUS AUTOMÁTICO AL TERMINAR DE ESCRIBIR ---
   useEffect(() => {
     if (isIntroDone) {
-      // Pequeño delay para asegurar que el input ya se renderizó
       setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
     }
   }, [isIntroDone]);
 
-  // Mantener foco si hacen clic afuera (opcional, pero útil)
   const keepFocus = () => {
     if (isIntroDone) {
       inputRef.current?.focus();
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // --- AQUÍ ESTÁ LA MAGIA: CONEXIÓN CON EL BACKEND ---
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputVal.trim()) return;
 
     if (step === 0) {
+      // Paso 1: Guardamos Nombre
       setName(inputVal);
       setInputVal("");
       setStep(1);
     } else if (step === 1) {
-      setEmail(inputVal);
+      // Paso 2: Guardamos Mail y ENVIAMOS
+      const emailValue = inputVal;
+      setEmail(emailValue);
       setInputVal("");
-      setStep(2);
+      setStep(2); // Muestra "ENCRIPTANDO DATOS..."
 
-      setTimeout(() => {
-        console.log("Datos capturados:", { name, email: inputVal });
-        setStep(3);
-      }, 2000);
+      try {
+        // Llamada a tu API (que guarda en Firebase)
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: name, email: emailValue }),
+        });
+
+        if (response.ok) {
+          // Si el servidor dice OK, esperamos 1.5s para dramatismo y mostramos ÉXITO
+          setTimeout(() => {
+            setStep(3);
+          }, 1500);
+        } else {
+          console.error("Error del servidor");
+          // Aquí podrías manejar un error visual si quisieras, por ahora solo loguea
+        }
+      } catch (error) {
+        console.error("Error de conexión:", error);
+      }
     }
   };
 
   return (
     <section 
-      ref={containerRef} // Conectamos el ref aquí
+      ref={containerRef} 
       className="w-full py-20 px-4 flex justify-center" 
       onClick={keepFocus}
     >
@@ -105,7 +122,6 @@ export default function CTAConsole() {
             <span className="animate-pulse font-bold mr-2">{">"}</span>
             {displayedIntro}
             
-            {/* Cursor del texto de arriba */}
             {!isIntroDone && (
               <span className="animate-pulse ml-1 inline-block bg-yellow-500 w-2 h-4 align-middle" />
             )}
@@ -166,7 +182,6 @@ export default function CTAConsole() {
                     onChange={(e) => setInputVal(e.target.value)}
                     className="w-full bg-transparent border-none outline-none text-yellow-100 font-bold uppercase tracking-wider caret-transparent placeholder-yellow-900/50"
                     autoComplete="off"
-                    // NOTA: No usamos autoFocus aquí, lo manejamos con useEffect arriba
                   />
                   
                   <motion.span 
