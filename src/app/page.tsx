@@ -9,9 +9,8 @@ import Bunker from "@/components/sections/bunker";
 import ConsoleMessage from "@/components/utils/console-message";
 import { bunkerSignals } from "@/lib/data";
 import WebglBackground from "@/components/ui/webgl-background";
-
-// 1. IMPORTAMOS TU COMPONENTE NUEVO
 import SectionReturn from "@/components/ui/SectionReturn"; 
+import CTAConsole from "@/components/ui/cta-console";
 
 export default function Home() {
   return (
@@ -21,35 +20,42 @@ export default function Home() {
       <ConsoleMessage /> 
       <Header />
       
-      {/* SECCIÓN 1: HERO (ID: hero) */}
+      {/* 1. HERO */}
       <div id="hero">
         <Hero />
       </div>
 
-      {/* SECCIÓN 2: RELEASES (ID: releases) */}
+      {/* 2. RELEASES */}
       <div id="releases">
         <Releases />
       </div>
-      {/* Botón: Vuelve a Hero */}
       <SectionReturn href="#hero" />
       
+      {/* INSTAGRAM CTA */}
       <CTAInstagram /> 
       
-      {/* SECCIÓN 3: PROJECTS (ID: projects) */}
+      {/* 3. PROJECTS */}
       <div id="projects">
         <Projects />
       </div>
-      {/* Botón: Vuelve a Releases */}
       <SectionReturn href="#releases" />
 
-      {/* SECCIÓN 4: COSMIC VICAR (ID: cosmic-vicar) */}
+      {/* --- CONSOLA DE CONTACTO --- */}
+      <div id="contact-console"> {/* Le puse un ID por si querés navegar hacia ella en el futuro */}
+        <CTAConsole />
+      </div>
+      {/* NUEVA FLECHITA: Vuelve a Projects */}
+      <SectionReturn href="#projects" />
+
+      {/* 4. COSMIC VICAR */}
       <div id="cosmic-vicar">
         <CosmicVicar />
       </div>
-      {/* Botón: Vuelve a Projects */}
+      {/* Nota: Podrías cambiar este href="#contact-console" si quisieras volver a la consola, 
+         pero volver a #projects también funciona bien como navegación general */}
       <SectionReturn href="#projects" />
 
-      {/* SECCIÓN 5: BUNKER (ID: bunker) */}
+      {/* 5. BUNKER */}
       <div id="bunker">
         <Bunker signals={bunkerSignals} />
       </div>

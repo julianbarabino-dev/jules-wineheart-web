@@ -11,7 +11,9 @@ const SECRET_MODES = {
   hacker: { target: "TRUELIES", style: "text-green-500 font-mono tracking-widest drop-shadow-[0_0_15px_rgba(34,197,94,0.9)]" },
   blood: { target: "LUNA", style: "text-red-600 font-black tracking-tighter drop-shadow-[0_0_30px_rgba(220,38,38,1)]" },
   ritual: { target: "RITUAL", style: "text-neutral-400 font-serif tracking-[1em] uppercase" },
-  play: { target: "PLAY", style: "text-green-400 font-bold tracking-widest drop-shadow-[0_0_20px_#4ade80]" }
+  play: { target: "PLAY", style: "text-green-400 font-bold tracking-widest drop-shadow-[0_0_20px_#4ade80]" },
+  // MODO STOP (Para apagar todo)
+  stop: { target: "STOP", style: "text-red-500 font-bold tracking-widest drop-shadow-[0_0_20px_#ef4444]" }
 };
 
 const MatrixRain = () => {
@@ -113,7 +115,8 @@ export default function Hero() {
   }, [isRadioActive]);
 
   useEffect(() => {
-    if (mode === 'play' && showOverlay) {
+    // Reseteo automático de modos visuales
+    if ((mode === 'play' || mode === 'stop') && showOverlay) {
       const timer = setTimeout(() => {
         setShowOverlay(false);
         setMode('default');
@@ -122,36 +125,64 @@ export default function Hero() {
     }
   }, [mode, showOverlay]);
 
+  // --- CORRECCIÓN EN EL PROCESAMIENTO DE INPUT ---
   const processInput = (char: string) => {
-    if (mode !== 'default') { setMode('default'); setShowOverlay(false); setBuffer(""); setTargetWord(""); return; }
     if (!/^[a-zA-Z]$/.test(char)) return;
 
     const upperChar = char.toUpperCase();
-    const nextCharIndex = buffer.length;
-    let currentTarget = targetWord;
+
+    // 1. DETERMINAR EL BUFFER EFECTIVO
+    // Si estamos en un modo activo (ej: play), reseteamos visualmente
+    // PERO tomamos el caracter actual como el inicio de una nueva palabra.
+    let effectiveBuffer = buffer;
+    let effectiveTarget = targetWord;
+
+    if (mode !== 'default') {
+      setMode('default');
+      setShowOverlay(false);
+      // Reiniciamos el buffer con la letra actual
+      effectiveBuffer = ""; 
+      effectiveTarget = "";
+    }
+
+    // 2. LÓGICA DE BÚSQUEDA DE PALABRA
+    const nextCharIndex = effectiveBuffer.length;
+    let currentTarget = effectiveTarget;
     
-    if (buffer === "") {
+    // Si el buffer está vacío (o lo acabamos de reiniciar), buscamos qué palabra empieza con esta letra
+    if (effectiveBuffer === "") {
       const foundKey = Object.keys(SECRET_MODES).find(key => key !== 'default' && SECRET_MODES[key as keyof typeof SECRET_MODES].target.startsWith(upperChar));
       if (foundKey) {
         const wordToMatch = SECRET_MODES[foundKey as keyof typeof SECRET_MODES].target;
         currentTarget = wordToMatch;
         setTargetWord(wordToMatch);
-      } else { return; }
+      } else { 
+        // Si la letra no empieza nada, reseteamos
+        setBuffer("");
+        setTargetWord("");
+        return; 
+      }
     }
 
+    // 3. VERIFICAR COINCIDENCIA
     if (currentTarget && currentTarget[nextCharIndex] === upperChar) {
-      const newBuffer = buffer + upperChar;
-      setBuffer(newBuffer);
+      const newBuffer = effectiveBuffer + upperChar;
+      setBuffer(newBuffer); // Actualizamos el estado
       
+      // ¿COMPLETÓ LA PALABRA?
       if (newBuffer === currentTarget) {
         const winningModeKey = Object.keys(SECRET_MODES).find(key => key !== 'default' && SECRET_MODES[key as keyof typeof SECRET_MODES].target === currentTarget);
         
         if (winningModeKey) {
+          // --- ACCIONES ESPECÍFICAS ---
           if (winningModeKey === 'play') {
-            const event = new CustomEvent('trigger-jules-radio');
-            window.dispatchEvent(event);
+            window.dispatchEvent(new CustomEvent('trigger-jules-radio'));
+          }
+          if (winningModeKey === 'stop') {
+            window.dispatchEvent(new CustomEvent('trigger-jules-radio-stop'));
           }
 
+          // Animación de éxito
           setTimeout(() => {
             setShake(true); 
             setMode(winningModeKey); 
@@ -160,6 +191,7 @@ export default function Hero() {
         }
       }
     } else { 
+        // Si se equivocó de letra, reset
         setBuffer(""); 
         setTargetWord(""); 
     }
@@ -202,13 +234,13 @@ export default function Hero() {
         animate={shake ? { x: [-5, 5, -5, 5, 0] } : { x: 0 }}
         transition={{ duration: 0.4 }}
         onClick={() => { if(mode === 'default' && buffer.length === 0) handleMobileFocus() }}
-        // CORREGIDO: Eliminé 'bg-black' del modo 'play'
         className={`relative min-h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden transition-colors duration-1000 z-20 pt-32 
-      ${mode === 'default' || mode === 'play' ? '' : ''}
+      ${mode === 'default' || mode === 'play' || mode === 'stop' ? '' : ''}
       ${mode === 'hacker' ? 'bg-black text-green-500 font-mono' : ''}
       ${mode === 'blood' ? 'bg-[#1a0505] text-red-400' : ''}
       ${mode === 'ritual' ? 'bg-gray-950 text-neutral-500 grayscale' : ''}
       ${mode === 'ghost' ? 'bg-[#0a0a0a] text-white' : ''}
+      ${mode === 'stop' ? 'bg-black text-red-500' : ''}
     `}>
       
       <input ref={hiddenInputRef} type="text" className="opacity-0 absolute top-0 left-0 h-1 w-1 -z-10" onChange={handleHiddenInput} autoComplete="off" autoCorrect="off" autoCapitalize="none" />
@@ -255,11 +287,10 @@ export default function Hero() {
       {mode === 'default' && (<WordProgressDisplay target={targetWord} current={buffer} onFocusInput={handleMobileFocus} />)}
       {mode !== 'default' && <div className="h-12 mb-8 opacity-0"></div>}
       
-      {/* CORREGIDO: Ahora el modo 'play' TAMPOCO se oculta ni se desenfoca */}
       <motion.div 
         animate={{ 
-            opacity: (mode === 'default' || mode === 'play') ? 1 : 0.2, 
-            filter: (mode === 'default' || mode === 'play') ? 'blur(0px)' : 'blur(5px)' 
+            opacity: (mode === 'default' || mode === 'play' || mode === 'stop') ? 1 : 0.2, 
+            filter: (mode === 'default' || mode === 'play' || mode === 'stop') ? 'blur(0px)' : 'blur(5px)' 
         }} 
         transition={{ duration: 0.5 }} 
         className="relative z-40 flex flex-col items-center max-w-4xl"

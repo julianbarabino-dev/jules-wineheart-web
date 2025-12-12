@@ -27,19 +27,18 @@ export default function Header() {
   const [trackName, setTrackName] = useState("");      
   const [displayedText, setDisplayedText] = useState(""); 
   
-  // Guardamos el BPM actual en una referencia
   const currentBpmRef = useRef(120);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // --- FUNCIÓN AUXILIAR: ENVIAR ESTADO A TODA LA APP ---
   const dispatchRadioEvent = (isPlaying: boolean, bpm: number) => {
-    // 1. Evento para el fondo pulsante (si lo usas)
+    // 1. Evento para el fondo pulsante
     const eventState = new CustomEvent('radio-state-change', { 
         detail: { isPlaying, bpm } 
     });
     window.dispatchEvent(eventState);
 
-    // 2. NUEVO: Eventos específicos para el Glitch del Hero
+    // 2. Eventos para el Glitch del Hero
     if (isPlaying) {
         window.dispatchEvent(new CustomEvent('trigger-jules-radio'));
     } else {
@@ -47,7 +46,7 @@ export default function Header() {
     }
   };
 
-  // --- EFECTO MAQUINA DE ESCRIBIR (DOS STYLE) ---
+  // --- EFECTO MAQUINA DE ESCRIBIR ---
   useEffect(() => {
     if (!trackName) {
         setDisplayedText("");
@@ -85,7 +84,6 @@ export default function Header() {
     audioRef.current.play().catch(e => console.error("Error playing:", e));
     
     setIsPlaying(true);
-    // Disparamos evento de encendido
     dispatchRadioEvent(true, selectedTrack.bpm); 
   };
 
@@ -95,7 +93,6 @@ export default function Header() {
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
-      // Disparamos evento de apagado (Stop Glitch)
       dispatchRadioEvent(false, currentBpmRef.current); 
     } else {
       if (!audioRef.current.src) {
@@ -103,27 +100,45 @@ export default function Header() {
       } else {
         audioRef.current.play();
         setIsPlaying(true);
-        // Disparamos evento de reanudación (Start Glitch)
         dispatchRadioEvent(true, currentBpmRef.current); 
       }
     }
   };
 
+  // --- MANEJO DE AUDIO Y EVENTOS REMOTOS (PLAY / STOP) ---
   useEffect(() => {
     audioRef.current = new Audio();
     audioRef.current.volume = 0.5;
 
     const handleEnded = () => { playRandomTrack(); };
     
-    // Este listener escucha si alguien escribe "PLAY" en el Hero para sincronizar este botón
+    // Handler para cuando escriben "PLAY" en consola
     const handleRemotePlay = () => {
       if (audioRef.current && audioRef.current.paused) {
         playRandomTrack();
       }
     };
 
+    // Handler para cuando escriben "STOP" en consola (AGREGADO)
+    const handleRemoteStop = () => {
+      if (audioRef.current && !audioRef.current.paused) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+        // Despachamos evento para sincronizar estados (BPM, Fondo, etc)
+        // Nota: dispatchRadioEvent enviará 'trigger-jules-radio-stop' de nuevo, 
+        // pero no pasa nada, es redundante pero seguro.
+        const eventState = new CustomEvent('radio-state-change', { 
+            detail: { isPlaying: false, bpm: currentBpmRef.current } 
+        });
+        window.dispatchEvent(eventState);
+      }
+    };
+
     audioRef.current.addEventListener('ended', handleEnded);
+    
+    // Escuchamos ambos eventos
     window.addEventListener('trigger-jules-radio', handleRemotePlay);
+    window.addEventListener('trigger-jules-radio-stop', handleRemoteStop);
 
     return () => {
       if (audioRef.current) {
@@ -132,6 +147,7 @@ export default function Header() {
         audioRef.current = null;
       }
       window.removeEventListener('trigger-jules-radio', handleRemotePlay);
+      window.removeEventListener('trigger-jules-radio-stop', handleRemoteStop);
     };
   }, []);
 
@@ -156,8 +172,11 @@ export default function Header() {
           title="JVLES Radio"
         >
           <div className="flex items-center gap-3">
+            {/* LOGICA DE PARPADEO (Ya la tenías, la mantengo intacta) */}
             <div className={`transition-colors duration-300 ${
-                isPlaying ? "text-green-500 drop-shadow-[0_0_8px_#4ade80]" : "text-white/40 group-hover:text-green-500"
+                isPlaying 
+                    ? "text-green-500 drop-shadow-[0_0_8px_#4ade80]" // SONANDO: Verde Fijo
+                    : "text-white/70 group-hover:text-green-500 animate-pulse" // PAUSA: Gris + Parpadeo
             }`}>
                 {isPlaying ? <Pause size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
             </div>
