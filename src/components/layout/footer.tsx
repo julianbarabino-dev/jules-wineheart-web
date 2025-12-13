@@ -108,7 +108,7 @@ export default function Footer() {
                         La mejor forma de apoyar este proyecto es adquiriendo la música en alta calidad.
                     </p>
                     <a 
-                        href="https://bandcamp.com" 
+                        href="https://bandcamp.com/juleswineheart" 
                         target="_blank"
                         className="block w-full text-center bg-white text-black py-2 text-[10px] font-black uppercase tracking-widest hover:bg-yellow-600 hover:text-white transition-colors rounded-sm"
                     >
