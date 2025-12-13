@@ -9,7 +9,8 @@ const navItems = [
   { name: "Música", href: "#releases" },
   { name: "Proyectos", href: "#projects" },
   { name: "CVR", href: "#cosmic-vicar" },
-  { name: "Bunker", href: "#bunker" },
+  { name: "LOG", href: "#bunker" },     // Antes "Bunker"
+  { name: "Contact", href: "#contact" } // Nuevo item
 ];
 
 // --- TU PLAYLIST CON BPM ---

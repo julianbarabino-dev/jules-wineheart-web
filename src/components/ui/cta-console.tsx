@@ -96,6 +96,7 @@ export default function CTAConsole() {
 
   return (
     <section 
+      id="contact"
       ref={containerRef} 
       className="w-full py-20 px-4 flex justify-center" 
       onClick={keepFocus}

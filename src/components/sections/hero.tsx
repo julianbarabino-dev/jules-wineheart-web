@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, ChevronDown, Moon, Flame, Keyboard } from "lucide-react";
+import { Keyboard, Moon, Flame } from "lucide-react"; 
 import { motion, AnimatePresence } from "framer-motion";
 
-// --- CONFIGURACIÓN DE MODOS SECRETOS ---
+// ... (TODA LA CONFIGURACIÓN DE SECRET_MODES y MATRIXRAIN QUEDA IGUAL) ...
 const SECRET_MODES = {
   default: { target: "", style: "" },
   ghost: { target: "LISTEN", style: "text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500 drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] font-serif" },
@@ -12,7 +12,6 @@ const SECRET_MODES = {
   blood: { target: "LUNA", style: "text-red-600 font-black tracking-tighter drop-shadow-[0_0_30px_rgba(220,38,38,1)]" },
   ritual: { target: "RITUAL", style: "text-neutral-400 font-serif tracking-[1em] uppercase" },
   play: { target: "PLAY", style: "text-green-400 font-bold tracking-widest drop-shadow-[0_0_20px_#4ade80]" },
-  // MODO STOP (Para apagar todo)
   stop: { target: "STOP", style: "text-red-500 font-bold tracking-widest drop-shadow-[0_0_20px_#ef4444]" }
 };
 
@@ -73,8 +72,9 @@ export default function Hero() {
   const [showOverlay, setShowOverlay] = useState(false);
   
   const [isRadioActive, setIsRadioActive] = useState(false);
-  const [glitchTrigger, setGlitchTrigger] = useState(false);
+  const [hasStartedOnce, setHasStartedOnce] = useState(false);
   
+  const [glitchTrigger, setGlitchTrigger] = useState(false);
   const hiddenInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -85,8 +85,14 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    const startRadio = () => { setIsRadioActive(true); };
-    const stopRadio = () => { setIsRadioActive(false); };
+    const startRadio = () => { setIsRadioActive(true); setHasStartedOnce(true); };
+    
+    const stopRadio = () => { 
+        setIsRadioActive(false); 
+        setMode('default'); 
+        setBuffer("");      
+        setTargetWord("");  
+    };
 
     window.addEventListener('trigger-jules-radio', startRadio);
     window.addEventListener('trigger-jules-radio-stop', stopRadio);
@@ -103,10 +109,8 @@ export default function Hero() {
       setGlitchTrigger(false);
       return;
     }
-    // 1. GLITCH INICIAL
     setGlitchTrigger(true);
     const initialTimeout = setTimeout(() => { setGlitchTrigger(false); }, 1200);
-    // 2. INTERVALO CADA 5 SEGUNDOS
     const intervalId = setInterval(() => {
       setGlitchTrigger(true);
       setTimeout(() => { setGlitchTrigger(false); }, 400); 
@@ -115,7 +119,6 @@ export default function Hero() {
   }, [isRadioActive]);
 
   useEffect(() => {
-    // Reseteo automático de modos visuales
     if ((mode === 'play' || mode === 'stop') && showOverlay) {
       const timer = setTimeout(() => {
         setShowOverlay(false);
@@ -125,31 +128,43 @@ export default function Hero() {
     }
   }, [mode, showOverlay]);
 
-  // --- CORRECCIÓN EN EL PROCESAMIENTO DE INPUT ---
+  // --- FUNCIÓN "START SYSTEM" ---
+  const handleSystemStart = (e: React.MouseEvent) => {
+    e.stopPropagation(); 
+    setHasStartedOnce(true);
+    window.dispatchEvent(new CustomEvent('trigger-jules-radio'));
+    setIsRadioActive(true);
+    setShake(true);
+    setMode('play'); 
+    setTargetWord("PLAY");
+    setBuffer("PLAY");
+
+    setTimeout(() => { 
+        setShake(false);
+        setMode('default'); 
+        setBuffer("");      
+        setTargetWord("");  
+    }, 1500);
+  };
+
+  // --- PROCESAMIENTO DE INPUT ---
   const processInput = (char: string) => {
     if (!/^[a-zA-Z]$/.test(char)) return;
 
     const upperChar = char.toUpperCase();
-
-    // 1. DETERMINAR EL BUFFER EFECTIVO
-    // Si estamos en un modo activo (ej: play), reseteamos visualmente
-    // PERO tomamos el caracter actual como el inicio de una nueva palabra.
     let effectiveBuffer = buffer;
     let effectiveTarget = targetWord;
 
     if (mode !== 'default') {
       setMode('default');
       setShowOverlay(false);
-      // Reiniciamos el buffer con la letra actual
       effectiveBuffer = ""; 
       effectiveTarget = "";
     }
 
-    // 2. LÓGICA DE BÚSQUEDA DE PALABRA
     const nextCharIndex = effectiveBuffer.length;
     let currentTarget = effectiveTarget;
     
-    // Si el buffer está vacío (o lo acabamos de reiniciar), buscamos qué palabra empieza con esta letra
     if (effectiveBuffer === "") {
       const foundKey = Object.keys(SECRET_MODES).find(key => key !== 'default' && SECRET_MODES[key as keyof typeof SECRET_MODES].target.startsWith(upperChar));
       if (foundKey) {
@@ -157,32 +172,28 @@ export default function Hero() {
         currentTarget = wordToMatch;
         setTargetWord(wordToMatch);
       } else { 
-        // Si la letra no empieza nada, reseteamos
         setBuffer("");
         setTargetWord("");
         return; 
       }
     }
 
-    // 3. VERIFICAR COINCIDENCIA
     if (currentTarget && currentTarget[nextCharIndex] === upperChar) {
       const newBuffer = effectiveBuffer + upperChar;
-      setBuffer(newBuffer); // Actualizamos el estado
+      setBuffer(newBuffer); 
       
-      // ¿COMPLETÓ LA PALABRA?
       if (newBuffer === currentTarget) {
         const winningModeKey = Object.keys(SECRET_MODES).find(key => key !== 'default' && SECRET_MODES[key as keyof typeof SECRET_MODES].target === currentTarget);
         
         if (winningModeKey) {
-          // --- ACCIONES ESPECÍFICAS ---
           if (winningModeKey === 'play') {
             window.dispatchEvent(new CustomEvent('trigger-jules-radio'));
+            setHasStartedOnce(true); 
           }
           if (winningModeKey === 'stop') {
             window.dispatchEvent(new CustomEvent('trigger-jules-radio-stop'));
           }
 
-          // Animación de éxito
           setTimeout(() => {
             setShake(true); 
             setMode(winningModeKey); 
@@ -191,7 +202,6 @@ export default function Hero() {
         }
       }
     } else { 
-        // Si se equivocó de letra, reset
         setBuffer(""); 
         setTargetWord(""); 
     }
@@ -225,8 +235,11 @@ export default function Hero() {
   const navIcons = [
     { src: "/icons/music-icon.svg", label: "Música", id: "#releases" },
     { src: "/icons/projects-icon.svg", label: "Proyectos", id: "#projects" },
-    { src: "/icons/cvr-icon.svg", label: "Cosmic Vicar Records", id: "#cosmic-vicar" }, 
-    { src: "/icons/bunker-icon.svg", label: "Bunker", id: "#bunker" }
+    { src: "/icons/cvr-icon.svg", label: "CVR", id: "#cosmic-vicar" }, 
+    // CAMBIO 1: Bunker ahora es LOG
+    { src: "/icons/bunker-icon.svg", label: "LOG", id: "#bunker" },
+    // CAMBIO 2: Agregamos Contacto (Asegurate de tener un icono o repetí uno)
+    { src: "/icons/mail-icon.svg", label: "CONTACT", id: "#contact" } 
   ];
 
   return (
@@ -234,7 +247,8 @@ export default function Hero() {
         animate={shake ? { x: [-5, 5, -5, 5, 0] } : { x: 0 }}
         transition={{ duration: 0.4 }}
         onClick={() => { if(mode === 'default' && buffer.length === 0) handleMobileFocus() }}
-        className={`relative min-h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden transition-colors duration-1000 z-20 pt-32 
+        /* CAMBIO 1: Ajuste de padding-top (pt-24) para empujar todo un poco más abajo visualmente */
+        className={`relative min-h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden transition-colors duration-1000 z-20 pt-24 md:pt-16
       ${mode === 'default' || mode === 'play' || mode === 'stop' ? '' : ''}
       ${mode === 'hacker' ? 'bg-black text-green-500 font-mono' : ''}
       ${mode === 'blood' ? 'bg-[#1a0505] text-red-400' : ''}
@@ -244,6 +258,30 @@ export default function Hero() {
     `}>
       
       <input ref={hiddenInputRef} type="text" className="opacity-0 absolute top-0 left-0 h-1 w-1 -z-10" onChange={handleHiddenInput} autoComplete="off" autoCorrect="off" autoCapitalize="none" />
+
+      {/* --- OVERLAY DE INICIO --- */}
+      <AnimatePresence>
+        {!isRadioActive && !hasStartedOnce && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.8 } }} 
+            className="absolute inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-[2px]"
+          >
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleSystemStart}
+                className="group relative px-8 py-3 overflow-hidden border border-purple-500/50 rounded-sm bg-black/40 hover:bg-black/80 transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.2)]"
+              >
+                 <span className="relative z-10 font-mono text-purple-400 font-bold tracking-[0.2em] text-sm md:text-base animate-pulse group-hover:text-purple-300 transition-colors">
+                   ▶ START SYSTEM
+                 </span>
+                 <div className="absolute inset-0 bg-purple-900/20 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+              </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {showOverlay && mode === 'hacker' && <MatrixRain />}
@@ -259,7 +297,7 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         onClick={(e) => { e.stopPropagation(); handleMobileFocus(); }} 
-        className="relative z-50 w-full max-w-4xl mx-auto select-none px-4 flex justify-center mb-12 h-40 md:h-56 rounded-lg cursor-pointer group"
+        className="relative z-50 w-full max-w-4xl mx-auto select-none px-4 flex justify-center mb-6 h-40 md:h-56 rounded-lg cursor-pointer group"
       >
         <div className="relative z-10 w-full h-full">
             <img 
@@ -284,8 +322,26 @@ export default function Hero() {
         </div>
       </motion.div>
 
+      {/* --- BOTÓN INLINE (START) --- */}
+      {!isRadioActive && hasStartedOnce && (
+          <motion.button 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={handleSystemStart}
+            className="mb-8 z-50 group relative px-6 py-2 overflow-hidden"
+          >
+             <span className="relative z-10 font-mono text-purple-400 font-bold tracking-[0.2em] text-sm md:text-base animate-pulse group-hover:text-purple-300 transition-colors">
+               ▶ START SYSTEM
+             </span>
+             <div className="absolute inset-0 bg-purple-900/20 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+          </motion.button>
+      )}
+
       {mode === 'default' && (<WordProgressDisplay target={targetWord} current={buffer} onFocusInput={handleMobileFocus} />)}
-      {mode !== 'default' && <div className="h-12 mb-8 opacity-0"></div>}
+      {mode === 'play' && (<WordProgressDisplay target="PLAY" current="PLAY" onFocusInput={() => {}} />)}
+
+      {mode !== 'default' && mode !== 'play' && <div className="h-12 mb-8 opacity-0"></div>}
       
       <motion.div 
         animate={{ 
@@ -295,13 +351,15 @@ export default function Hero() {
         transition={{ duration: 0.5 }} 
         className="relative z-40 flex flex-col items-center max-w-4xl"
       >
-          <div className="flex flex-wrap justify-center gap-3 md:gap-6 font-bold tracking-[0.3em] text-[10px] md:text-xs uppercase mb-12 opacity-80">
+          {/* Subtítulos */}
+          <div className="flex flex-wrap justify-center gap-3 md:gap-6 font-bold tracking-[0.3em] text-[10px] md:text-xs uppercase mb-16 opacity-80">
             <span>Lo-fi Folk</span><span className="text-green-500 animate-pulse drop-shadow-[0_0_5px_rgba(34,197,94,1)]">•</span>
             <span>Electronic</span><span className="text-green-500 animate-pulse drop-shadow-[0_0_5px_rgba(34,197,94,1)]">•</span>
             <span>Ambient</span>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-8 sm:gap-12 mb-16">
+          {/* Nav Icons: CAMBIO 2 - Quitamos el margen gigante de abajo (antes mb-32) para que todo el bloque baje */}
+          <div className="flex flex-wrap justify-center gap-8 sm:gap-12 mb-8">
             {navIcons.map((tool, i) => (
               <button key={i} onClick={(e) => { e.stopPropagation(); scrollTo(tool.id); }} className="group flex flex-col items-center gap-2 transition-all duration-300 cursor-pointer">
                 <div className="relative w-7 h-7 transition-all duration-300 opacity-70 group-hover:opacity-100 group-hover:scale-125 filter group-hover:text-green-300 group-hover:sepia-[100%] group-hover:saturate-[1000%] group-hover:hue-rotate-[80deg] group-hover:drop-shadow-[0_0_25px_rgba(167,243,208,1)]">
@@ -311,13 +369,7 @@ export default function Hero() {
               </button>
             ))}
           </div>
-
-          <div className="flex justify-center mb-12">
-            <button onClick={(e) => { e.stopPropagation(); scrollTo('#releases'); }} className="px-8 py-4 bg-white text-black font-black uppercase tracking-wider hover:scale-105 transition-transform flex items-center gap-2 rounded-sm cursor-pointer">
-                <Play size={16} fill="currentColor" /> Bloodmoon EP
-            </button>
-          </div>
-          <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="mt-8 opacity-50"><ChevronDown size={24} /></motion.div>
+          
       </motion.div>
     </motion.section>
   );

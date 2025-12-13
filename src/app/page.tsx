@@ -40,24 +40,22 @@ export default function Home() {
       </div>
       <SectionReturn href="#releases" />
 
-      {/* --- CONSOLA DE CONTACTO --- */}
-      <div id="contact-console"> {/* Le puse un ID por si querés navegar hacia ella en el futuro */}
-        <CTAConsole />
-      </div>
-      {/* NUEVA FLECHITA: Vuelve a Projects */}
-      <SectionReturn href="#projects" />
-
-      {/* 4. COSMIC VICAR */}
+      {/* 4. COSMIC VICAR (Movido aquí para mantener el flujo) */}
       <div id="cosmic-vicar">
         <CosmicVicar />
       </div>
-      {/* Nota: Podrías cambiar este href="#contact-console" si quisieras volver a la consola, 
-         pero volver a #projects también funciona bien como navegación general */}
       <SectionReturn href="#projects" />
 
-      {/* 5. BUNKER */}
+      {/* 5. BUNKER / LOG (Antes del contacto) */}
       <div id="bunker">
         <Bunker signals={bunkerSignals} />
+      </div>
+      <SectionReturn href="#cosmic-vicar" />
+
+      {/* 6. CONSOLA DE CONTACTO (Al final, como cierre) */}
+      {/* Nota: Usamos id="contact" para coincidir con el Header */}
+      <div id="contact"> 
+        <CTAConsole />
       </div>
      
       <Footer />
