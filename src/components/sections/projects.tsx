@@ -47,66 +47,73 @@ export default function Projects() {
             onScroll={handleScroll}
             className="flex overflow-x-auto snap-x snap-mandatory gap-6 px-6 pb-8 w-full no-scrollbar md:px-[calc((100vw-1080px)/2+1.5rem)]"
         >
-            {projects.map((project, index) => (
-                <div 
-                    key={project.id} 
-                    className={`
-                        relative flex-none w-[85vw] md:w-[450px] snap-center
-                        group rounded-2xl bg-white/5 backdrop-blur-md 
-                        overflow-hidden flex flex-col transition-all duration-500
-                        
-                        /* USO ! PARA FORZAR EL BORDE PÚRPURA EN LAS TARJETAS */
-                        !border border-purple-500/20 hover:!border-purple-500/50
+            {projects.map((project, index) => {
+                // Verificamos si esta es la tarjeta activa
+                const isActive = activeIndex === index;
 
-                        /* GLOW PÚRPURA EN LAS TARJETAS */
-                        shadow-[0_0_15px_rgba(168,85,247,0.15)]
-                        hover:shadow-[0_0_30px_rgba(168,85,247,0.35)]
-
-                        ${activeIndex === index ? 'opacity-100 scale-100' : 'opacity-60 scale-95 md:opacity-100 md:scale-100'} 
-                        ${project.style}
-                    `}
-                >
-                    <div className="relative aspect-[16/9] w-full bg-neutral-900/50 overflow-hidden">
-                        <img 
-                            src={project.imgId} 
-                            alt={project.title} 
-                            className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center z-[-1]">
-                            <project.icon size={40} className="text-white/10" />
-                        </div>
-                        {project.tag && (
-                            <div className="absolute top-3 right-3 z-20">
-                                <span className={`border border-purple-500/20 text-[9px] font-black px-2 py-1 uppercase flex items-center gap-1 shadow-lg rounded backdrop-blur-md ${project.tagStyle}`}>
-                                    <Award size={10} /> {project.tag}
-                                </span>
+                return (
+                    <div 
+                        key={project.id} 
+                        className={`
+                            relative flex-none w-[85vw] md:w-[450px] snap-center
+                            group rounded-2xl bg-white/5 backdrop-blur-md 
+                            overflow-hidden flex flex-col transition-all duration-500
+                            
+                            /* LÓGICA DEL GLOW Y BORDE AUTOMÁTICO */
+                            /* Si es la activa (isActive), le damos el borde fuerte y el glow intenso */
+                            /* Si NO es la activa, tiene un borde suave y un glow mínimo */
+                            
+                            ${isActive 
+                                ? '!border-purple-500/60 shadow-[0_0_30px_rgba(168,85,247,0.4)] opacity-100 scale-100' 
+                                : '!border-purple-500/10 shadow-[0_0_10px_rgba(168,85,247,0.1)] opacity-50 scale-95 md:opacity-100 md:scale-100'}
+                            
+                            /* Mantenemos el hover para desktop por si acaso */
+                            hover:!border-purple-500/60 hover:shadow-[0_0_30px_rgba(168,85,247,0.4)]
+                            
+                            !border
+                            ${project.style}
+                        `}
+                    >
+                        <div className="relative aspect-[16/9] w-full bg-neutral-900/50 overflow-hidden">
+                            <img 
+                                src={project.imgId} 
+                                alt={project.title} 
+                                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center z-[-1]">
+                                <project.icon size={40} className="text-white/10" />
                             </div>
-                        )}
-                    </div>
+                            {project.tag && (
+                                <div className="absolute top-3 right-3 z-20">
+                                    <span className={`border border-purple-500/20 text-[9px] font-black px-2 py-1 uppercase flex items-center gap-1 shadow-lg rounded backdrop-blur-md ${project.tagStyle}`}>
+                                        <Award size={10} /> {project.tag}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
 
-                    <div className="p-6 flex flex-col flex-1 border-t border-purple-500/10 bg-transparent">
-                        <h3 className="text-2xl font-black text-white uppercase italic mb-3 tracking-tight">{project.title}</h3>
-                        <p className="text-neutral-300 text-xs leading-relaxed mb-6 flex-1">
-                            {project.desc}
-                        </p>
-                        {project.btn && (
-                            <button 
-                                onClick={() => window.open(project.btn.link)} 
-                                className="w-full py-3 bg-white/5 hover:bg-purple-500/10 text-white border border-white/10 hover:border-purple-500/30 text-[10px] uppercase font-bold tracking-widest transition-all duration-300 rounded flex items-center justify-center gap-2"
-                            >
-                                <Play size={10} fill="currentColor" /> {project.btn.text}
-                            </button>
-                        )}
+                        <div className="p-6 flex flex-col flex-1 border-t border-purple-500/10 bg-transparent">
+                            <h3 className="text-2xl font-black text-white uppercase italic mb-3 tracking-tight">{project.title}</h3>
+                            <p className="text-neutral-300 text-xs leading-relaxed mb-6 flex-1">
+                                {project.desc}
+                            </p>
+                            {project.btn && (
+                                <button 
+                                    onClick={() => window.open(project.btn.link)} 
+                                    className="w-full py-3 bg-white/5 hover:bg-purple-500/10 text-white border border-white/10 hover:border-purple-500/30 text-[10px] uppercase font-bold tracking-widest transition-all duration-300 rounded flex items-center justify-center gap-2"
+                                >
+                                    <Play size={10} fill="currentColor" /> {project.btn.text}
+                                </button>
+                            )}
+                        </div>
                     </div>
-                </div>
-            ))}
+                );
+            })}
             <div className="w-6 shrink-0" />
         </div>
 
-        {/* --- CONTROLES DE NAVEGACIÓN (AHORA EN AZUL) --- */}
+        {/* CONTROLES DE NAVEGACIÓN (AZULES) */}
         <div className="container mx-auto px-6 max-w-[1080px] mt-4 flex flex-col items-center justify-center gap-3">
-            
-            {/* Indicadores de barra: AZULES para coincidir con "02. PORTFOLIO" */}
             <div className="flex items-center gap-2">
                 {projects.map((_, i) => (
                     <button
@@ -115,15 +122,13 @@ export default function Projects() {
                         className={`
                             h-1.5 rounded-sm transition-all duration-300 
                             ${activeIndex === i 
-                                ? 'w-8 bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]' // Azul Activo
-                                : 'w-2 bg-white/10 hover:bg-blue-500/30'} // Hover Azul
+                                ? 'w-8 bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]' 
+                                : 'w-2 bg-white/10 hover:bg-blue-500/30'}
                         `}
                         aria-label={`Ir al proyecto ${i + 1}`}
                     />
                 ))}
             </div>
-            
-            {/* Indicador Swipe Mobile: AZUL */}
             <div className="md:hidden flex items-center justify-center text-blue-500/40 animate-pulse filter drop-shadow-[0_0_5px_rgba(59,130,246,0.4)]">
                 <ChevronRight size={14} className="-mr-2 opacity-50" />
                 <ChevronRight size={14} className="-mr-2 opacity-75" />
